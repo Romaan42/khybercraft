@@ -1,10 +1,12 @@
 "use client";
 
+import { adminLogout } from "@/actions/adminActions";
 import { Box, LayoutGrid, ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function AdminHeader() {
+  const router = useRouter();
   const pathname = usePathname();
 
   const links = [
@@ -25,6 +27,12 @@ export default function AdminHeader() {
     },
   ];
 
+  const logout = async () => {
+    const result = await adminLogout();
+    if (result.success) {
+      router.push("/admin-login");
+    }
+  };
   return (
     <header className="flex flex-col h-screen w-64 border-neutral-200 border relative">
       {/* Header */}
@@ -54,6 +62,12 @@ export default function AdminHeader() {
           );
         })}
       </nav>
+      <button
+        className="text-center text-red-500 cursor-pointer"
+        onClick={logout}
+      >
+        logout
+      </button>
     </header>
   );
 }

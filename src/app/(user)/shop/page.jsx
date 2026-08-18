@@ -7,111 +7,12 @@ export const metadata = {
     "Shop the finest handcrafted Kaptaan, Norozi, and Peshawari chappals made with premium leather and durable soles.",
 };
 
-// const initialProducts = [
-//   {
-//     id: "1",
-//     name: "Royal Charsadda Kaptaan Special",
-//     category: "kaptaan",
-//     price: "Rs. 4,999",
-//     originalPrice: "Rs. 6,500",
-//     rating: 4.9,
-//     reviews: 128,
-//     isBestseller: true,
-//     badge: "Bestseller",
-//     color: "Brown",
-//     soleType: "Double Sole",
-//     image:
-//       "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&q=80&w=900",
-//     tag: "Handcrafted",
-//   },
-//   {
-//     id: "2",
-//     name: "Classic Black Norozi Cut",
-//     category: "norozi",
-//     price: "Rs. 5,499",
-//     originalPrice: "Rs. 7,000",
-//     rating: 5.0,
-//     reviews: 94,
-//     isBestseller: false,
-//     badge: "Trending",
-//     color: "Black",
-//     soleType: "Tyre Sole",
-//     image:
-//       "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=900",
-//     tag: "Pure Cow Leather",
-//   },
-//   {
-//     id: "3",
-//     name: "Traditional Charsadda Zalmi",
-//     category: "peshawari",
-//     price: "Rs. 4,299",
-//     originalPrice: "Rs. 5,500",
-//     rating: 4.8,
-//     reviews: 76,
-//     isBestseller: false,
-//     badge: "Limited",
-//     color: "Mustard",
-//     soleType: "Single Sole",
-//     image:
-//       "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=900",
-//     tag: "Heritage",
-//   },
-//   {
-//     id: "4",
-//     name: "Textured Tan Panjdara",
-//     category: "kaptaan",
-//     price: "Rs. 5,999",
-//     originalPrice: "Rs. 7,500",
-//     rating: 4.9,
-//     reviews: 112,
-//     isBestseller: true,
-//     badge: "Premium",
-//     color: "Tan",
-//     soleType: "Double Sole",
-//     image:
-//       "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&q=80&w=900",
-//     tag: "Tyre Sole",
-//   },
-//   {
-//     id: "5",
-//     name: "Dark Chocolate Norozi Double Sole",
-//     category: "norozi",
-//     price: "Rs. 6,299",
-//     originalPrice: "Rs. 8,000",
-//     rating: 4.9,
-//     reviews: 58,
-//     isBestseller: false,
-//     badge: "Premium",
-//     color: "Chocolate",
-//     soleType: "Double Sole",
-//     image:
-//       "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=900",
-//     tag: "Premium Finish",
-//   },
-//   {
-//     id: "6",
-//     name: "Matte Black Peshawari Classic",
-//     category: "peshawari",
-//     price: "Rs. 3,999",
-//     originalPrice: "Rs. 5,000",
-//     rating: 4.7,
-//     reviews: 82,
-//     isBestseller: false,
-//     badge: "Classic",
-//     color: "Black",
-//     soleType: "Single Sole",
-//     image:
-//       "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=900",
-//     tag: "Everyday Wear",
-//   },
-// ];
-
 export default async function ShopPage() {
   try {
     const res = await fetch(`${process.env.BASE_URL}/api/products`, {
       cache: "force-cache",
       next: {
-        revalidate: 60, // Revalidate every 60 seconds
+        revalidate: 60,
       },
     });
 

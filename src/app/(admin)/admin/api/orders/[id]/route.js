@@ -26,18 +26,15 @@ export async function GET(request, { params }) {
 // PUT / Update order details
 export async function PUT(request, { params }) {
   try {
-    await dbConnect();
-    const { id } = params;
-    const body = await request.json();
+    await connectDb();
+    const { id } = await params;
+    const { orderStatus, paymentStatus } = await request.json();
 
     const updatedOrder = await Order.findByIdAndUpdate(
       id,
       {
-        orderStatus: body.orderStatus,
-        paymentStatus: body.paymentStatus,
-        trackingId: body.trackingId,
-        adminNotes: body.adminNotes,
-        ...(body.orderStatus === "Delivered" && { deliveredAt: new Date() }),
+        orderStatus,
+        paymentStatus,
       },
       { new: true },
     );
@@ -48,6 +45,7 @@ export async function PUT(request, { params }) {
 
     return NextResponse.json(updatedOrder, { status: 200 });
   } catch (error) {
+    console.log("ERROR", error);
     return NextResponse.json(
       { message: "Error updating order", error: error.message },
       { status: 500 },

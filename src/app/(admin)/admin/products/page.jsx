@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Plus, Search, Filter, Edit, Trash2, ExternalLink } from "lucide-react";
+import { Plus, Search, Filter, Edit, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import TableSkeleton from "@/components/admin/LoadingSkeleton";
@@ -24,6 +24,20 @@ export default function AdminProductsPage() {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  const handleDelete = async (id) => {
+    if (confirm("do you want to delete this product?")) {
+      const res = await fetch(`/admin/api/products/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (res.ok) {
+        fetchProducts();
+      } else {
+        toast.error("error while deleting product");
+      }
+    }
+  };
 
   return (
     <div className="p-6 space-y-6 bg-slate-50/50 min-h-screen">
@@ -121,13 +135,15 @@ export default function AdminProductsPage() {
                       </span>
                     </td>
                     <td className="px-5 py-3.5 text-right space-x-1">
-                      <Link
-                        href={`/admin/products/${p._id}`}
-                        className="p-1.5 text-slate-500 hover:text-black hover:bg-slate-100 rounded-lg transition"
+                      <button className="p-1.5 text-slate-500 hover:text-black hover:bg-slate-100 rounded-lg transition">
+                        <Link href={`/admin/products/${p._id}`}>
+                          <Edit size={15} />
+                        </Link>
+                      </button>
+                      <button
+                        onClick={() => handleDelete(p._id)}
+                        className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
                       >
-                        <Edit size={15} />
-                      </Link>
-                      <button className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition">
                         <Trash2 size={15} />
                       </button>
                     </td>

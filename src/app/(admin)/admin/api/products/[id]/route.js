@@ -40,7 +40,7 @@ export async function PUT(request, { params }) {
         category: body.category,
         price: body.price,
         salePrice: body.salePrice,
-        stock: body.stock,
+        stok: body.stok,
         description: body.description,
         sizes: body.sizes,
         images: body.images,
@@ -61,6 +61,22 @@ export async function PUT(request, { params }) {
   } catch (error) {
     return NextResponse.json(
       { message: "Error updating product", error: error.message },
+      { status: 500 },
+    );
+  }
+}
+
+// DELETE prodcot by id
+export async function DELETE(_, { params }) {
+  try {
+    const { id } = await params;
+    await connectDb();
+    await Product.findByIdAndDelete(id);
+    return Response.json({ success: true, message: "product deleted" });
+  } catch (error) {
+    console.log("ERROR", error);
+    return Response.json(
+      { success: true, message: "something went wrong!" },
       { status: 500 },
     );
   }

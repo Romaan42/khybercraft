@@ -66,8 +66,10 @@ export default function OrdersComp() {
                     .join(", ")}
                 </td>
                 <td className="px-5 py-3.5">
-                  <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] font-semibold">
-                    {o.paymentMethod}
+                  <span
+                    className={`${o.paymentStatus === "Paid" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"} text-slate-700 px-2 py-0.5 rounded text-[10px] font-semibold`}
+                  >
+                    {o.paymentStatus}
                   </span>
                 </td>
                 <td className="px-5 py-3.5 font-bold text-slate-900">

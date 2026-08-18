@@ -62,7 +62,7 @@ export default function AdminEditOrderPage({ params }) {
     setSaving(true);
 
     try {
-      const res = await fetch(`/api/admin/orders/${orderId}`, {
+      const res = await fetch(`/admin/api/orders/${orderId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

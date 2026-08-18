@@ -32,7 +32,7 @@ export default function AdminEditProductPage({ params }) {
     category: "Traditional Chappal",
     price: "",
     salePrice: "",
-    stock: "",
+    stok: "",
     description: "",
     isFeatured: false,
     inStock: true,
@@ -55,7 +55,7 @@ export default function AdminEditProductPage({ params }) {
             category: data.category || "Traditional Chappal",
             price: data.price || "",
             salePrice: data.salePrice || "",
-            stock: data.stock || "",
+            stok: data.stok || "",
             description: data.description || "",
             isFeatured: data.isFeatured || false,
             inStock: data.inStock ?? true,
@@ -410,9 +410,9 @@ export default function AdminEditProductPage({ params }) {
                   </label>
                   <input
                     type="number"
-                    value={formData.stock}
+                    value={formData.stok}
                     onChange={(e) =>
-                      setFormData({ ...formData, stock: e.target.value })
+                      setFormData({ ...formData, stok: e.target.value })
                     }
                     placeholder="25"
                     className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-xs text-stone-900 placeholder-stone-400 focus:outline-none focus:border-amber-600 focus:bg-white transition"

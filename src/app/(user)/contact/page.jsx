@@ -16,8 +16,6 @@ export const metadata = {
   description:
     "Get in touch with us for custom sizing, order tracking, wholesale inquiries, or general questions about our authentic handcrafted Chappals.",
 };
-src =
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105822.84587900746!2d71.70119335!3d34.14815525!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38d930263be4c47f%3A0xbbe1752b9fae23b8!2sCharsadda%2C%20Khyber%20Pakhtunkhwa!5e0!3m2!1sen!2spk!4v1700000000000!5m2!1sen!2spk";
 
 export default function ContactPage() {
   return (

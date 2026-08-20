@@ -24,6 +24,7 @@ export const GET = async () => {
         image: product.images[0],
         qty: item.quantity,
         color: "red",
+        size: item.size,
       };
     });
 

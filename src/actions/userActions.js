@@ -75,8 +75,9 @@ export const logoutUser = async () => {
   }
 };
 
-export const addToCart = async (_, productId) => {
+export const addToCart = async (_, product) => {
   try {
+    const { productId, size } = product;
     await connectDb();
     const user = await checkLoginUser();
     if (!user) {
@@ -92,7 +93,7 @@ export const addToCart = async (_, productId) => {
       existingCartItem.quantity += 1;
       await existingCartItem.save();
     } else {
-      await Cart.create({ user: user._id, productId, quantity: 1 });
+      await Cart.create({ user: user._id, productId, quantity: 1, size });
     }
 
     return { success: true, message: "Product added to cart successfully" };

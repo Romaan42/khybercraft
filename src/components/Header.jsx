@@ -105,18 +105,17 @@ export default function Header() {
 
           {/* Actions */}
           <div className="flex items-center space-x-2 sm:space-x-4">
-            {/* Search */}
-            <button className="p-2 text-stone-300 hover:text-amber-500 transition hidden sm:block">
+            {/* <button className="p-2 text-stone-300 hover:text-amber-500 transition hidden sm:block">
               <Search size={20} />
             </button>
 
-            {/* Wishlist */}
+           
             <Link
               href="/wishlist"
               className="p-2 text-stone-300 hover:text-amber-500 transition hidden sm:block"
             >
               <Heart size={20} />
-            </Link>
+            </Link> */}
 
             {/* Cart */}
             <Link
@@ -175,7 +174,7 @@ export default function Header() {
 
             {/* WhatsApp */}
             <a
-              href="https://wa.me/923139598855"
+              href="https://wa.me/923379368405"
               className="hidden md:inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-full transition shadow-lg shadow-amber-600/20"
             >
               <PhoneCall size={14} />

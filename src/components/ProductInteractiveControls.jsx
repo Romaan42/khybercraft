@@ -1,18 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useEffect, useState, useTransition } from "react";
 import Image from "next/image";
 import { Star, ShoppingBag, PhoneCall } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCartItems, guestAddToCart } from "@/store/cartSlice";
+import toast from "react-hot-toast";
+import { addToCart } from "@/actions/userActions";
 
 export default function ProductInteractiveSection({ product }) {
+  const dispatch = useDispatch();
+  const [trasition, setTranstion] = useTransition();
+  const [state, action, loading] = useActionState(addToCart);
+  const { user, userLoading } = useSelector((state) => state.user);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState(product.sizes?.[2] || 8);
+  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const isOutOfStock = product.stok <= 0;
   const dicountedPrice = Math.floor(product.price / product.discount);
   const finalPrice = product.price - dicountedPrice;
   const whatsappMessage = encodeURIComponent(
     `Hello! I want to order "${product.title}" (SKU: ${product.id})\nSize: ${selectedSize}\nPrice: Rs. ${finalPrice}`,
   );
+
+  useEffect(() => {
+    if (state) {
+      if (state.success) {
+        toast.success(state.message);
+        dispatch(getCartItems());
+      } else {
+        toast.error(state.message);
+      }
+    }
+  }, [state]);
+
+  const handleAddToCart = async () => {
+    if (userLoading) return;
+
+    if (!user) {
+      dispatch(guestAddToCart({ ...product, qty: 1, size: selectedSize }));
+      toast.success("added to cart");
+      return;
+    }
+    setTranstion(() => {
+      action({ productId: product._id, size: selectedSize });
+    });
+  };
 
   return (
     <>
@@ -153,8 +185,9 @@ export default function ProductInteractiveSection({ product }) {
         {/* Action Buttons */}
         <div className="space-y-3 pt-2">
           <button
-            disabled={isOutOfStock}
-            className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-stone-800 disabled:text-stone-500 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 group"
+            disabled={isOutOfStock || loading || trasition}
+            onClick={handleAddToCart}
+            className={`w-full bg-amber-600 hover:bg-amber-700 disabled:bg-stone-800 disabled:text-stone-500 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 group ${loading || trasition ? "cursor-not-allowed" : ""}`}
           >
             <ShoppingBag size={16} />
             <span>{isOutOfStock ? "Out of Stock" : "Add to Cart"}</span>

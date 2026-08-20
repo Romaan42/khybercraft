@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
   try {
     await connectDb();
     const { id } = await params;
-    console.log({ id });
+
     const order = await Order.findById(id);
     if (!order) {
       return NextResponse.json({ message: "Order not found" }, { status: 404 });
@@ -28,13 +28,16 @@ export async function PUT(request, { params }) {
   try {
     await connectDb();
     const { id } = await params;
-    const { orderStatus, paymentStatus } = await request.json();
+    const { orderStatus, paymentStatus, notes, tracking } =
+      await request.json();
 
     const updatedOrder = await Order.findByIdAndUpdate(
       id,
       {
         orderStatus,
         paymentStatus,
+        notes,
+        tracking,
       },
       { new: true },
     );

@@ -76,6 +76,7 @@ export default function CheckoutPage() {
         qty: item.qty,
         image: item.image,
         price: item.price,
+        size: item.size,
       })),
       subtotal,
       shippingFee: deliveryFee,

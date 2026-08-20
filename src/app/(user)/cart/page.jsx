@@ -87,7 +87,15 @@ export default function CartPage() {
   const subtotal = useMemo(() => {
     return items.reduce((acc, item) => acc + item.price * item.qty, 0);
   }, [items]);
-  const discountAmount = subtotal / appliedDiscount;
+
+  const discountAmount = useMemo(() => {
+    if (appliedDiscount < 1) {
+      return 0;
+    }
+
+    return subtotal / appliedDiscount;
+  }, [items]);
+
   const shippingFee = 0; // Free delivery
   const grandTotal = subtotal - discountAmount + shippingFee;
 
@@ -146,29 +154,14 @@ export default function CartPage() {
                       <h3 className="font-serif font-bold text-stone-100 text-base sm:text-lg">
                         {item.title}
                       </h3>
-                      <p className="text-xs text-stone-400">
-                        {item.variant ?? "not"}
-                      </p>
-                      <p className="text-xs text-amber-500 font-medium">
-                        Color: {item.color ?? "red"}
-                      </p>
 
-                      {/* Size Selector */}
                       <div className="flex items-center gap-2 pt-1">
                         <label className="text-[11px] text-stone-400 uppercase font-bold">
                           Size (PK/UK):
                         </label>
-                        <select
-                          value={item.size}
-                          onChange={(e) => updateSize(item.id, e.target.value)}
-                          className="bg-stone-950 border border-stone-800 text-amber-500 text-xs font-bold rounded px-2 py-1 focus:outline-none focus:border-amber-600"
-                        >
-                          {[6, 7, 8, 9, 10, 11, 12].map((s) => (
-                            <option key={s} value={s}>
-                              Size {s}
-                            </option>
-                          ))}
-                        </select>
+                        <span className="text-[11px] text-white uppercase font-bold">
+                          {item.size}
+                        </span>
                       </div>
                     </div>
                   </div>

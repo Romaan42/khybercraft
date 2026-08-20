@@ -22,8 +22,6 @@ export default function ShopClient({ initialProducts }) {
 
       const searchLower = searchQuery.toLowerCase();
       const matchesSearch = product.title.toLowerCase().includes(searchLower);
-      // product.tag.toLowerCase().includes(searchLower) ||
-      // product.category.toLowerCase().includes(searchLower);
 
       return matchesCategory && matchesSearch;
     });
@@ -65,23 +63,6 @@ export default function ShopClient({ initialProducts }) {
             </div>
           </div>
         </div>
-
-        {/* <div className="mt-8 flex flex-wrap gap-3">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              type="button"
-              onClick={() => setActiveCategory(category.id)}
-              className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
-                activeCategory === category.id
-                  ? "border-amber-500 bg-amber-500 text-stone-950 shadow-lg shadow-amber-500/20"
-                  : "border-stone-800 bg-stone-950/90 text-stone-300 hover:border-amber-500 hover:bg-stone-900"
-              }`}
-            >
-              {category.label}
-            </button>
-          ))}
-        </div> */}
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">

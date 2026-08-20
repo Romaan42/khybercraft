@@ -17,6 +17,7 @@ const orderSchema = new mongoose.Schema(
         qty: { type: Number, required: true },
         price: { type: Number, required: true },
         image: { type: String },
+        size: { type: String },
       },
     ],
     shippingAddress: {
@@ -38,11 +39,14 @@ const orderSchema = new mongoose.Schema(
       enum: ["Pending", "Paid", "Failed"],
       default: "Pending",
     },
+    tracking: String,
+    notes: String,
     orderStatus: {
       type: String,
       enum: ["Pending", "Processing", "Dispatched", "Delivered", "Cancelled"],
       default: "Pending",
     },
+    size: String,
     subtotal: {
       type: Number,
       required: true,

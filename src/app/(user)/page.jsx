@@ -194,27 +194,10 @@ export default function CharsaddaChappalWebsite() {
                 with modern durability.
               </p>
             </div>
-
-            {/* Category Filter Tabs */}
-            {/* <div className="flex justify-center flex-wrap gap-2 mb-12">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                className={`px-5 py-2.5 rounded-full text-xs font-semibold transition ${true ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/20'
-                  : 'bg-stone-900 text-stone-400 hover:text-stone-200 border border-stone-800'
-                  }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div> */}
-
-            {/* Product Grid */}
             <ProductsGrid />
           </div>
         </section>
 
-        {/* ----------------- CRAFTSMANSHIP STORY ----------------- */}
         <section
           id="craftsmanship"
           className="py-20 bg-stone-900 border-t border-stone-800 relative overflow-hidden"
@@ -223,8 +206,9 @@ export default function CharsaddaChappalWebsite() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="relative">
                 <div className="aspect-video sm:aspect-square rounded-2xl overflow-hidden border border-stone-800">
-                  <img
-                    src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=800"
+                  <Image
+                    src="https://res.cloudinary.com/druroxxha/image/upload/v1787125043/without-bg_kams6q.png"
+                    fill
                     alt="Craftsmanship"
                     className="w-full h-full object-cover"
                   />

@@ -68,8 +68,8 @@ export default function AdminEditOrderPage({ params }) {
         body: JSON.stringify({
           orderStatus,
           paymentStatus,
-          trackingId,
-          adminNotes,
+          tracking: trackingId,
+          notes: adminNotes,
         }),
       });
 
@@ -215,21 +215,28 @@ export default function AdminEditOrderPage({ params }) {
               </h2>
 
               <div className="divide-y divide-stone-100">
-                {order.orderItems?.map((item, idx) => (
+                {order.orderItems.map((item, idx) => (
                   <div
                     key={idx}
                     className="py-3 flex items-center justify-between gap-4"
                   >
-                    <div>
+                    <div className="max-w-20">
+                      <img
+                        className="w-full"
+                        src={item.image}
+                        alt={item.title}
+                      />
+                    </div>
+                    <div className="grow">
                       <h4 className="text-xs font-bold text-stone-900">
-                        {item.name}
+                        {item.title}
                       </h4>
                       <p className="text-[11px] text-stone-500">
-                        Size: {item.size} • Qty: {item.quantity}
+                        Size: {item.size} • Qty: {item.qty}
                       </p>
                     </div>
                     <span className="text-xs font-bold text-stone-800">
-                      Rs. {(item.price * item.quantity).toLocaleString()}
+                      Rs. {(item.price * item.qty).toLocaleString()}
                     </span>
                   </div>
                 ))}

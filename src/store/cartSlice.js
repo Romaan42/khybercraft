@@ -65,7 +65,7 @@ const cartSlice = createSlice({
       if (existingItem) {
         existingItem.qty += 1;
       } else {
-        state.items.push({ ...product, qty: 1 });
+        state.items.push({ ...product, qty: 1, size: product.size });
       }
 
       saveInLocal(state.items);

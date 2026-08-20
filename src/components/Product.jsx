@@ -69,6 +69,7 @@ export default function Product({ product }) {
               title: product.title,
               price: product.price,
               image: product.images[0],
+              sizes: product.sizes,
             }}
           />
         </div>

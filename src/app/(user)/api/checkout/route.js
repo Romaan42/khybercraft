@@ -13,6 +13,7 @@ export const POST = async (request) => {
       subtotal,
       shippingFee,
       totalAmount,
+      size,
     } = await request.json();
 
     const user = await checkLoginUser();
@@ -31,6 +32,7 @@ export const POST = async (request) => {
       subtotal,
       shippingFee,
       totalAmount,
+      size,
     });
     await Cart.deleteMany({ user: user._id });
     return Response.json(

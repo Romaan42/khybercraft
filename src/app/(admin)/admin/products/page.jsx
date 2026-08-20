@@ -120,7 +120,7 @@ export default function AdminProductsPage() {
                     <td className="px-5 py-3.5 font-bold text-slate-900">
                       {p.price}
                     </td>
-                    <td className="px-5 py-3.5 font-medium">{p.stok} units</td>
+                    <td className="px-5 py-3.5 font-medium">{p.stock} units</td>
                     <td className="px-5 py-3.5">
                       <span
                         className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide inline-block ${

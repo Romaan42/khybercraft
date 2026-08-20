@@ -13,7 +13,7 @@ const productSchema = mongoose.Schema({
   },
   description: String,
   price: Number,
-  stok: Number,
+  stock: Number,
   discount: {
     type: Number,
     default: 0,
@@ -34,9 +34,14 @@ const productSchema = mongoose.Schema({
     },
   ],
   images: [String],
+  sizes: [String],
   isActive: {
     type: Boolean,
     default: true,
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false,
   },
   category: {
     type: String,

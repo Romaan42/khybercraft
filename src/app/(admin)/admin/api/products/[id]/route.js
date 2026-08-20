@@ -40,7 +40,7 @@ export async function PUT(request, { params }) {
         category: body.category,
         price: body.price,
         salePrice: body.salePrice,
-        stok: body.stok,
+        stock: body.stock,
         description: body.description,
         sizes: body.sizes,
         images: body.images,

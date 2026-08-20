@@ -36,6 +36,7 @@ export default function AddToCart({ product }) {
     // Guest user
     if (!user && !userLoading) {
       dispatch(guestAddToCart(product));
+      toast.success("added to cart");
       return;
     }
 

@@ -103,7 +103,7 @@ export default async function ShopPage() {
               <div className="lg:col-span-6">
                 <div className="relative overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-950/10 shadow-2xl shadow-black/30">
                   <img
-                    src="https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&q=80&w=900"
+                    src="https://res.cloudinary.com/druroxxha/image/upload/v1787125043/without-bg_kams6q.png"
                     alt="Charsadda leather chappal"
                     className="h-full w-full object-cover"
                   />
@@ -112,7 +112,7 @@ export default async function ShopPage() {
                       Featured style
                     </p>
                     <h2 className="mt-2 text-3xl font-semibold text-stone-100">
-                      Royal Kaptaan Classic
+                      khybercraft collection
                     </h2>
                     <p className="mt-3 max-w-md text-sm text-stone-300">
                       A signature hand-stitched design with rich leather,

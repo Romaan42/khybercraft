@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ShoppingBag,
   Trash2,
@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllItems,
   getCartItems,
+  guestRemoveFromCart,
   setLoading,
   updateQty,
 } from "@/store/cartSlice";
@@ -30,15 +31,6 @@ export default function CartPage() {
   const dispatch = useDispatch();
   const { items, cartLoading } = useSelector((state) => state.cart);
   const { user, userLoading } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    if (userLoading) return;
-    if (!user) {
-      dispatch(getAllItems());
-      return;
-    }
-    dispatch(getCartItems());
-  }, [user]);
 
   const [promoCode, setPromoCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState(0);
@@ -65,6 +57,11 @@ export default function CartPage() {
 
   // Handle Item Removal
   const removeItem = async (id) => {
+    if (userLoading) return;
+    if (!user) {
+      dispatch(guestRemoveFromCart(id));
+      return;
+    }
     dispatch(setLoading(true));
     const result = await deleteCartItem(id);
     if (result.success) {
@@ -75,11 +72,22 @@ export default function CartPage() {
   };
 
   // Handle Promo Code Apply
-  const handleApplyPromo = (e) => {};
+  const handleApplyPromo = (e) => {
+    e.preventDefault();
+    if (promoCode.trim() === "123") {
+      toast.success("coupon are applied");
+      setAppliedDiscount(10);
+    } else {
+      toast.error("code are wrong!");
+      setAppliedDiscount(0);
+    }
+  };
 
   // Calculation summaries
-  const subtotal = items.reduce((acc, item) => acc + item.price * item.qty, 0);
-  const discountAmount = subtotal * appliedDiscount;
+  const subtotal = useMemo(() => {
+    return items.reduce((acc, item) => acc + item.price * item.qty, 0);
+  }, [items]);
+  const discountAmount = subtotal / appliedDiscount;
   const shippingFee = 0; // Free delivery
   const grandTotal = subtotal - discountAmount + shippingFee;
 

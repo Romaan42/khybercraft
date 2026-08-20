@@ -73,7 +73,7 @@ export default function ContactPage() {
               </div>
 
               <a
-                href="https://wa.me/923001234567?text=Hello%2C%20I%20have%20a%20question%20regarding%20Charsadda%20Chappal"
+                href="https://wa.me/923379368405"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-lg shadow-amber-600/20"
@@ -94,9 +94,13 @@ export default function ContactPage() {
                   <h4 className="text-xs font-bold text-stone-400 uppercase tracking-wider">
                     Call / WhatsApp
                   </h4>
-                  <p className="text-sm font-semibold text-stone-100 mt-1">
-                    +92 300 1234567
-                  </p>
+                  <a
+                    href="https://wa.me/923379368405"
+                    target="_blank"
+                    className="text-sm font-semibold text-stone-100 mt-1"
+                  >
+                    +92 337 9368405
+                  </a>
                   <p className="text-[11px] text-stone-500">
                     Mon - Sat (10:00 AM to 9:00 PM)
                   </p>
@@ -113,7 +117,7 @@ export default function ContactPage() {
                     Email Address
                   </h4>
                   <p className="text-sm font-semibold text-stone-100 mt-1">
-                    support@charsaddaheritage.com
+                    khybercraft.pk@gmail.com
                   </p>
                   <p className="text-[11px] text-stone-500">
                     We respond within 24 hours.

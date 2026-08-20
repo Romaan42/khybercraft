@@ -15,11 +15,10 @@ import {
 import ProductInteractiveSection from "@/components/ProductInteractiveControls";
 import Product from "@/components/Product";
 
-// Mock database query matching your exact DB model
 async function getProductBySlug(slug) {
   const res = await fetch(`${process.env.BASE_URL}/api/product/${slug}`);
   const result = await res.json();
-  console.log(result);
+
   if (!result.success) {
     return null;
   }
@@ -39,10 +38,6 @@ async function getRelatedProducts(currentId) {
 //   const product = await getProductBySlug(slug);
 
 //   if (!product) return { title: "Product Not Found" };
-
-//   const discountedPrice = Math.round(
-//     product.price - (product.price * product.discount) / 100,
-//   );
 
 //   return {
 //     title: `${product.title} | Premium Chappal Footwear`,
@@ -70,14 +65,33 @@ export default async function page({ params }) {
   const relatedProducts = await getRelatedProducts(product._id);
   if (!product) notFound();
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.shortDescription || product.description || "",
+    image: product.images || [],
+    category: product.category,
+    offers: {
+      "@type": "Offer",
+      price: product.price,
+      priceCurrency: "PKR",
+      availability:
+        product.stock > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      url: `https://yourdomain.com/products/${slug}`,
+    },
+  };
+
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100 font-sans selection:bg-amber-600 selection:text-white">
-      {/* Google SEO Schema */}
-      {/* <script
+      <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      /> */}
-
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(productSchema),
+        }}
+      />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Breadcrumb Navigation */}
         <nav aria-label="Breadcrumb" className="mb-8">
@@ -145,7 +159,6 @@ export default async function page({ params }) {
                 </p>
               </div>
             </div>
-
             <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4">
               <RotateCcw size={24} className="text-amber-500 shrink-0" />
               <div>
@@ -161,7 +174,7 @@ export default async function page({ params }) {
         </article>
 
         {/* Related Products / Cross-Selling Section */}
-        {relatedProducts.length > 0 && (
+        {relatedProducts.length > 1 && (
           <section className="mt-20 pt-12 border-t border-stone-800">
             <div className="flex items-end justify-between mb-8">
               <div>

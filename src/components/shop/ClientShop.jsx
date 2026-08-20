@@ -66,7 +66,7 @@ export default function ShopClient({ initialProducts }) {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-3">
+        {/* <div className="mt-8 flex flex-wrap gap-3">
           {categories.map((category) => (
             <button
               key={category.id}
@@ -81,7 +81,7 @@ export default function ShopClient({ initialProducts }) {
               {category.label}
             </button>
           ))}
-        </div>
+        </div> */}
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
@@ -90,7 +90,7 @@ export default function ShopClient({ initialProducts }) {
             <Product key={product._id} product={product} />
           ))
         ) : (
-          <div className="col-span-full rounded-[2rem] border border-stone-800 bg-stone-900/90 p-14 text-center text-stone-400">
+          <div className="col-span-full rounded-4xl border border-stone-800 bg-stone-900/90 p-14 text-center text-stone-400">
             No matching products found. Try a broader search or choose another
             collection.
           </div>

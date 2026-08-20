@@ -11,7 +11,7 @@ export default function ProductInteractiveSection({ product }) {
   const dicountedPrice = Math.floor(product.price / product.discount);
   const finalPrice = product.price - dicountedPrice;
   const whatsappMessage = encodeURIComponent(
-    `Hello! I want to order "${product.title}" (SKU: ${product.sku})\nSize: ${selectedSize}\nPrice: Rs. ${finalPrice}`,
+    `Hello! I want to order "${product.title}" (SKU: ${product.id})\nSize: ${selectedSize}\nPrice: Rs. ${finalPrice}`,
   );
 
   return (
@@ -70,7 +70,7 @@ export default function ProductInteractiveSection({ product }) {
             </span>
             <span className="text-stone-700">•</span>
             <span className="text-xs text-stone-500 uppercase font-mono">
-              SKU: {product.sku}
+              SKU: {product._id}
             </span>
           </div>
 
@@ -88,10 +88,10 @@ export default function ProductInteractiveSection({ product }) {
               </span>
             </div>
             <span className="text-stone-700">•</span>
-            {!isOutOfStock ? (
+            {product.stock > 1 ? (
               <span className="inline-flex items-center gap-1.5 text-green-400 font-semibold">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                In Stock ({product.stok} available)
+                In Stock ({product.stock} available)
               </span>
             ) : (
               <span className="text-red-400 font-semibold">Out of Stock</span>
@@ -102,7 +102,7 @@ export default function ProductInteractiveSection({ product }) {
         {/* Price Card */}
         <div className="p-4 bg-stone-900/60 border border-stone-800 rounded-xl flex items-baseline gap-3">
           <span className="text-3xl font-bold text-amber-500">
-            Rs. {finalPrice.toLocaleString()}
+            Rs. {product.price.toLocaleString()}
           </span>
           {product.discount > 0 && (
             <>
@@ -161,7 +161,7 @@ export default function ProductInteractiveSection({ product }) {
           </button>
 
           <a
-            href={`https://wa.me/923001234567?text=${whatsappMessage}`}
+            href={`https://wa.me/923379368405?text=${whatsappMessage}`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full bg-stone-900 hover:bg-stone-800 text-stone-200 border border-stone-800 font-semibold py-3.5 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition"

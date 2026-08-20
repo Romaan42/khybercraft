@@ -17,21 +17,20 @@ import {
 } from "lucide-react";
 import { CldUploadButton } from "next-cloudinary";
 
-export default function AdminEditProductPage({ params }) {
-  const resolvedParams = use(params);
-  const productId = resolvedParams?.id;
+export default function AdminEditProductPage() {
   const router = useRouter();
 
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  // Product Form State
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
     category: "Traditional Chappal",
     price: "",
     salePrice: "",
-    stock: "",
+    stok: "",
     description: "",
     isFeatured: false,
     inStock: true,
@@ -40,52 +39,6 @@ export default function AdminEditProductPage({ params }) {
   const [sizes, setSizes] = useState(["6", "7", "8", "9", "10", "11"]);
   const [images, setImages] = useState([]);
 
-  // Fetch Existing Product Data
-  useEffect(() => {
-    async function fetchProduct() {
-      try {
-        setLoading(true);
-        const res = await fetch(`/admin/api/products/${productId}`);
-        if (res.ok) {
-          const data = await res.json();
-          setFormData({
-            title: data.title || "",
-            slug: data.slug || "",
-            category: data.category || "Traditional Chappal",
-            price: data.price || "",
-            salePrice: data.salePrice || "",
-            stock: data.stock || "",
-            description: data.description || "",
-            isFeatured: data.isFeatured || false,
-            inStock: data.inStock ?? true,
-          });
-          setSizes(
-            data.sizes && data.sizes.length > 0
-              ? data.sizes
-              : ["6", "7", "8", "9", "10", "11"],
-          );
-          setImages(data.images && data.images.length > 0 ? data.images : [""]);
-        } else {
-          alert("Failed to fetch product details.");
-        }
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (productId) fetchProduct();
-  }, [productId]);
-
-  // Dynamic Array Handlers for Images
-  const handleImageChange = (index, value) => {
-    const updated = [...images];
-    updated[index] = value;
-    setImages(updated);
-  };
-
-  const addImageField = () => setImages([...images, ""]);
   const removeImageField = (index) =>
     setImages(images.filter((_, i) => i !== index));
 
@@ -101,25 +54,25 @@ export default function AdminEditProductPage({ params }) {
   // Submit Handler
   const handleSave = async (e) => {
     e.preventDefault();
-    setSaving(true);
+    console.log(formData);
 
     try {
-      const res = await fetch(`/admin/api/products/${productId}`, {
-        method: "PUT",
+      const res = await fetch(`/admin/api/add-product`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
           price: Number(formData.price),
           salePrice: formData.salePrice ? Number(formData.salePrice) : null,
-          stock: Number(formData.stock),
+          stock: Number(formData.stok),
           sizes,
-          images: images.filter((img) => img.trim() !== ""),
+          images,
         }),
       });
 
       if (res.ok) {
         alert("Product updated successfully!");
-        router.refresh();
+        // router.refresh();
       } else {
         alert("Failed to update product.");
       }
@@ -409,9 +362,9 @@ export default function AdminEditProductPage({ params }) {
                   </label>
                   <input
                     type="number"
-                    value={formData.stock}
+                    value={formData.stok}
                     onChange={(e) =>
-                      setFormData({ ...formData, stock: e.target.value })
+                      setFormData({ ...formData, stok: e.target.value })
                     }
                     placeholder="25"
                     className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-xs text-stone-900 placeholder-stone-400 focus:outline-none focus:border-amber-600 focus:bg-white transition"

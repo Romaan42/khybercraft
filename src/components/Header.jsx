@@ -29,12 +29,13 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (!user && !userLoading) {
+    if (userLoading) return;
+    if (!user) {
       dispatch(getAllItems());
       return;
     }
     dispatch(getCartItems());
-  }, [user]);
+  }, [user, userLoading]);
 
   const handleLogout = async () => {
     // Implement logout functionality here

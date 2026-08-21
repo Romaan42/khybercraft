@@ -100,7 +100,7 @@ export default function CharsaddaChappalWebsite() {
                 <div className="relative mx-auto max-w-md lg:max-w-none">
                   <div className="aspect-4/5 rounded-2xl overflow-hidden border-2 border-stone-800 shadow-2xl relative group">
                     <Image
-                      src="https://res.cloudinary.com/druroxxha/image/upload/v1786523098/banner_a5yhff.png"
+                      src="https://res.cloudinary.com/druroxxha/image/upload/v1787304344/WhatsApp_Image_2026-08-21_at_2.23.06_PM_jndtpu.jpg"
                       fill
                       loading="eager"
                       alt="Charsadda Chappal Showcase"

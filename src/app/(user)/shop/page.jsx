@@ -1,5 +1,6 @@
 import ShopClient from "@/components/shop/ClientShop";
 import { Sparkles, ShieldCheck, Truck, RefreshCw } from "lucide-react";
+import Image from "next/image";
 
 export const metadata = {
   title: "Shop Charsadda Chappal | Handcrafted Leather Collection",
@@ -102,8 +103,9 @@ export default async function ShopPage() {
 
               <div className="lg:col-span-6">
                 <div className="relative overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-950/10 shadow-2xl shadow-black/30">
-                  <img
-                    src="https://res.cloudinary.com/druroxxha/image/upload/v1787125043/without-bg_kams6q.png"
+                  <Image
+                    src="https://res.cloudinary.com/druroxxha/image/upload/v1787304344/WhatsApp_Image_2026-08-21_at_2.23.06_PM_jndtpu.jpg"
+                    fill
                     alt="Charsadda leather chappal"
                     className="h-full w-full object-cover"
                   />

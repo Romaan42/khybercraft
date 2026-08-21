@@ -115,7 +115,7 @@ function OrderDetails() {
       <div className="space-y-3">
         {/* WhatsApp Confirmation Option */}
         <a
-          href={`https://wa.me/923139598855?text=${whatsappMessage}`}
+          href={`https://wa.me/923379368405?text=${whatsappMessage}`}
           target="_blank"
           rel="noopener noreferrer"
           className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-600/10 flex items-center justify-center gap-2"

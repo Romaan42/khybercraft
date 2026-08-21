@@ -322,7 +322,7 @@ export default function CartPage() {
                   </a>
 
                   <a
-                    href={`https://wa.me/923001234567?text=Hello%2C%20I%20want%20to%20order%20Chappal%20Total%20Rs.%20${grandTotal}`}
+                    href={`https://wa.me/923379368405?text=Hello%2C%20I%20want%20to%20order%20Chappal%20Total%20Rs.%20${grandTotal}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full bg-stone-950 hover:bg-stone-800 text-stone-200 border border-stone-800 font-semibold py-3 rounded-lg text-xs flex items-center justify-center gap-2 transition"

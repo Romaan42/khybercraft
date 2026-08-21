@@ -51,9 +51,12 @@ export default function AdminProductsPage() {
             Manage your footwear inventory, pricing, and stock status.
           </p>
         </div>
-        <button className="inline-flex items-center gap-2 bg-black hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow-sm self-start sm:self-auto">
+        <Link
+          href={`/admin/add-product`}
+          className="inline-flex items-center gap-2 bg-black hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow-sm self-start sm:self-auto"
+        >
           <Plus size={16} /> Add Product
-        </button>
+        </Link>
       </div>
 
       {/* Filter & Search Bar */}

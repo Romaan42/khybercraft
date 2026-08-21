@@ -188,13 +188,13 @@ export default function ProfilePage() {
                             {order.paymentMethod}
                           </span>
                         </div>
-                        {order.trackingNumber && (
+                        {order.tracking && (
                           <div>
                             <span className="text-stone-500 block uppercase font-semibold text-[10px]">
                               Tracking #
                             </span>
                             <span className="text-amber-500 font-medium">
-                              {order.trackingNumber}
+                              {order.tracking}
                             </span>
                           </div>
                         )}

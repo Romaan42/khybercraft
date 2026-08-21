@@ -14,6 +14,7 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function AdminEditOrderPage({ params }) {
   const resolvedParams = use(params);
@@ -38,11 +39,12 @@ export default function AdminEditOrderPage({ params }) {
         const res = await fetch(`/admin/api/orders/${orderId}`);
         if (res.ok) {
           const data = await res.json();
+
           setOrder(data);
           setOrderStatus(data.orderStatus || "Pending");
           setPaymentStatus(data.paymentStatus || "Pending");
-          setTrackingId(data.trackingId || "");
-          setAdminNotes(data.adminNotes || "");
+          setTrackingId(data.tracking || "");
+          setAdminNotes(data.notes || "");
         } else {
           alert("Failed to fetch order details.");
         }
@@ -74,14 +76,14 @@ export default function AdminEditOrderPage({ params }) {
       });
 
       if (res.ok) {
-        alert("Order updated successfully!");
+        toast.success("Order updated successfully!");
         router.refresh();
       } else {
-        alert("Failed to update order.");
+        toast.error("Failed to update order.");
       }
     } catch (error) {
       console.error("Error updating order:", error);
-      alert("Something went wrong while saving.");
+      toast.error("Something went wrong while saving.");
     } finally {
       setSaving(false);
     }

@@ -207,7 +207,7 @@ export default function CharsaddaChappalWebsite() {
               <div className="relative">
                 <div className="aspect-video sm:aspect-square rounded-2xl overflow-hidden border border-stone-800">
                   <Image
-                    src="https://res.cloudinary.com/druroxxha/image/upload/v1787125043/without-bg_kams6q.png"
+                    src="https://res.cloudinary.com/druroxxha/image/upload/v1787304344/WhatsApp_Image_2026-08-21_at_2.23.06_PM_jndtpu.jpg"
                     fill
                     alt="Craftsmanship"
                     className="w-full h-full object-cover"

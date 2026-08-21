@@ -4,6 +4,7 @@ import { adminLogout } from "@/actions/adminActions";
 import { Box, LayoutGrid, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 
 export default function AdminHeader() {
   const router = useRouter();
@@ -35,7 +36,8 @@ export default function AdminHeader() {
   };
   return (
     <header className="flex flex-col h-screen w-64 border-neutral-200 border relative">
-      {/* Header */}
+      <Toaster />
+
       <div className="text-2xl font-bold p-5 flex justify-center items-center border-neutral-200 border">
         Admin Panel
       </div>

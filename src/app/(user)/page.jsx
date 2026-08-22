@@ -108,21 +108,6 @@ export default function CharsaddaChappalWebsite() {
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
                     />
                     <div className="absolute inset-0 bg-linear-to-t from-stone-950 via-transparent to-transparent opacity-80" />
-
-                    {/* Floating Price Tag */}
-                    <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-stone-900/90 border border-stone-800 backdrop-blur-md flex items-center justify-between">
-                      <div>
-                        <p className="text-xs text-amber-500 uppercase font-semibold tracking-wider">
-                          Signature Edition
-                        </p>
-                        <p className="text-lg font-bold text-stone-100">
-                          Kaptaan Classic Brown
-                        </p>
-                      </div>
-                      <span className="text-lg font-bold text-amber-500">
-                        Rs. 4,999
-                      </span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -130,7 +115,6 @@ export default function CharsaddaChappalWebsite() {
           </div>
         </section>
 
-        {/* ----------------- FEATURE HIGHLIGHTS ----------------- */}
         <section className="bg-stone-900/50 border-y border-stone-800 py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">

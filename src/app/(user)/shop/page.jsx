@@ -36,7 +36,7 @@ export default async function ShopPage() {
           </span>
         </div>
 
-        <section className="relative overflow-hidden bg-stone-900 py-16">
+        {/* <section className="relative overflow-hidden bg-stone-900 py-16">
           <div className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-amber-500/10 blur-3xl" />
           <div className="pointer-events-none absolute right-0 top-24 h-72 w-72 rounded-full bg-amber-600/10 blur-3xl" />
 
@@ -125,9 +125,9 @@ export default async function ShopPage() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
-        <section
+        {/* <section
           id="why-us"
           className="bg-stone-900/80 border-y border-stone-800 py-12"
         >
@@ -171,7 +171,7 @@ export default async function ShopPage() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <ShopClient initialProducts={products} />

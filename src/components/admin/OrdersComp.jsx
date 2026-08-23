@@ -1,5 +1,5 @@
 "use client";
-import { Eye } from "lucide-react";
+import { Eye, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import TableSkeleton from "@/components/admin/LoadingSkeleton";
@@ -9,7 +9,7 @@ export default function OrdersComp() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const fetchOrders = () => {
     setLoading(true);
     fetch("/admin/api/orders")
       .then((res) => res.json())
@@ -27,7 +27,27 @@ export default function OrdersComp() {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchOrders();
   }, []);
+
+  const handleOnDelete = async (id) => {
+    setLoading(true);
+    const res = await fetch(`/admin/api/orders/${id}`, {
+      method: "DELETE",
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      toast.success(result.message);
+      fetchOrders();
+    } else {
+      toast.error(result.message);
+    }
+  };
 
   if (loading) return <TableSkeleton />;
 
@@ -88,7 +108,7 @@ export default function OrdersComp() {
                     {o.orderStatus}
                   </span>
                 </td>
-                <td className="px-5 py-3.5 text-right">
+                <td className="px-5 py-3.5 text-right flex items-center">
                   <Link
                     href={`/admin/orders/${o._id}`}
                     className="p-1.5 text-slate-500 hover:text-black hover:bg-slate-100 rounded-lg transition"
@@ -96,6 +116,13 @@ export default function OrdersComp() {
                   >
                     <Eye size={16} />
                   </Link>
+                  <button
+                    onClick={() => handleOnDelete(o._id)}
+                    className="p-1.5 cursor-pointer text-red-500 hover:text-black hover:bg-slate-100 rounded-lg transition"
+                    title="View Order"
+                  >
+                    <TrashIcon size={16} />
+                  </button>
                 </td>
               </tr>
             ))}

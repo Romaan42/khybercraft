@@ -22,14 +22,18 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Loading from "../loading";
+import { logoutUser } from "@/actions/userActions";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("orders"); // 'orders' | 'profile'
   const [loading, setLoading] = useState(false);
   const { user, userLoading } = useSelector((state) => state.user);
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
+    setLoading(true);
     fetch("/api/orders", {
       credentials: "include",
     })
@@ -41,8 +45,21 @@ export default function ProfilePage() {
       })
       .catch((err) => {
         toast.error(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [user]);
+
+  const handleLogout = async () => {
+    const result = await logoutUser();
+    if (result.success) {
+      toast.success(result.message);
+      router.push("/");
+    } else {
+      toast.error(result.message);
+    }
+  };
 
   const getStatusBadge = (orderStatus) => {
     switch (orderStatus.toLowerCase()) {
@@ -73,8 +90,7 @@ export default function ProfilePage() {
         );
     }
   };
-
-  if (userLoading) return <Loading />;
+  if (userLoading || loading) return <Loading />;
 
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100 font-sans selection:bg-amber-600 selection:text-white">
@@ -110,7 +126,7 @@ export default function ProfilePage() {
 
           <div className="flex items-center gap-3 w-full md:w-auto border-t md:border-t-0 border-stone-800 pt-4 md:pt-0">
             <button
-              onClick={() => toast.success("Logged out successfully")}
+              onClick={handleLogout}
               className="inline-flex items-center gap-2 bg-stone-950 hover:bg-stone-800 text-stone-300 border border-stone-800 text-xs font-semibold px-4 py-2.5 rounded-lg transition"
             >
               <LogOut size={14} /> Sign Out

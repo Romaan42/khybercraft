@@ -1,16 +1,12 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   ShieldCheck,
   Truck,
   RotateCcw,
-  Star,
-  ShoppingBag,
   Sparkles,
   ChevronRight,
   ArrowRight,
-  Check,
 } from "lucide-react";
 import ProductInteractiveSection from "@/components/ProductInteractiveControls";
 import Product from "@/components/Product";
@@ -31,32 +27,6 @@ async function getRelatedProducts(currentId) {
   const result = await res.json();
   return result.products.filter((product) => product._id !== currentId);
 }
-
-// 1. SEO Metadata Generation
-// export async function generateMetadata({ params }) {
-//   const { slug } = await params;
-//   const product = await getProductBySlug(slug);
-
-//   if (!product) return { title: "Product Not Found" };
-
-//   return {
-//     title: `${product.title} | Premium Chappal Footwear`,
-//     description: product.shortDescription || product.description,
-//     keywords: [
-//       product.title,
-//       `${product.category} chappal`,
-//       "Charsadda Chappal",
-//       "Peshawari Chappal",
-//       "Pakistani Handcrafted Leather Shoes",
-//     ],
-//     openGraph: {
-//       title: product.title,
-//       description: product.shortDescription,
-//       images: product.images.map((img) => ({ url: img, alt: product.title })),
-//       type: "product",
-//     },
-//   };
-// }
 
 export default async function page({ params }) {
   const { slug } = await params;
@@ -128,13 +98,8 @@ export default async function page({ params }) {
 
         {/* Product Interactive Main Grid */}
         <article className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
-          <ProductInteractiveSection
-            product={product}
-            finalPrice={0}
-            originalPrice={0}
-          />
+          <ProductInteractiveSection product={product} />
 
-          {/* Guarantees & Specs Section */}
           <div className="lg:col-span-12 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-stone-800">
             <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4">
               <ShieldCheck size={24} className="text-amber-500 shrink-0" />
@@ -174,7 +139,7 @@ export default async function page({ params }) {
         </article>
 
         {/* Related Products / Cross-Selling Section */}
-        {relatedProducts.length > 1 && (
+        {relatedProducts.length > 0 && (
           <section className="mt-20 pt-12 border-t border-stone-800">
             <div className="flex items-end justify-between mb-8">
               <div>

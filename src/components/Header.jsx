@@ -2,21 +2,15 @@
 import { logoutUser } from "@/actions/userActions";
 import { getAllItems, getCartItems } from "@/store/cartSlice";
 import { checkLogin } from "@/store/userSlice";
-import {
-  Heart,
-  Menu,
-  PhoneCall,
-  Search,
-  ShoppingBag,
-  User,
-  X,
-} from "lucide-react";
+import { LogOut, Menu, PhoneCall, ShoppingBag, User, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Header() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
 
@@ -41,6 +35,7 @@ export default function Header() {
     // Implement logout functionality here
     await logoutUser();
     dispatch(checkLogin());
+    router.refresh();
   };
 
   const links = [
@@ -59,6 +54,10 @@ export default function Header() {
     {
       name: "About",
       link: "/about",
+    },
+    {
+      name: "Orders",
+      link: "/profile",
     },
   ];
 
@@ -103,21 +102,7 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Actions */}
           <div className="flex items-center space-x-2 sm:space-x-4">
-            {/* <button className="p-2 text-stone-300 hover:text-amber-500 transition hidden sm:block">
-              <Search size={20} />
-            </button>
-
-           
-            <Link
-              href="/wishlist"
-              className="p-2 text-stone-300 hover:text-amber-500 transition hidden sm:block"
-            >
-              <Heart size={20} />
-            </Link> */}
-
-            {/* Cart */}
             <Link
               href="/cart"
               className="p-2 text-stone-300 hover:text-amber-500 transition relative"
@@ -200,14 +185,26 @@ export default function Header() {
 
           {/* Mobile Auth */}
           {user ? (
-            <Link
-              href="/profile"
+            <div
               onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center gap-2 px-3 py-2 text-amber-500 font-semibold"
+              className="flex items-center justify-between gap-2 px-3 py-2 font-semibold"
             >
-              <User size={18} />
-              {user.name}
-            </Link>
+              <Link
+                href="/profile"
+                className="text-amber-500 flex items-center gap-2"
+              >
+                <User size={18} className="text-white" />
+                {user.name}
+              </Link>
+
+              <button
+                className="px-3 py-2 text-sm font-medium text-stone-300 bg-red-400 rounded-lg transition cursor-pointer flex items-center gap-2"
+                onClick={handleLogout}
+              >
+                <span>Logout</span>
+                <LogOut />
+              </button>
+            </div>
           ) : (
             <div className="flex items-center gap-4 px-3 py-2">
               <Link

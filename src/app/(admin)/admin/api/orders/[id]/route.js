@@ -55,3 +55,20 @@ export async function PUT(request, { params }) {
     );
   }
 }
+
+export async function DELETE(_, { params }) {
+  try {
+    await connectDb();
+    const { id } = await params;
+    await Order.findByIdAndDelete(id);
+    return Response.json(
+      { success: true, message: "order deleted successfully" },
+      { status: 201 },
+    );
+  } catch (error) {
+    return Response.json(
+      { success: false, message: "something went wrong!" },
+      { status: 500 },
+    );
+  }
+}

@@ -1,3 +1,4 @@
+import { Heart } from "lucide-react";
 import React from "react";
 
 export default function Footer() {
@@ -29,6 +30,12 @@ export default function Footer() {
             Contact Us
           </a>
         </div>
+      </div>
+      <div>
+        <h1>
+          Powered By <Heart />
+          ROMAN KHAN
+        </h1>
       </div>
     </footer>
   );

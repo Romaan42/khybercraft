@@ -160,6 +160,7 @@ export default function Header() {
             {/* WhatsApp */}
             <a
               href="https://wa.me/923379368405"
+              target="_blank"
               className="hidden md:inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-full transition shadow-lg shadow-amber-600/20"
             >
               <PhoneCall size={14} />

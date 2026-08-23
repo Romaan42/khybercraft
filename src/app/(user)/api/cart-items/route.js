@@ -18,9 +18,7 @@ export const GET = async () => {
       );
     }
 
-    const items = await Cart.find({
-      user: user._id,
-    }).populate("productId");
+    const items = await Cart.find({ user: user._id }).populate("productId");
 
     const cartItems = items
       .filter((item) => item.productId) // deleted/missing product ko skip karega

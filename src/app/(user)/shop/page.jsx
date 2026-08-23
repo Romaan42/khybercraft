@@ -11,10 +11,7 @@ export const metadata = {
 export default async function ShopPage() {
   try {
     const res = await fetch(`${process.env.BASE_URL}/api/products`, {
-      cache: "force-cache",
-      next: {
-        revalidate: 60,
-      },
+      cache: "no-store",
     });
 
     if (!res.ok) {

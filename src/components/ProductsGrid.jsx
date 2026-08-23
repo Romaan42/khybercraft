@@ -4,10 +4,7 @@ import Product from "./Product";
 export default async function ProductsGrid() {
   try {
     const res = await fetch(`${process.env.BASE_URL}/api/products`, {
-      cache: "force-cache",
-      next: {
-        revalidate: 60, // Revalidate every 60 seconds
-      },
+      cache: "no-store",
     });
 
     if (!res.ok) {

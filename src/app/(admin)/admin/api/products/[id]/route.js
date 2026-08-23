@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDb from "@/lib/db";
 import Product from "@/models/productModel";
+import Cart from "@/models/cartModel";
 
 // GET single product by ID
 export async function GET(request, { params }) {
@@ -72,6 +73,9 @@ export async function DELETE(_, { params }) {
     const { id } = await params;
     await connectDb();
     await Product.findByIdAndDelete(id);
+
+    await Cart.deleteMany({ productId: id });
+
     return Response.json({ success: true, message: "product deleted" });
   } catch (error) {
     console.log("ERROR", error);

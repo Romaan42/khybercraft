@@ -5,34 +5,51 @@ import Cart from "@/models/cartModel";
 export const GET = async () => {
   try {
     await connectDb();
+
     const user = await checkLoginUser();
+
     if (!user) {
       return Response.json(
-        { success: false, message: "user are not logged in!" },
+        {
+          success: false,
+          message: "User is not logged in!",
+        },
         { status: 401 },
       );
     }
 
-    const items = await Cart.find({ user: user._id }).populate("productId");
+    const items = await Cart.find({
+      user: user._id,
+    }).populate("productId");
 
-    const cartItems = items.map((item) => {
-      const product = item.productId.toObject();
-      return {
-        _id: item._id,
-        title: product.title,
-        price: product.price,
-        image: product.images[0],
-        qty: item.quantity,
-        color: "red",
-        size: item.size,
-      };
+    const cartItems = items
+      .filter((item) => item.productId) // deleted/missing product ko skip karega
+      .map((item) => {
+        const product = item.productId;
+
+        return {
+          _id: item._id,
+          title: product.title,
+          price: product.price,
+          image: product.images?.[0] || "",
+          qty: item.quantity,
+          color: "red",
+          size: item.size,
+        };
+      });
+
+    return Response.json({
+      success: true,
+      cartItems,
     });
-
-    return Response.json({ success: true, cartItems });
   } catch (error) {
     console.log("ERROR", error);
+
     return Response.json(
-      { success: false, message: "something went wrong!" },
+      {
+        success: false,
+        message: "Something went wrong!",
+      },
       { status: 500 },
     );
   }

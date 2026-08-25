@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import Order from "@/models/orderModel";
 import Product from "@/models/productModel";
-import User from "@/models/orderModel";
+import User from "@/models/userModel";
 import connectDb from "@/lib/db";
 
 export async function GET(req) {

@@ -1,14 +1,19 @@
 import Link from "next/link";
 import AddToCart from "./AddToCart";
 import { Star } from "lucide-react";
+import ClImage from "./ClgImage";
 
 export default function Product({ product }) {
   return (
     <div className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-stone-800 bg-stone-900 transition hover:border-amber-500/40 hover:shadow-[0_35px_60px_-30px_rgba(251,191,36,0.6)]">
       <div className="relative overflow-hidden bg-stone-950">
-        <img
+        <ClImage
           src={product.images[0]}
-          alt={product.name}
+          alt={product.title}
+          width={170}
+          height={100}
+          placeholder="blur"
+          blurDataURL={product.images[0]}
           className="h-72 w-full object-cover transition duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-x-0 top-4 flex items-start justify-between px-4">

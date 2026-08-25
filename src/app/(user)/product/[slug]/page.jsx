@@ -7,9 +7,25 @@ import {
   Sparkles,
   ChevronRight,
   ArrowRight,
+  Star,
+  CheckCircle2,
 } from "lucide-react";
 import ProductInteractiveSection from "@/components/ProductInteractiveControls";
 import Product from "@/components/Product";
+import ReviewSubmissionForm from "@/components/ReviewSubmission";
+
+async function getReviews(id) {
+  try {
+    const res = await fetch(`${process.env.BASE_URL}/api/review/${id}`, {
+      cache: "no-store", // Ensures reviews are always fresh on submission
+    });
+    const result = await res.json();
+
+    return result.success ? result.reviews : [];
+  } catch (error) {
+    return [];
+  }
+}
 
 async function getProductBySlug(slug) {
   const res = await fetch(`${process.env.BASE_URL}/api/product/${slug}`);
@@ -32,9 +48,21 @@ export default async function page({ params }) {
   const { slug } = await params;
 
   const product = await getProductBySlug(slug);
-  const relatedProducts = await getRelatedProducts(product._id);
   if (!product) notFound();
 
+  // Fetch reviews using the product's unique ID
+  const reviews = await getReviews(product._id);
+
+  const relatedProducts = await getRelatedProducts(product._id);
+
+  const averageRating =
+    reviews.length > 0
+      ? (
+          reviews.reduce((acc, item) => acc + item.stars, 0) / reviews.length
+        ).toFixed(1)
+      : "5.0";
+
+  // SEO-friendly JSON-LD Schema with Product + Reviews/AggregateRating
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -52,6 +80,31 @@ export default async function page({ params }) {
           : "https://schema.org/OutOfStock",
       url: `https://yourdomain.com/products/${slug}`,
     },
+    aggregateRating:
+      reviews.length > 0
+        ? {
+            "@type": "AggregateRating",
+            ratingValue: averageRating,
+            reviewCount: reviews.length,
+            bestRating: "5",
+            worstRating: "1",
+          }
+        : undefined,
+    review: reviews.map((rev) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: rev.author,
+      },
+      datePublished: rev.date,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: rev.rating,
+        bestRating: "5",
+        worstRating: "1",
+      },
+      reviewBody: rev.comment,
+    })),
   };
 
   return (
@@ -137,6 +190,97 @@ export default async function page({ params }) {
             </div>
           </div>
         </article>
+
+        {/* SEO-Friendly Customer Reviews Section & Submission Layout */}
+        <section className="mt-20 pt-12 border-t border-stone-800">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+            <div>
+              <span className="text-amber-500 text-xs font-bold uppercase tracking-widest flex items-center gap-1.5">
+                <Star size={14} className="fill-amber-500" /> Customer Feedback
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-100 mt-1">
+                Verified Reviews {reviews.length}
+              </h2>
+            </div>
+            <div className="flex items-center gap-2 bg-stone-900 border border-stone-800 px-4 py-2 rounded-xl">
+              <div className="flex text-amber-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    size={16}
+                    className={
+                      i < Math.floor(Number(averageRating))
+                        ? "fill-amber-500"
+                        : ""
+                    }
+                  />
+                ))}
+              </div>
+              <span className="text-sm font-bold text-stone-100">
+                {averageRating}
+              </span>
+              <span className="text-xs text-stone-400">/ 5.0 Overall</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left Column: List of Reviews */}
+            <div className="lg:col-span-7 space-y-4">
+              {reviews.length === 0 ? (
+                <div className="bg-stone-900/40 border border-stone-800/80 p-8 rounded-2xl text-center text-stone-400 text-sm">
+                  No reviews yet. Be the first to share your experience with
+                  this item!
+                </div>
+              ) : (
+                reviews.map((rev) => (
+                  <div
+                    key={rev._id}
+                    className="bg-stone-900/60 border border-stone-800 p-6 rounded-2xl flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex text-amber-500">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              size={14}
+                              className={
+                                i < rev.stars
+                                  ? "fill-amber-500"
+                                  : "text-stone-700"
+                              }
+                            />
+                          ))}
+                        </div>
+                        <span className="text-xs text-stone-500">
+                          {rev.date}
+                        </span>
+                      </div>
+                      <p className="text-stone-300 text-sm leading-relaxed mb-4">
+                        &quot;{rev.message}&quot;
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-stone-800/60 text-xs">
+                      <span className="font-semibold text-stone-200">
+                        {rev.userId.name}
+                      </span>
+                      {rev.verified && (
+                        <span className="flex items-center gap-1 text-emerald-500">
+                          <CheckCircle2 size={13} /> Verified Buyer
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Right Column: Review Submission Form */}
+            <div className="lg:col-span-5 sticky top-8">
+              <ReviewSubmissionForm productId={product._id} />
+            </div>
+          </div>
+        </section>
 
         {/* Related Products / Cross-Selling Section */}
         {relatedProducts.length > 0 && (

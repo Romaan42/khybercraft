@@ -51,6 +51,12 @@ export default function OrdersComp() {
 
   if (loading) return <TableSkeleton />;
 
+  if (orders.length === 0)
+    return (
+      <div className="h-40 flex items-center justify-center">
+        <h1 className="text-2xl font-bold">Orders does not exist's</h1>
+      </div>
+    );
   return (
     <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">

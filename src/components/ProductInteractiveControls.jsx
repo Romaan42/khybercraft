@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCartItems, guestAddToCart } from "@/store/cartSlice";
 import toast from "react-hot-toast";
 import { addToCart } from "@/actions/userActions";
+import { CldImage } from "next-cloudinary";
 
 export default function ProductInteractiveSection({ product }) {
   const dispatch = useDispatch();
@@ -57,11 +58,11 @@ export default function ProductInteractiveSection({ product }) {
               {product.discount}% OFF
             </div>
           )}
-          <Image
+          <CldImage
             src={product.images[selectedImage] || product.images[0]}
             alt={`${product.title} View ${selectedImage + 1}`}
             fill
-            priority
+            quality={80}
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
           />
@@ -80,10 +81,11 @@ export default function ProductInteractiveSection({ product }) {
                   : "border-stone-800 hover:border-stone-700 opacity-70 hover:opacity-100"
               }`}
             >
-              <Image
+              <CldImage
                 src={img}
                 alt={`Thumbnail ${idx + 1}`}
                 fill
+                quality={10}
                 sizes="80px"
                 className="object-cover"
               />

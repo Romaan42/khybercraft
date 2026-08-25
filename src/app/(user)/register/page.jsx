@@ -14,7 +14,6 @@ import {
   Award,
   ArrowRight,
 } from "lucide-react";
-import validForm from "@/lib/zod";
 import { registerUser } from "@/actions/userActions";
 import { useRouter } from "next/navigation";
 
@@ -68,20 +67,6 @@ export default function RegisterPage() {
       setErrors(["Passwords do not match"]);
       return;
     }
-    const res = validForm.safeParse({
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.password,
-    });
-    if (!res.success) {
-      const errors = res.error.issues.map((issue) => issue.message);
-      setErrors(errors);
-      return;
-    }
-
-    setErrors(null);
-
     formAction(formData);
   };
 

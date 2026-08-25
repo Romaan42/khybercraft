@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col">
         <StoreProvider>
           <Header />
-          {children}
+          <main className="min-h-[80vh]">{children}</main>
           <Footer />
         </StoreProvider>
       </body>

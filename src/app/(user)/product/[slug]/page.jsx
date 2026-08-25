@@ -99,11 +99,11 @@ export default async function page({ params }) {
       datePublished: rev.date,
       reviewRating: {
         "@type": "Rating",
-        ratingValue: rev.rating,
+        ratingValue: rev.stars,
         bestRating: "5",
         worstRating: "1",
       },
-      reviewBody: rev.comment,
+      reviewBody: rev.message,
     })),
   };
 
@@ -232,46 +232,52 @@ export default async function page({ params }) {
                   this item!
                 </div>
               ) : (
-                reviews.map((rev) => (
-                  <div
-                    key={rev._id}
-                    className="bg-stone-900/60 border border-stone-800 p-6 rounded-2xl flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex text-amber-500">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              size={14}
-                              className={
-                                i < rev.stars
-                                  ? "fill-amber-500"
-                                  : "text-stone-700"
-                              }
-                            />
-                          ))}
+                reviews.map((rev) => {
+                  const date = new Date(rev.createdAt);
+
+                  rev.date = date.toLocaleDateString();
+                  rev.time = date.toLocaleTimeString();
+                  return (
+                    <div
+                      key={rev._id}
+                      className="bg-stone-900/60 border border-stone-800 p-6 rounded-2xl flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex text-amber-500">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                size={14}
+                                className={
+                                  i < rev.stars
+                                    ? "fill-amber-500"
+                                    : "text-stone-700"
+                                }
+                              />
+                            ))}
+                          </div>
+                          <span className="text-xs text-stone-500">
+                            {rev.date} . {rev.time}
+                          </span>
                         </div>
-                        <span className="text-xs text-stone-500">
-                          {rev.date}
-                        </span>
+                        <p className="text-stone-300 text-sm leading-relaxed mb-4">
+                          &quot;{rev.message}&quot;
+                        </p>
                       </div>
-                      <p className="text-stone-300 text-sm leading-relaxed mb-4">
-                        &quot;{rev.message}&quot;
-                      </p>
-                    </div>
-                    <div className="flex items-center justify-between pt-4 border-t border-stone-800/60 text-xs">
-                      <span className="font-semibold text-stone-200">
-                        {rev.userId.name}
-                      </span>
-                      {rev.verified && (
-                        <span className="flex items-center gap-1 text-emerald-500">
-                          <CheckCircle2 size={13} /> Verified Buyer
+                      <div className="flex items-center justify-between pt-4 border-t border-stone-800/60 text-xs">
+                        <span className="font-semibold text-stone-200">
+                          {rev.userId.name}
                         </span>
-                      )}
+                        {rev.verified && (
+                          <span className="flex items-center gap-1 text-emerald-500">
+                            <CheckCircle2 size={13} /> Verified Buyer
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
 

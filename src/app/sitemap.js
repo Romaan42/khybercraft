@@ -1,13 +1,13 @@
-import { connectDB } from "@/lib/db"; // direct DB se lo, API call mat karo
+import connectDb from "@/lib/db";
 import Product from "@/models/Product";
 
-export const revalidate = 86400; // 24 hours me 1 baar regenerate hoga
+export const revalidate = 86400;
 
 export default async function sitemap() {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.khybercraft.com";
 
-  await connectDB();
+  await connectDb();
 
   // 1. Static Pages
   const staticRoutes = [

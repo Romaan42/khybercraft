@@ -16,7 +16,7 @@ export default async function sitemap() {
       lastModified: new Date(),
     },
     ...products.map((product) => ({
-      url: `https://yourdomain.com/products/${product.slug}`,
+      url: `https://www.khybercraft.com/products/${product.slug}`,
       lastModified: new Date(product.updatedAt),
     })),
   ];

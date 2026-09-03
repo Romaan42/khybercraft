@@ -18,6 +18,19 @@ export const metadata = {
   title: "Khybercraft | spend less smile more",
   description:
     "Authentic Charsadda handmade leather chappals crafted from premium full-grain leather. Discover traditional Peshawari craftsmanship at KhyberCraft.",
+  keywords: [
+    "peshawari chappal",
+    "charsadda chappal",
+    "handmade leather chappal",
+    "traditional footwear",
+    "authentic peshawari chappal",
+    "khybercraft",
+    "premium leather chappal",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }) {

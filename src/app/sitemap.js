@@ -33,7 +33,7 @@ export default async function sitemap() {
     url: `${baseUrl}/product/${product.slug}`,
     lastModified: product.updatedAt || new Date(),
     changeFrequency: "weekly",
-    priority: 0.6,
+    priority: 0.9,
   }));
 
   // 3. Agar categories bhi hain to

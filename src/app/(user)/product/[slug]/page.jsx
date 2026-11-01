@@ -97,9 +97,9 @@ export default async function page({ params }) {
       "@type": "Review",
       author: {
         "@type": "Person",
-        name: rev.author,
+        name: rev.userId.name || "Verified Buyer",
       },
-      datePublished: rev.date,
+      datePublished: new Date(rev.createdAt).toISOString(),
       reviewRating: {
         "@type": "Rating",
         ratingValue: rev.stars,

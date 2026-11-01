@@ -15,7 +15,7 @@ export default async function sitemap() {
     { url: "/shop", priority: 0.9, changeFrequency: "daily" },
     { url: "/about", priority: 0.8, changeFrequency: "monthly" },
     { url: "/contact", priority: 0.8, changeFrequency: "monthly" },
-    { url: "/faq", priority: 0.7, changeFrequency: "monthly" },
+    // { url: "/faq", priority: 0.7, changeFrequency: "monthly" },
   ].map((route) => ({
     url: `${baseUrl}${route.url}`,
     lastModified: new Date(),
@@ -30,7 +30,7 @@ export default async function sitemap() {
     .limit(50000); // sitemap limit
 
   const productRoutes = products.map((product) => ({
-    url: `${baseUrl}/products/${product.slug}`,
+    url: `${baseUrl}/product/${product.slug}`,
     lastModified: product.updatedAt || new Date(),
     changeFrequency: "weekly",
     priority: 0.6,

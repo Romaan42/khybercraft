@@ -16,6 +16,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { CldUploadButton } from "next-cloudinary";
+import { categories } from "@/lib/categories";
 
 export default function AdminEditProductPage() {
   const router = useRouter();
@@ -104,12 +105,6 @@ export default function AdminEditProductPage() {
             >
               <ArrowLeft size={14} /> Back to Products
             </Link>
-            <h1 className="font-serif font-bold text-2xl text-stone-900 flex items-center gap-2">
-              Edit Product{" "}
-              <span className="text-amber-600 text-lg">
-                ({formData.title || "Untitled"})
-              </span>
-            </h1>
           </div>
 
           <button
@@ -122,7 +117,7 @@ export default function AdminEditProductPage() {
             ) : (
               <Save size={16} />
             )}
-            <span>{saving ? "Saving..." : "Update Product"}</span>
+            <span>{saving ? "Saving..." : "Save Product"}</span>
           </button>
         </div>
 
@@ -145,7 +140,11 @@ export default function AdminEditProductPage() {
                     type="text"
                     value={formData.title}
                     onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
+                      setFormData({
+                        ...formData,
+                        title: e.target.value,
+                        slug: e.target.value.toLowerCase().split(" ").join("-"),
+                      })
                     }
                     placeholder="e.g. Special Charsadda Kaptaan Chappal"
                     className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-xs text-stone-900 placeholder-stone-400 focus:outline-none focus:border-amber-600 focus:bg-white transition"
@@ -347,12 +346,11 @@ export default function AdminEditProductPage() {
                     }
                     className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-xs text-stone-900 focus:outline-none focus:border-amber-600 focus:bg-white transition"
                   >
-                    <option value="Traditional Chappal">
-                      Traditional Chappal
-                    </option>
-                    <option value="Kaptaan Special">Kaptaan Special</option>
-                    <option value="Norani Chappal">Norani Chappal</option>
-                    <option value="Zalmi Cut">Zalmi Cut</option>
+                    {categories.map((cat, i) => (
+                      <option value={cat} key={i}>
+                        {cat}
+                      </option>
+                    ))}
                   </select>
                 </div>
 

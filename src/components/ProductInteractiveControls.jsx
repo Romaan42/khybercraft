@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState, useEffect, useState, useTransition } from "react";
-import Image from "next/image";
 import { Star, ShoppingBag, PhoneCall } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItems, guestAddToCart } from "@/store/cartSlice";
@@ -11,6 +10,7 @@ import { CldImage } from "next-cloudinary";
 
 export default function ProductInteractiveSection({ product }) {
   const dispatch = useDispatch();
+  const [reviews, setReviews] = useState([]);
   const [trasition, setTranstion] = useTransition();
   const [state, action, loading] = useActionState(addToCart);
   const { user, userLoading } = useSelector((state) => state.user);
@@ -33,6 +33,16 @@ export default function ProductInteractiveSection({ product }) {
       }
     }
   }, [state]);
+
+  useEffect(() => {
+    (async function () {
+      const res = await fetch(`/api/review/${product._id}`);
+      const result = await res.json();
+      if (result.success) {
+        setReviews(result.reviews);
+      }
+    })();
+  }, []);
 
   const handleAddToCart = async () => {
     if (userLoading) return;
@@ -62,14 +72,14 @@ export default function ProductInteractiveSection({ product }) {
             src={product.images[selectedImage] || product.images[0]}
             alt={`${product.title} View ${selectedImage + 1}`}
             fill
-            quality={80}
+            priority={true}
+            loading="eager"
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
           />
         </div>
 
         {/* Gallery Thumbnails */}
-        {/* {product.images.length > 1 && ( */}
         <div className="flex items-center gap-3 overflow-x-auto pb-2">
           {product.images.map((img, idx) => (
             <button
@@ -85,14 +95,12 @@ export default function ProductInteractiveSection({ product }) {
                 src={img}
                 alt={`Thumbnail ${idx + 1}`}
                 fill
-                quality={10}
                 sizes="80px"
                 className="object-cover"
               />
             </button>
           ))}
         </div>
-        {/* )} */}
       </div>
 
       {/* Product Details & Actions (Right - 5 COLS) */}
@@ -116,9 +124,9 @@ export default function ProductInteractiveSection({ product }) {
           <div className="flex items-center gap-4 mt-3 text-xs">
             <div className="flex items-center gap-1 text-amber-500 font-bold">
               <Star size={14} className="fill-amber-500" />
-              <span>{product.reviews.length > 0 ? "4.9" : "New Arrival"}</span>
+              <span>{reviews.length > 0 ? "4.9" : "New Arrival"}</span>
               <span className="text-stone-500 font-normal">
-                ({product.reviews.length} reviews)
+                ({reviews.length} reviews)
               </span>
             </div>
             <span className="text-stone-700">•</span>
@@ -143,7 +151,7 @@ export default function ProductInteractiveSection({ product }) {
               <span className="text-sm text-stone-500 line-through">
                 Rs. {product.price.toLocaleString()}
               </span>
-              <span className="ml-auto bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2.5 py-1 rounded-md border border-amber-500/20">
+              <span className="ml-auto bg-amber-500/10 text-amber-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md border border-amber-500/20">
                 Save Rs. {(product.price - finalPrice).toLocaleString()}
               </span>
             </>
@@ -152,7 +160,7 @@ export default function ProductInteractiveSection({ product }) {
 
         {/* Short Description */}
         <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
-          {product.shortDescription || product.description}
+          {product.shortDescription || product.description.slice(0, 100)}
         </p>
 
         {/* Size Selection */}

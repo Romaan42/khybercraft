@@ -9,6 +9,9 @@ import {
   ArrowRight,
   Star,
   CheckCircle2,
+  Clock,
+  Package,
+  Banknote,
 } from "lucide-react";
 import ProductInteractiveSection from "@/components/ProductInteractiveControls";
 import Product from "@/components/Product";
@@ -152,40 +155,73 @@ export default async function page({ params }) {
         {/* Product Interactive Main Grid */}
         <article className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
           <ProductInteractiveSection product={product} />
-
-          <div className="lg:col-span-12 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-stone-800">
-            <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4">
-              <ShieldCheck size={24} className="text-amber-500 shrink-0" />
-              <div>
-                <h4 className="text-xs font-bold text-stone-100 uppercase tracking-wider">
-                  Pure Leather Guaranteed
-                </h4>
-                <p className="text-[11px] text-stone-400 mt-0.5">
-                  Handcrafted from premium cowhide leather.
-                </p>
-              </div>
+          <div className="lg:col-span-12 space-y-4 pt-8 border-t border-stone-800">
+            {/* Section Heading */}
+            <div className="flex items-center gap-2 text-amber-400 font-semibold text-xs uppercase tracking-wider">
+              <Truck size={16} />
+              <span>Logistics & Stock Availability</span>
             </div>
 
-            <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4">
-              <Truck size={24} className="text-amber-500 shrink-0" />
-              <div>
-                <h4 className="text-xs font-bold text-stone-100 uppercase tracking-wider">
-                  Nationwide Delivery
-                </h4>
-                <p className="text-[11px] text-stone-400 mt-0.5">
-                  Cash on Delivery in 2–4 business days.
-                </p>
+            {/* 4-Item Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Estimated Delivery */}
+              <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40">
+                <div className="p-2.5 bg-amber-500/10 text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
+                  <Clock size={20} />
+                </div>
+                <div>
+                  <h4 className="text-[11px] font-medium text-stone-400 uppercase tracking-wide">
+                    Estimated Delivery
+                  </h4>
+                  <p className="text-xs font-bold text-stone-100 mt-0.5">
+                    1–3 working days
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4">
-              <RotateCcw size={24} className="text-amber-500 shrink-0" />
-              <div>
-                <h4 className="text-xs font-bold text-stone-100 uppercase tracking-wider">
-                  Easy Size Exchange
-                </h4>
-                <p className="text-[11px] text-stone-400 mt-0.5">
-                  Free exchange within 7 days of purchase.
-                </p>
+
+              {/* Warehouse Stock */}
+              <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40">
+                <div className="p-2.5 bg-amber-500/10 text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
+                  <Package size={20} />
+                </div>
+                <div>
+                  <h4 className="text-[11px] font-medium text-stone-400 uppercase tracking-wide">
+                    Warehouse Stock
+                  </h4>
+                  <p className="text-xs font-bold text-stone-100 mt-0.5">
+                    In stock – dispatched in 1–2 days
+                  </p>
+                </div>
+              </div>
+
+              {/* Payment Method */}
+              <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40">
+                <div className="p-2.5 bg-amber-500/10 text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
+                  <Banknote size={20} />
+                </div>
+                <div>
+                  <h4 className="text-[11px] font-medium text-stone-400 uppercase tracking-wide">
+                    Payment Method
+                  </h4>
+                  <p className="text-xs font-bold text-stone-100 mt-0.5">
+                    Cash on Delivery (COD) Supported
+                  </p>
+                </div>
+              </div>
+
+              {/* Courier Partners */}
+              <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40">
+                <div className="p-2.5 bg-amber-500/10 text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
+                  <ShieldCheck size={20} />
+                </div>
+                <div>
+                  <h4 className="text-[11px] font-medium text-stone-400 uppercase tracking-wide">
+                    Courier Partners
+                  </h4>
+                  <p className="text-xs font-bold text-stone-100 mt-0.5">
+                    Regional Express Couriers
+                  </p>
+                </div>
               </div>
             </div>
           </div>

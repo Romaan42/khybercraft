@@ -1,6 +1,5 @@
 import ShopClient from "@/components/shop/ClientShop";
 import { Sparkles, ShieldCheck, Truck, RefreshCw } from "lucide-react";
-import Image from "next/image";
 
 export const metadata = {
   title: "Shop Charsadda Chappal | Handcrafted Leather Collection",
@@ -32,144 +31,6 @@ export default async function ShopPage() {
             quality
           </span>
         </div>
-
-        {/* <section className="relative overflow-hidden bg-stone-900 py-16">
-          <div className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-amber-500/10 blur-3xl" />
-          <div className="pointer-events-none absolute right-0 top-24 h-72 w-72 rounded-full bg-amber-600/10 blur-3xl" />
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-              <div className="lg:col-span-6 space-y-6">
-                <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-amber-200">
-                  <Sparkles size={14} /> Master Artisans Collection
-                </span>
-
-                <h1 className="text-4xl font-serif font-bold tracking-tight text-stone-100 sm:text-5xl lg:text-6xl">
-                  Shop the Finest{" "}
-                  <span className="text-amber-500">Charsadda</span> Leather
-                  Chappals
-                </h1>
-
-                <p className="max-w-2xl text-stone-400 text-base sm:text-lg leading-8">
-                  Discover premium handcrafted Kaptaan, Norozi, and Peshawari
-                  footwear built for comfort, durability, and timeless style.
-                </p>
-
-                <div className="grid gap-4 sm:grid-cols-[max-content_max-content]">
-                  <a
-                    href="#collections"
-                    className="inline-flex items-center justify-center rounded-full bg-amber-500 px-7 py-4 text-base font-semibold text-stone-950 shadow-lg shadow-amber-500/20 transition hover:bg-amber-400"
-                  >
-                    Explore Collection
-                  </a>
-                  <a
-                    href="#why-us"
-                    className="inline-flex items-center justify-center rounded-full border border-stone-700 bg-stone-800/90 px-7 py-4 text-base font-semibold text-stone-200 transition hover:bg-stone-700"
-                  >
-                    Why Choose Us
-                  </a>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-3xl border border-stone-800 bg-stone-950/80 p-5">
-                    <p className="text-3xl font-serif font-bold text-amber-400">
-                      100%
-                    </p>
-                    <p className="mt-2 text-sm text-stone-400">
-                      Authentic local leather
-                    </p>
-                  </div>
-                  <div className="rounded-3xl border border-stone-800 bg-stone-950/80 p-5">
-                    <p className="text-3xl font-serif font-bold text-amber-400">
-                      5.0
-                    </p>
-                    <p className="mt-2 text-sm text-stone-400">
-                      Average customer rating
-                    </p>
-                  </div>
-                  <div className="rounded-3xl border border-stone-800 bg-stone-950/80 p-5">
-                    <p className="text-3xl font-serif font-bold text-amber-400">
-                      Fast
-                    </p>
-                    <p className="mt-2 text-sm text-stone-400">
-                      Nationwide delivery in 2–3 days
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:col-span-6">
-                <div className="relative overflow-hidden rounded-[2rem] border border-stone-800 bg-stone-950/10 shadow-2xl shadow-black/30">
-                  <Image
-                    src="https://res.cloudinary.com/druroxxha/image/upload/v1787304344/WhatsApp_Image_2026-08-21_at_2.23.06_PM_jndtpu.jpg"
-                    fill
-                    alt="Charsadda leather chappal"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/95 to-transparent p-6">
-                    <p className="text-xs uppercase tracking-[0.3em] text-stone-400">
-                      Featured style
-                    </p>
-                    <h2 className="mt-2 text-3xl font-semibold text-stone-100">
-                      khybercraft collection
-                    </h2>
-                    <p className="mt-3 max-w-md text-sm text-stone-300">
-                      A signature hand-stitched design with rich leather,
-                      durable tyre soles, and premium finishing.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section> */}
-
-        {/* <section
-          id="why-us"
-          className="bg-stone-900/80 border-y border-stone-800 py-12"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="rounded-3xl border border-stone-800 bg-stone-950/80 p-6">
-                <p className="text-amber-500 text-sm font-semibold uppercase tracking-[0.3em]">
-                  Craftsmanship
-                </p>
-                <h3 className="mt-4 text-xl font-semibold text-stone-100">
-                  Handmade in Charsadda
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-stone-400">
-                  Each pair is stitched by expert artisans using traditional
-                  techniques passed down through generations.
-                </p>
-              </div>
-              <div className="rounded-3xl border border-stone-800 bg-stone-950/80 p-6">
-                <p className="text-amber-500 text-sm font-semibold uppercase tracking-[0.3em]">
-                  Quality
-                </p>
-                <h3 className="mt-4 text-xl font-semibold text-stone-100">
-                  Premium leather & soles
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-stone-400">
-                  Full-grain cow leather and reinforced tyre soles keep your
-                  chappals comfortable and long-lasting.
-                </p>
-              </div>
-              <div className="rounded-3xl border border-stone-800 bg-stone-950/80 p-6">
-                <p className="text-amber-500 text-sm font-semibold uppercase tracking-[0.3em]">
-                  Service
-                </p>
-                <h3 className="mt-4 text-xl font-semibold text-stone-100">
-                  Trusted shipping
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-stone-400">
-                  Fast nationwide delivery, secure packaging, and easy size
-                  exchange for a worry-free shopping experience.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section> */}
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <ShopClient initialProducts={products} />
         </div>
@@ -222,6 +83,7 @@ export default async function ShopPage() {
       </div>
     );
   } catch (err) {
+    console.log(err);
     return <h1>something went wrong</h1>;
   }
 }

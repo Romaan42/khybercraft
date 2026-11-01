@@ -4,11 +4,14 @@ import {
   ShieldCheck,
   Truck,
   Sparkles,
+  ShoppingBag,
+  Grid,
 } from "lucide-react";
 import Image from "next/image";
 import ProductsGrid from "@/components/ProductsGrid";
+import ClImage from "@/components/ClgImage";
 
-export default function CharsaddaChappalWebsite() {
+export default function MultiCategoryStoreWebsite() {
   try {
     return (
       <div className="min-h-screen bg-stone-950 text-stone-100 font-sans selection:bg-amber-600 selection:text-white">
@@ -16,8 +19,8 @@ export default function CharsaddaChappalWebsite() {
         <div className="bg-amber-700 text-stone-100 text-xs py-2 px-4 text-center font-medium tracking-wide flex justify-center items-center gap-2">
           <Sparkles size={14} className="animate-pulse text-amber-300" />
           <span>
-            Free Delivery All Over Pakistan | 100% Authentic Handcrafted Cow
-            Leather
+            Free Delivery All Over Pakistan | Premium Quality Across All
+            Collections
           </span>
           <Sparkles size={14} className="animate-pulse text-amber-300" />
         </div>
@@ -37,21 +40,21 @@ export default function CharsaddaChappalWebsite() {
               <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
                 <div className="inline-flex items-center gap-2 bg-stone-800/80 border border-stone-700 text-amber-500 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
                   <Award size={14} />
-                  <span>Original Charsadda Craftsmanship</span>
+                  <span>Premium Quality & Authentic Products</span>
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-stone-100 leading-tight">
-                  Authentic{" "}
+                  Discover Our{" "}
                   <span className="text-amber-500 underline decoration-amber-600/40">
-                    Charsadda
+                    Exclusive
                   </span>{" "}
-                  Handcrafted Leather Chappal
+                  Multi-Category Collections
                 </h1>
 
                 <p className="text-stone-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
-                  Crafted by master artisans in Charsadda using pure full-grain
-                  leather, durable truck-tyre soles, and centuries-old Pashtun
-                  heritage techniques.
+                  From traditional handcrafted footwear to modern everyday
+                  essentials, explore our wide range of premium goods crafted
+                  for ultimate durability and style.
                 </p>
 
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
@@ -59,17 +62,18 @@ export default function CharsaddaChappalWebsite() {
                     href="#collections"
                     className="w-full sm:w-auto px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg shadow-lg shadow-amber-600/20 transition flex items-center justify-center gap-2 group"
                   >
-                    <span>Explore Collection</span>
+                    <ShoppingBag size={18} />
+                    <span>Shop All Categories</span>
                     <ChevronRight
                       size={18}
                       className="group-hover:translate-x-1 transition-transform"
                     />
                   </a>
                   <a
-                    href="#craftsmanship"
+                    href="#quality"
                     className="w-full sm:w-auto px-8 py-4 bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700 font-semibold rounded-lg transition text-center"
                   >
-                    Our Heritage
+                    Why Choose Us
                   </a>
                 </div>
 
@@ -79,35 +83,36 @@ export default function CharsaddaChappalWebsite() {
                     <h4 className="text-lg font-serif font-bold text-amber-500">
                       100%
                     </h4>
-                    <p className="text-xs text-stone-400">Pure Cow Leather</p>
+                    <p className="text-xs text-stone-400">Authentic Items</p>
                   </div>
                   <div>
                     <h4 className="text-lg font-serif font-bold text-amber-500">
-                      Master
+                      Top Tier
                     </h4>
-                    <p className="text-xs text-stone-400">Hand Stitched</p>
+                    <p className="text-xs text-stone-400">Quality Checked</p>
                   </div>
                   <div>
                     <h4 className="text-lg font-serif font-bold text-amber-500">
-                      Guaranteed
+                      Hassle-Free
                     </h4>
-                    <p className="text-xs text-stone-400">Life-time Sole</p>
+                    <p className="text-xs text-stone-400">Easy Returns</p>
                   </div>
                 </div>
               </div>
+
               {/* Hero Right Image Spotlight */}
               <div className="lg:col-span-5 relative">
                 <div className="relative mx-auto max-w-md lg:max-w-none">
-                  <div className="aspect-4/5 rounded-2xl overflow-hidden border-2 border-stone-800 shadow-2xl relative group">
-                    <Image
-                      src="https://res.cloudinary.com/druroxxha/image/upload/v1787304344/WhatsApp_Image_2026-08-21_at_2.23.06_PM_jndtpu.jpg"
+                  <div className="aspect-4/5 rounded-2xl overflow-hidden border-2 border-stone-800 shadow-2xl relative group bg-stone-900">
+                    <ClImage
+                      src="https://res.cloudinary.com/druroxxha/image/upload/v1793532119/Gemini_Generated_Image_vxm08nvxm08nvxm0-1024x1024_jkhtfg.jpg"
                       fill
-                      loading="eager"
-                      alt="Charsadda Chappal Showcase"
+                      priority
+                      alt="Store Showcase"
                       sizes="(max-width: 1024px) 100vw, 40vw"
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+                      className="object-cover group-hover:scale-105 transition duration-700"
                     />
-                    <div className="absolute inset-0 bg-linear-to-t from-stone-950 via-transparent to-transparent opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-transparent opacity-80 pointer-events-none" />
                   </div>
                 </div>
               </div>
@@ -115,6 +120,7 @@ export default function CharsaddaChappalWebsite() {
           </div>
         </section>
 
+        {/* ----------------- LOGISTICS / TRUST BADGES ----------------- */}
         <section className="bg-stone-900/50 border-y border-stone-800 py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
@@ -124,10 +130,10 @@ export default function CharsaddaChappalWebsite() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-stone-200">
-                    Nationwide Free Shipping
+                    Nationwide Express Delivery
                   </h4>
                   <p className="text-xs text-stone-400">
-                    Cash on delivery available all over Pakistan
+                    Cash on delivery available all across Pakistan
                   </p>
                 </div>
               </div>
@@ -138,10 +144,10 @@ export default function CharsaddaChappalWebsite() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-stone-200">
-                    Authenticity Guaranteed
+                    100% Guaranteed Quality
                   </h4>
                   <p className="text-xs text-stone-400">
-                    100% Genuine full-grain local leather
+                    Tested and verified materials for long durability
                   </p>
                 </div>
               </div>
@@ -152,10 +158,10 @@ export default function CharsaddaChappalWebsite() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-stone-200">
-                    Handcrafted Perfection
+                    Unmatched Customer Care
                   </h4>
                   <p className="text-xs text-stone-400">
-                    Made by master craftsmen in KPK
+                    Fast exchanges & responsive support
                   </p>
                 </div>
               </div>
@@ -167,74 +173,75 @@ export default function CharsaddaChappalWebsite() {
         <section id="collections" className="py-20 bg-stone-950">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="text-amber-500 text-xs font-bold uppercase tracking-widest">
-                Heritage Lineup
+              <span className="text-amber-500 text-xs font-bold uppercase tracking-widest inline-flex items-center gap-1.5">
+                <Grid size={14} /> Our Catalog
               </span>
               <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-100 mt-2">
-                Featured Charsadda Collections
+                Explore All Products
               </h2>
               <p className="text-stone-400 text-sm mt-3">
-                Hand-stitched precision designed to combine traditional elegance
-                with modern durability.
+                Browse through our wide selection of items carefully curated for
+                quality, performance, and style.
               </p>
             </div>
             <ProductsGrid />
           </div>
         </section>
 
+        {/* ----------------- QUALITY & BRAND SECTION ----------------- */}
         <section
-          id="craftsmanship"
+          id="quality"
           className="py-20 bg-stone-900 border-t border-stone-800 relative overflow-hidden"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="relative">
-                <div className="aspect-video sm:aspect-square rounded-2xl overflow-hidden border border-stone-800">
+                <div className="aspect-video sm:aspect-square rounded-2xl overflow-hidden border border-stone-800 relative">
                   <Image
-                    src="https://res.cloudinary.com/druroxxha/image/upload/v1787304344/WhatsApp_Image_2026-08-21_at_2.23.06_PM_jndtpu.jpg"
+                    src="https://res.cloudinary.com/druroxxha/image/upload/v1793532119/Gemini_Generated_Image_vxm08nvxm08nvxm0-1024x1024_jkhtfg.jpg"
                     fill
-                    alt="Craftsmanship"
-                    className="w-full h-full object-cover"
+                    alt="Brand Showcase"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
                   />
                 </div>
                 <div className="absolute -bottom-6 -right-6 hidden sm:block bg-stone-950 p-6 rounded-xl border border-stone-800 max-w-xs">
                   <p className="text-amber-500 font-serif font-bold text-2xl">
-                    100+ Years
+                    Uncompromised
                   </p>
                   <p className="text-xs text-stone-400 mt-1">
-                    Preserving the authentic art of Charsadda footwear weaving
-                    and double-sole tire cutting.
+                    Quality standard maintained across all our product lines.
                   </p>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <span className="text-amber-500 text-xs font-bold uppercase tracking-widest">
-                  Master Artisans
+                  Our Promise
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-100">
-                  Handmade with Pride in Khyber Pakhtunkhwa
+                  Crafted for Excellence & Customer Satisfaction
                 </h2>
                 <p className="text-stone-400 text-sm leading-relaxed">
-                  Every pair of Charsadda Chappal goes through up to 28
-                  intricate artisanal steps. From selecting premium cow leather
-                  to shaping the iconic curved toe and cutting durable tire
-                  soles, our craftsmen ensure maximum comfort and indestructible
-                  durability.
+                  We believe in delivering items that meet the highest standards
+                  of durability and functionality. Whether you are shopping for
+                  traditional classics or modern essentials, every product in
+                  our catalog undergoes rigorous checks before reaching your
+                  doorstep.
                 </p>
 
                 <ul className="space-y-3 text-sm text-stone-300">
                   <li className="flex items-center gap-3">
                     <div className="h-2 w-2 rounded-full bg-amber-500" />
-                    Heavy-duty truck tire soles built for all terrains
+                    Carefully sourced high-grade materials
                   </li>
                   <li className="flex items-center gap-3">
                     <div className="h-2 w-2 rounded-full bg-amber-500" />
-                    Premium memory foam padded footbeds for all-day wear
+                    Strict quality control on every single order
                   </li>
                   <li className="flex items-center gap-3">
                     <div className="h-2 w-2 rounded-full bg-amber-500" />
-                    Double-stitched waxed thread for maximum tear resistance
+                    Fast, secure, and reliable nationwide shipping
                   </li>
                 </ul>
               </div>
@@ -244,6 +251,6 @@ export default function CharsaddaChappalWebsite() {
       </div>
     );
   } catch (err) {
-    return <h1>error while loading products</h1>;
+    return <h1>Error while loading products</h1>;
   }
 }

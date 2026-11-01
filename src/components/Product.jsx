@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AddToCart from "./AddToCart";
-import { Star } from "lucide-react";
 import ClImage from "./ClgImage";
+import RatingSection from "./RatingSection";
 
 export default function Product({ product }) {
   return (
@@ -30,11 +30,7 @@ export default function Product({ product }) {
 
       <div className="flex flex-1 flex-col justify-between p-6">
         <div className="space-y-4">
-          <div className="flex items-center gap-2 text-amber-500">
-            <Star size={14} fill="currentColor" />
-            <span className="text-sm font-semibold">{product.rating}</span>
-            <span className="text-xs text-stone-500">({product.reviews})</span>
-          </div>
+          <RatingSection id={product._id} />
 
           <Link href={`/product/${product.slug}`}>
             <h3 className="text-xl font-semibold text-stone-100 transition group-hover:text-amber-400">

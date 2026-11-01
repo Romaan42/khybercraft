@@ -1,5 +1,5 @@
 import connectDb from "@/lib/db";
-import Product from "@/models/Product";
+import Product from "@/models/productModel";
 
 export const revalidate = 86400;
 

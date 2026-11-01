@@ -58,7 +58,7 @@ export default function Product({ product }) {
         <div className="mt-6">
           <div className="mb-4 flex items-center gap-3">
             <span className="text-2xl font-bold text-amber-400">
-              {product.price}
+              AED {product.price}
             </span>
             <span className="text-sm text-stone-500 line-through">
               {product.originalPrice}

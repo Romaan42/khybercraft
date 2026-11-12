@@ -31,12 +31,12 @@ const orderSchema = new mongoose.Schema(
     paymentMethod: {
       type: String,
       required: true,
-      enum: ["COD", "Bank Transfer"],
+      enum: ["COD", "Bank Transfer", "CARD"],
       default: "COD",
     },
     paymentStatus: {
       type: String,
-      enum: ["Pending", "Paid", "Failed"],
+      enum: ["Pending", "Paid", "Failed", "COD"],
       default: "Pending",
     },
     tracking: String,
@@ -59,6 +59,8 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    tracker: { type: String, default: "" },
+
     deliveredAt: Date,
   },
   { timestamps: true },

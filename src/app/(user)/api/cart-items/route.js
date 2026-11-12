@@ -1,6 +1,7 @@
 import checkLoginUser from "@/lib/checkLoginUser";
 import connectDb from "@/lib/db";
 import Cart from "@/models/cartModel";
+import Product from "@/models/productModel";
 
 export const GET = async () => {
   try {

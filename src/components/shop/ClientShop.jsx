@@ -80,7 +80,7 @@ export default function ShopClient({ initialProducts = [] }) {
     <div className="space-y-8">
       {/* Categories Section */}
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-400">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
           Categories
         </h3>
         <div className="space-y-2">
@@ -92,13 +92,13 @@ export default function ShopClient({ initialProducts = [] }) {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-xs font-medium transition-all ${
                   isSelected
-                    ? "bg-amber-600 text-stone-100 shadow-md shadow-amber-600/20"
-                    : "text-stone-400 hover:bg-stone-800/60 hover:text-stone-200"
+                    ? "bg-amber-600 text-white shadow-md shadow-amber-600/20"
+                    : "text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 hover:text-stone-900 dark:hover:text-stone-200"
                 }`}
               >
                 <span>{cat.label}</span>
                 {isSelected && (
-                  <span className="h-2 w-2 rounded-full bg-stone-100" />
+                  <span className="h-2 w-2 rounded-full bg-white" />
                 )}
               </button>
             );
@@ -106,15 +106,15 @@ export default function ShopClient({ initialProducts = [] }) {
         </div>
       </div>
 
-      <hr className="border-stone-800" />
+      <hr className="border-stone-200 dark:border-stone-800" />
 
       {/* Price Range Filter */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-400">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
             Price Range
           </h3>
-          <span className="text-xs font-semibold text-stone-300">
+          <span className="text-xs font-semibold text-stone-700 dark:text-stone-300">
             Rs. {Number(priceRange.max).toLocaleString()}
           </span>
         </div>
@@ -131,7 +131,7 @@ export default function ShopClient({ initialProducts = [] }) {
                 max: Number(e.target.value),
               }))
             }
-            className="w-full h-1.5 cursor-pointer appearance-none rounded-lg bg-stone-800 accent-amber-500"
+            className="w-full h-1.5 cursor-pointer appearance-none rounded-lg bg-stone-200 dark:bg-stone-800 accent-amber-600 dark:accent-amber-500"
           />
           <div className="flex items-center justify-between text-[11px] text-stone-500 font-medium">
             <span>Rs. 0</span>
@@ -140,25 +140,25 @@ export default function ShopClient({ initialProducts = [] }) {
         </div>
       </div>
 
-      <hr className="border-stone-800" />
+      <hr className="border-stone-200 dark:border-stone-800" />
 
       {/* Sort By Filter */}
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-400">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
           Sort Products
         </h3>
         <div className="relative">
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="w-full appearance-none rounded-xl border border-stone-800 bg-stone-950 px-4 py-2.5 text-xs font-medium text-stone-200 outline-none focus:border-amber-500"
+            className="w-full appearance-none rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 px-4 py-2.5 text-xs font-medium text-stone-800 dark:text-stone-200 outline-none focus:border-amber-600 dark:focus:border-amber-500 transition-colors"
           >
             <option value="default">Featured / Default</option>
             <option value="price-low">Price: Low to High</option>
             <option value="price-high">Price: High to Low</option>
             <option value="newest">Newest Arrivals</option>
           </select>
-          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-500" />
+          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400 dark:text-stone-500" />
         </div>
       </div>
 
@@ -166,7 +166,7 @@ export default function ShopClient({ initialProducts = [] }) {
       {isFiltered && (
         <button
           onClick={resetFilters}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 py-2.5 text-xs font-semibold text-rose-400 transition hover:bg-rose-500/20"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 py-2.5 text-xs font-semibold text-rose-600 dark:text-rose-400 transition hover:bg-rose-500/20"
         >
           <RotateCcw size={14} /> Clear All Filters
         </button>
@@ -177,35 +177,38 @@ export default function ShopClient({ initialProducts = [] }) {
   return (
     <section id="collections" className="space-y-8">
       {/* Top Banner & Search Header */}
-      <div className="rounded-[2rem] border border-stone-800 bg-stone-900/90 p-6 sm:p-8 shadow-2xl shadow-black/20">
+      <div className="rounded-[2rem] border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900/90 p-6 sm:p-8 shadow-xl shadow-stone-200/50 dark:shadow-2xl dark:shadow-black/20 transition-colors duration-300">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-600 dark:text-amber-400">
               Handcrafted Footwear
             </p>
-            <h2 className="text-2xl font-serif font-bold text-stone-100 sm:text-4xl">
+            <h2 className="text-2xl font-serif font-bold text-stone-900 dark:text-stone-100 sm:text-4xl">
               Authentic Leather Collection
             </h2>
           </div>
 
           <div className="flex items-center gap-3">
             <label className="relative block flex-1 sm:w-80">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-500" />
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400 dark:text-stone-500" />
               <input
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search styles, leather, tag..."
-                className="w-full rounded-full border border-stone-800 bg-stone-950/90 py-3 pl-11 pr-4 text-sm text-stone-100 placeholder-stone-500 outline-none transition focus:border-amber-500"
+                className="w-full rounded-full border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950/90 py-3 pl-11 pr-4 text-sm text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 outline-none transition focus:border-amber-600 dark:focus:border-amber-500"
               />
             </label>
 
             {/* Mobile Filter Button Toggle */}
             <button
               onClick={() => setIsMobileFilterOpen(true)}
-              className="flex items-center gap-2 rounded-full border border-stone-800 bg-stone-950/90 px-4 py-3 text-xs font-medium text-stone-300 lg:hidden"
+              className="flex items-center gap-2 rounded-full border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950/90 px-4 py-3 text-xs font-medium text-stone-700 dark:text-stone-300 lg:hidden transition-colors"
             >
-              <SlidersHorizontal size={14} className="text-amber-400" />
+              <SlidersHorizontal
+                size={14}
+                className="text-amber-600 dark:text-amber-400"
+              />
               <span>Filters</span>
             </button>
           </div>
@@ -215,21 +218,21 @@ export default function ShopClient({ initialProducts = [] }) {
       {/* Main Layout: Sidebar + Grid */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
         {/* Desktop Sidebar (Left Side) */}
-        <aside className="hidden h-fit rounded-3xl border border-stone-800 bg-stone-900/50 p-6 backdrop-blur-sm lg:block">
+        <aside className="hidden h-fit rounded-3xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900/50 p-6 shadow-sm dark:shadow-none backdrop-blur-sm lg:block transition-colors duration-300">
           <FilterSidebarContent />
         </aside>
 
         {/* Mobile Slide-Over Drawer Modal */}
         {isMobileFilterOpen && (
-          <div className="fixed inset-0 z-50 flex bg-black/80 backdrop-blur-sm lg:hidden">
-            <div className="ml-auto h-full w-full max-w-xs overflow-y-auto bg-stone-900 p-6 shadow-2xl">
-              <div className="mb-6 flex items-center justify-between border-b border-stone-800 pb-4">
-                <h3 className="text-base font-semibold text-stone-100">
+          <div className="fixed inset-0 z-50 flex bg-black/60 dark:bg-black/80 backdrop-blur-sm lg:hidden">
+            <div className="ml-auto h-full w-full max-w-xs overflow-y-auto bg-white dark:bg-stone-900 p-6 shadow-2xl transition-colors duration-300">
+              <div className="mb-6 flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-4">
+                <h3 className="text-base font-semibold text-stone-900 dark:text-stone-100">
                   Filters
                 </h3>
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="rounded-lg p-1 text-stone-400 hover:text-stone-100"
+                  className="rounded-lg p-1 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
                 >
                   <X size={20} />
                 </button>
@@ -242,10 +245,10 @@ export default function ShopClient({ initialProducts = [] }) {
         {/* Right Side: Product Display Area */}
         <div className="space-y-6 lg:col-span-3">
           {/* Active Status Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-stone-800/80 bg-stone-900/40 px-5 py-3 text-xs">
-            <span className="text-stone-400 font-medium">
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-stone-200 dark:border-stone-800/80 bg-white dark:bg-stone-900/40 px-5 py-3 text-xs shadow-sm dark:shadow-none transition-colors duration-300">
+            <span className="text-stone-600 dark:text-stone-400 font-medium">
               Showing{" "}
-              <strong className="text-stone-100">
+              <strong className="text-stone-900 dark:text-stone-100">
                 {filteredProducts.length}
               </strong>{" "}
               styles
@@ -253,12 +256,12 @@ export default function ShopClient({ initialProducts = [] }) {
 
             {isFiltered && (
               <div className="flex items-center gap-2">
-                <span className="rounded-full bg-amber-500/10 px-3 py-1 text-[11px] font-medium text-amber-400 border border-amber-500/20">
+                <span className="rounded-full bg-amber-500/10 px-3 py-1 text-[11px] font-medium text-amber-700 dark:text-amber-400 border border-amber-500/20">
                   Filters Active
                 </span>
                 <button
                   onClick={resetFilters}
-                  className="text-stone-400 hover:text-stone-200 underline"
+                  className="text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 underline"
                 >
                   Reset
                 </button>
@@ -273,8 +276,8 @@ export default function ShopClient({ initialProducts = [] }) {
                 <Product key={product._id} product={product} />
               ))
             ) : (
-              <div className="col-span-full rounded-3xl border border-stone-800 bg-stone-900/40 p-12 text-center text-stone-400 space-y-3">
-                <p className="text-base font-semibold text-stone-200">
+              <div className="col-span-full rounded-3xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900/40 p-12 text-center text-stone-500 dark:text-stone-400 space-y-3 shadow-sm dark:shadow-none">
+                <p className="text-base font-semibold text-stone-800 dark:text-stone-200">
                   No matching products found
                 </p>
                 <p className="text-xs text-stone-500">
@@ -282,7 +285,7 @@ export default function ShopClient({ initialProducts = [] }) {
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="mt-2 inline-flex items-center gap-2 rounded-full bg-amber-600 px-5 py-2 text-xs font-semibold text-white transition hover:bg-amber-500"
+                  className="mt-2 inline-flex items-center gap-2 rounded-full bg-amber-600 px-5 py-2 text-xs font-semibold text-white transition hover:bg-amber-700 dark:hover:bg-amber-500"
                 >
                   Reset Filters
                 </button>

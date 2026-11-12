@@ -62,7 +62,7 @@ export default function ProductInteractiveSection({ product }) {
       {/* Image Gallery (Left - 7 COLS) */}
       <div className="lg:col-span-7 space-y-4">
         {/* Active Hero Image */}
-        <div className="relative aspect-square bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
+        <div className="relative aspect-square bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl overflow-hidden shadow-sm dark:shadow-none">
           {product.discount > 0 && (
             <div className="absolute top-4 left-4 z-10 bg-amber-600 text-white text-xs font-bold uppercase px-3 py-1.5 rounded-md shadow">
               {product.discount}% OFF
@@ -85,10 +85,10 @@ export default function ProductInteractiveSection({ product }) {
             <button
               key={idx}
               onClick={() => setSelectedImage(idx)}
-              className={`relative w-20 h-20 rounded-xl overflow-hidden bg-stone-900 border-2 transition shrink-0 ${
+              className={`relative w-20 h-20 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border-2 transition shrink-0 cursor-pointer ${
                 selectedImage === idx
-                  ? "border-amber-500 scale-95"
-                  : "border-stone-800 hover:border-stone-700 opacity-70 hover:opacity-100"
+                  ? "border-amber-600 dark:border-amber-500 scale-95 shadow-sm"
+                  : "border-stone-200 dark:border-stone-800 hover:border-stone-400 dark:hover:border-stone-700 opacity-70 hover:opacity-100"
               }`}
             >
               <CldImage
@@ -107,51 +107,53 @@ export default function ProductInteractiveSection({ product }) {
       <div className="lg:col-span-5 space-y-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-amber-500 text-xs font-bold uppercase tracking-widest">
+            <span className="text-amber-700 dark:text-amber-500 text-xs font-bold uppercase tracking-widest">
               {product.category}
             </span>
-            <span className="text-stone-700">•</span>
+            <span className="text-stone-400 dark:text-stone-700">•</span>
             <span className="text-xs text-stone-500 uppercase font-mono">
               SKU: {product._id}
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-100 mt-1">
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-stone-100 mt-1">
             {product.title}
           </h1>
 
           {/* Rating & Stock Status */}
           <div className="flex items-center gap-4 mt-3 text-xs">
-            <div className="flex items-center gap-1 text-amber-500 font-bold">
+            <div className="flex items-center gap-1 text-amber-600 dark:text-amber-500 font-bold">
               <Star size={14} className="fill-amber-500" />
               <span>{reviews.length > 0 ? "4.9" : "New Arrival"}</span>
               <span className="text-stone-500 font-normal">
                 ({reviews.length} reviews)
               </span>
             </div>
-            <span className="text-stone-700">•</span>
+            <span className="text-stone-400 dark:text-stone-700">•</span>
             {product.stock > 1 ? (
-              <span className="inline-flex items-center gap-1.5 text-green-400 font-semibold">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 text-emerald-600 dark:text-green-400 font-semibold">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-green-500 animate-pulse" />
                 In Stock ({product.stock} available)
               </span>
             ) : (
-              <span className="text-red-400 font-semibold">Out of Stock</span>
+              <span className="text-rose-600 dark:text-red-400 font-semibold">
+                Out of Stock
+              </span>
             )}
           </div>
         </div>
 
         {/* Price Card */}
-        <div className="p-4 bg-stone-900/60 border border-stone-800 rounded-xl flex items-baseline gap-3">
-          <span className="text-3xl font-bold text-amber-500">
+        <div className="p-4 bg-white dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 rounded-xl flex items-baseline gap-3 shadow-sm dark:shadow-none">
+          <span className="text-3xl font-bold text-amber-600 dark:text-amber-500">
             AED {product.price.toLocaleString()}
           </span>
           {product.discount > 0 && (
             <>
-              <span className="text-sm text-stone-500 line-through">
+              <span className="text-sm text-stone-400 dark:text-stone-500 line-through">
                 Rs. {product.price.toLocaleString()}
               </span>
-              <span className="ml-auto bg-amber-500/10 text-amber-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md border border-amber-500/20">
+              <span className="ml-auto bg-amber-500/10 text-amber-700 dark:text-amber-500 text-[10px] font-extrabold px-2.5 py-1 rounded-md border border-amber-500/20">
                 Save Rs. {(product.price - finalPrice).toLocaleString()}
               </span>
             </>
@@ -159,7 +161,7 @@ export default function ProductInteractiveSection({ product }) {
         </div>
 
         {/* Short Description */}
-        <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+        <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
           {product.shortDescription || product.description.slice(0, 100)}
         </p>
 
@@ -167,10 +169,10 @@ export default function ProductInteractiveSection({ product }) {
         {product.sizes && product.sizes.length > 0 && (
           <div className="space-y-2">
             <div className="flex justify-between items-center text-xs">
-              <label className="font-bold text-stone-300 uppercase tracking-wide">
+              <label className="font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wide">
                 Select Size (PK/UK):
               </label>
-              <button className="text-amber-500 hover:underline font-medium text-[11px]">
+              <button className="text-amber-600 dark:text-amber-500 hover:underline font-medium text-[11px] cursor-pointer">
                 Size Chart
               </button>
             </div>
@@ -179,10 +181,10 @@ export default function ProductInteractiveSection({ product }) {
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`py-2 rounded-lg text-xs font-bold border transition ${
+                  className={`py-2 rounded-lg text-xs font-bold border transition cursor-pointer ${
                     selectedSize === size
-                      ? "bg-amber-600 text-white border-amber-500 shadow-md shadow-amber-600/20"
-                      : "bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700"
+                      ? "bg-amber-600 text-white border-amber-600 dark:border-amber-500 shadow-md shadow-amber-600/20"
+                      : "bg-stone-50 dark:bg-stone-900 border-stone-300 dark:border-stone-800 text-stone-800 dark:text-stone-300 hover:border-stone-400 dark:hover:border-stone-700"
                   }`}
                 >
                   {size}
@@ -197,7 +199,9 @@ export default function ProductInteractiveSection({ product }) {
           <button
             disabled={isOutOfStock || loading || trasition}
             onClick={handleAddToCart}
-            className={`w-full bg-amber-600 hover:bg-amber-700 disabled:bg-stone-800 disabled:text-stone-500 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 group ${loading || trasition ? "cursor-not-allowed" : ""}`}
+            className={`w-full bg-amber-600 hover:bg-amber-700 disabled:bg-stone-200 dark:disabled:bg-stone-800 disabled:text-stone-400 dark:disabled:text-stone-500 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 group cursor-pointer ${
+              loading || trasition ? "cursor-not-allowed" : ""
+            }`}
           >
             <ShoppingBag size={16} />
             <span>{isOutOfStock ? "Out of Stock" : "Add to Cart"}</span>
@@ -207,19 +211,22 @@ export default function ProductInteractiveSection({ product }) {
             href={`https://wa.me/923469715695?text=${whatsappMessage}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full bg-stone-900 hover:bg-stone-800 text-stone-200 border border-stone-800 font-semibold py-3.5 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition"
+            className="w-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-900 dark:hover:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-800 font-semibold py-3.5 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition"
           >
-            <PhoneCall size={16} className="text-green-500" />
+            <PhoneCall
+              size={16}
+              className="text-emerald-600 dark:text-green-500"
+            />
             <span>Quick Order via WhatsApp</span>
           </a>
         </div>
 
         {/* Detailed Description */}
-        <div className="pt-4 border-t border-stone-800">
-          <h4 className="text-xs font-bold text-stone-200 uppercase tracking-wide mb-2">
+        <div className="pt-4 border-t border-stone-200 dark:border-stone-800">
+          <h4 className="text-xs font-bold text-stone-800 dark:text-stone-200 uppercase tracking-wide mb-2">
             Product Description
           </h4>
-          <p className="text-xs text-stone-400 leading-relaxed">
+          <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
             {product.description}
           </p>
         </div>

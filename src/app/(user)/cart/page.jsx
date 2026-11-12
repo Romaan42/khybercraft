@@ -26,6 +26,8 @@ import {
 import { deleteCartItem, updateServerQty } from "@/actions/userActions";
 import toast from "react-hot-toast";
 import CartSkeleton from "@/components/Cart/CartSkelton";
+import Link from "next/link";
+import ClImage from "@/components/ClgImage";
 
 export default function CartPage() {
   const dispatch = useDispatch();
@@ -152,9 +154,11 @@ export default function CartPage() {
                   {/* Item Image & Info */}
                   <div className="flex items-center gap-4 w-full sm:w-auto">
                     <div className="w-20 h-20 sm:w-24 sm:h-24 bg-stone-950 rounded-lg overflow-hidden border border-stone-800 shrink-0">
-                      <img
+                      <ClImage
                         src={item.image}
                         alt={item.title}
+                        fill
+                        quality={75}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -318,7 +322,7 @@ export default function CartPage() {
 
                 {/* Checkout Actions */}
                 <div className="space-y-3 pt-2">
-                  <a
+                  <Link
                     href="/checkout"
                     className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3.5 rounded-lg text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 group"
                   >
@@ -327,7 +331,7 @@ export default function CartPage() {
                       size={16}
                       className="group-hover:translate-x-1 transition-transform"
                     />
-                  </a>
+                  </Link>
 
                   <a
                     href={`https://wa.me/923379368405?${message}`}

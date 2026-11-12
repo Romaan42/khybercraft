@@ -32,7 +32,6 @@ export default function Header() {
   }, [user, userLoading]);
 
   const handleLogout = async () => {
-    // Implement logout functionality here
     await logoutUser();
     dispatch(checkLogin());
     router.refresh();
@@ -62,7 +61,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-stone-900/90 backdrop-blur-md border-b border-stone-800">
+    <header className="sticky top-0 z-50 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md border-b border-stone-200 dark:border-stone-800 transition-colors duration-300">
       <Toaster />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -70,7 +69,7 @@ export default function Header() {
           <div className="flex items-center lg:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-stone-400 hover:text-amber-500 hover:bg-stone-800 transition"
+              className="p-2 rounded-md text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-500 hover:bg-stone-100 dark:hover:bg-stone-800 transition"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -79,11 +78,11 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-1 lg:flex-none text-center lg:text-left">
             <Link href="/" className="inline-block group">
-              <span className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-stone-100 group-hover:text-amber-500 transition">
+              <span className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100 group-hover:text-amber-600 dark:group-hover:text-amber-500 transition">
                 KHYBERCRAFT<span className="text-amber-600">.</span>
               </span>
 
-              <span className="block text-[10px] uppercase tracking-[0.3em] text-stone-400 -mt-1 font-semibold">
+              <span className="block text-[10px] uppercase tracking-[0.3em] text-stone-500 dark:text-stone-400 -mt-1 font-semibold">
                 Heritage Footwear
               </span>
             </Link>
@@ -95,7 +94,7 @@ export default function Header() {
               <Link
                 key={val.name}
                 href={val.link}
-                className="text-stone-300 hover:text-amber-500 transition"
+                className="text-stone-700 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-500 transition"
               >
                 {val.name}
               </Link>
@@ -105,7 +104,7 @@ export default function Header() {
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Link
               href="/cart"
-              className="p-2 text-stone-300 hover:text-amber-500 transition relative"
+              className="p-2 text-stone-700 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-500 transition relative"
             >
               <ShoppingBag size={22} />
 
@@ -117,21 +116,21 @@ export default function Header() {
             {/* User Authentication */}
             {userLoading ? (
               <div className="hidden sm:flex items-center gap-2 px-3 py-2">
-                <div className="w-5 h-5 rounded-full bg-stone-700 animate-pulse" />
-                <div className="w-20 h-4 rounded bg-stone-700 animate-pulse" />
+                <div className="w-5 h-5 rounded-full bg-stone-200 dark:bg-stone-700 animate-pulse" />
+                <div className="w-20 h-4 rounded bg-stone-200 dark:bg-stone-700 animate-pulse" />
               </div>
             ) : user ? (
               <div className="hidden sm:flex items-center gap-2">
                 <Link
                   href="/profile"
-                  className="hidden sm:flex items-center gap-2 px-3 py-2 text-stone-200 hover:text-amber-500 transition"
+                  className="hidden sm:flex items-center gap-2 px-3 py-2 text-stone-800 dark:text-stone-200 hover:text-amber-600 dark:hover:text-amber-500 transition"
                 >
                   <User size={19} />
 
                   <span className="text-sm font-medium">{user.name}</span>
                 </Link>
                 <button
-                  className="px-3 py-2 text-sm font-medium text-stone-300 hover:text-red-400 transition cursor-pointer"
+                  className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-300 hover:text-red-600 dark:hover:text-red-400 transition cursor-pointer"
                   onClick={handleLogout}
                 >
                   Logout
@@ -141,16 +140,16 @@ export default function Header() {
               <div className="hidden sm:flex items-center gap-2 text-sm">
                 <Link
                   href="/login"
-                  className="text-stone-300 hover:text-amber-500 transition font-medium"
+                  className="text-stone-700 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-500 transition font-medium"
                 >
                   Login
                 </Link>
 
-                <span className="text-stone-600">/</span>
+                <span className="text-stone-300 dark:text-stone-600">/</span>
 
                 <Link
                   href="/register"
-                  className="text-amber-500 hover:text-amber-400 transition font-semibold"
+                  className="text-amber-600 dark:text-amber-500 hover:text-amber-700 dark:hover:text-amber-400 transition font-semibold"
                 >
                   Register
                 </Link>
@@ -172,13 +171,13 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-stone-800 bg-stone-900 px-4 pt-2 pb-6 space-y-3">
+        <div className="lg:hidden border-t border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 px-4 pt-2 pb-6 space-y-3 shadow-lg dark:shadow-none">
           {links.map((link) => (
             <Link
               key={link.name}
               href={link.link}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-stone-300 hover:bg-stone-800 hover:text-amber-500"
+              className="block px-3 py-2 rounded-md text-base font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 hover:text-amber-600 dark:hover:text-amber-500"
             >
               {link.name}
             </Link>
@@ -188,30 +187,30 @@ export default function Header() {
           {user ? (
             <div
               onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center justify-between gap-2 px-3 py-2 font-semibold"
+              className="flex items-center justify-between gap-2 px-3 py-2 font-semibold border-t border-stone-100 dark:border-stone-800 pt-3"
             >
               <Link
                 href="/profile"
-                className="text-amber-500 flex items-center gap-2"
+                className="text-amber-600 dark:text-amber-500 flex items-center gap-2"
               >
-                <User size={18} className="text-white" />
+                <User size={18} className="text-stone-700 dark:text-white" />
                 {user.name}
               </Link>
 
               <button
-                className="px-3 py-2 text-sm font-medium text-stone-300 bg-red-400 rounded-lg transition cursor-pointer flex items-center gap-2"
+                className="px-3 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 dark:text-stone-300 dark:bg-red-400 rounded-lg transition cursor-pointer flex items-center gap-2"
                 onClick={handleLogout}
               >
                 <span>Logout</span>
-                <LogOut />
+                <LogOut size={16} />
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-4 px-3 py-2">
+            <div className="flex items-center gap-4 px-3 py-2 border-t border-stone-100 dark:border-stone-800 pt-3">
               <Link
                 href="/login"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-stone-300 hover:text-amber-500 font-medium"
+                className="text-stone-700 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-500 font-medium"
               >
                 Login
               </Link>
@@ -219,7 +218,7 @@ export default function Header() {
               <Link
                 href="/register"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-amber-500 hover:text-amber-400 font-semibold"
+                className="text-amber-600 dark:text-amber-500 hover:text-amber-700 dark:hover:text-amber-400 font-semibold"
               >
                 Register
               </Link>
@@ -229,8 +228,9 @@ export default function Header() {
           {/* WhatsApp */}
           <div className="pt-2">
             <a
-              href="#order"
-              className="flex items-center justify-center gap-2 w-full bg-amber-600 text-white font-bold py-2.5 rounded-md text-sm"
+              href="https://wa.me/923379368405"
+              target="_blank"
+              className="flex items-center justify-center gap-2 w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-md text-sm transition"
             >
               <PhoneCall size={16} />
               Order on WhatsApp

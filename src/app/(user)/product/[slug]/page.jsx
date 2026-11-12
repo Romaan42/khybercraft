@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import {
   ShieldCheck,
   Truck,
-  RotateCcw,
   Sparkles,
   ChevronRight,
   ArrowRight,
@@ -97,7 +96,7 @@ export default async function page({ params }) {
       "@type": "Review",
       author: {
         "@type": "Person",
-        name: rev.userId.name || "Verified Buyer",
+        name: rev?.userId?.name || "Verified Buyer",
       },
       datePublished: new Date(rev.createdAt).toISOString(),
       reviewRating: {
@@ -111,7 +110,7 @@ export default async function page({ params }) {
   };
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 font-sans selection:bg-amber-600 selection:text-white">
+    <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans selection:bg-amber-600 selection:text-white transition-colors duration-300">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -121,9 +120,12 @@ export default async function page({ params }) {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Breadcrumb Navigation */}
         <nav aria-label="Breadcrumb" className="mb-8">
-          <ol className="flex items-center gap-2 text-xs text-stone-400">
+          <ol className="flex items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
             <li>
-              <Link href="/" className="hover:text-amber-500 transition">
+              <Link
+                href="/"
+                className="hover:text-amber-600 dark:hover:text-amber-500 transition"
+              >
                 Home
               </Link>
             </li>
@@ -131,14 +133,17 @@ export default async function page({ params }) {
               <ChevronRight size={12} />
             </li>
             <li>
-              <Link href="/shop" className="hover:text-amber-500 transition">
+              <Link
+                href="/shop"
+                className="hover:text-amber-600 dark:hover:text-amber-500 transition"
+              >
                 Shop
               </Link>
             </li>
             <li>
               <ChevronRight size={12} />
             </li>
-            <li className="capitalize hover:text-amber-500 transition">
+            <li className="capitalize hover:text-amber-600 dark:hover:text-amber-500 transition">
               <Link href={`/category/${product.category}`}>
                 {product.category}
               </Link>
@@ -146,7 +151,7 @@ export default async function page({ params }) {
             <li>
               <ChevronRight size={12} />
             </li>
-            <li className="text-amber-500 font-medium truncate max-w-45">
+            <li className="text-amber-600 dark:text-amber-500 font-medium truncate max-w-[180px]">
               {product.title}
             </li>
           </ol>
@@ -155,9 +160,9 @@ export default async function page({ params }) {
         {/* Product Interactive Main Grid */}
         <article className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
           <ProductInteractiveSection product={product} />
-          <div className="lg:col-span-12 space-y-4 pt-8 border-t border-stone-800">
+          <div className="lg:col-span-12 space-y-4 pt-8 border-t border-stone-200 dark:border-stone-800">
             {/* Section Heading */}
-            <div className="flex items-center gap-2 text-amber-400 font-semibold text-xs uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold text-xs uppercase tracking-wider">
               <Truck size={16} />
               <span>Logistics & Stock Availability</span>
             </div>
@@ -165,60 +170,60 @@ export default async function page({ params }) {
             {/* 4-Item Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Estimated Delivery */}
-              <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40">
-                <div className="p-2.5 bg-amber-500/10 text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
+              <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40 shadow-sm dark:shadow-none">
+                <div className="p-2.5 bg-amber-500/10 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
                   <Clock size={20} />
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-medium text-stone-400 uppercase tracking-wide">
+                  <h4 className="text-[11px] font-medium text-stone-500 dark:text-stone-400 uppercase tracking-wide">
                     Estimated Delivery
                   </h4>
-                  <p className="text-xs font-bold text-stone-100 mt-0.5">
+                  <p className="text-xs font-bold text-stone-900 dark:text-stone-100 mt-0.5">
                     1–3 working days
                   </p>
                 </div>
               </div>
 
               {/* Warehouse Stock */}
-              <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40">
-                <div className="p-2.5 bg-amber-500/10 text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
+              <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40 shadow-sm dark:shadow-none">
+                <div className="p-2.5 bg-amber-500/10 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
                   <Package size={20} />
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-medium text-stone-400 uppercase tracking-wide">
+                  <h4 className="text-[11px] font-medium text-stone-500 dark:text-stone-400 uppercase tracking-wide">
                     Warehouse Stock
                   </h4>
-                  <p className="text-xs font-bold text-stone-100 mt-0.5">
+                  <p className="text-xs font-bold text-stone-900 dark:text-stone-100 mt-0.5">
                     In stock – dispatched in 1–2 days
                   </p>
                 </div>
               </div>
 
               {/* Payment Method */}
-              <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40">
-                <div className="p-2.5 bg-amber-500/10 text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
+              <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40 shadow-sm dark:shadow-none">
+                <div className="p-2.5 bg-amber-500/10 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
                   <Banknote size={20} />
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-medium text-stone-400 uppercase tracking-wide">
+                  <h4 className="text-[11px] font-medium text-stone-500 dark:text-stone-400 uppercase tracking-wide">
                     Payment Method
                   </h4>
-                  <p className="text-xs font-bold text-stone-100 mt-0.5">
+                  <p className="text-xs font-bold text-stone-900 dark:text-stone-100 mt-0.5">
                     Cash on Delivery (COD) Supported
                   </p>
                 </div>
               </div>
 
               {/* Courier Partners */}
-              <div className="bg-stone-900 border border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40">
-                <div className="p-2.5 bg-amber-500/10 text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
+              <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40 shadow-sm dark:shadow-none">
+                <div className="p-2.5 bg-amber-500/10 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-500/20 shrink-0">
                   <ShieldCheck size={20} />
                 </div>
                 <div>
-                  <h4 className="text-[11px] font-medium text-stone-400 uppercase tracking-wide">
+                  <h4 className="text-[11px] font-medium text-stone-500 dark:text-stone-400 uppercase tracking-wide">
                     Courier Partners
                   </h4>
-                  <p className="text-xs font-bold text-stone-100 mt-0.5">
+                  <p className="text-xs font-bold text-stone-900 dark:text-stone-100 mt-0.5">
                     Regional Express Couriers
                   </p>
                 </div>
@@ -228,17 +233,17 @@ export default async function page({ params }) {
         </article>
 
         {/* SEO-Friendly Customer Reviews Section & Submission Layout */}
-        <section className="mt-20 pt-12 border-t border-stone-800">
+        <section className="mt-20 pt-12 border-t border-stone-200 dark:border-stone-800">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
             <div>
-              <span className="text-amber-500 text-xs font-bold uppercase tracking-widest flex items-center gap-1.5">
+              <span className="text-amber-600 dark:text-amber-500 text-xs font-bold uppercase tracking-widest flex items-center gap-1.5">
                 <Star size={14} className="fill-amber-500" /> Customer Feedback
               </span>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-100 mt-1">
-                Verified Reviews {reviews.length}
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100 mt-1">
+                Verified Reviews ({reviews.length})
               </h2>
             </div>
-            <div className="flex items-center gap-2 bg-stone-900 border border-stone-800 px-4 py-2 rounded-xl">
+            <div className="flex items-center gap-2 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 px-4 py-2 rounded-xl shadow-sm dark:shadow-none">
               <div className="flex text-amber-500">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -247,15 +252,17 @@ export default async function page({ params }) {
                     className={
                       i < Math.floor(Number(averageRating))
                         ? "fill-amber-500"
-                        : ""
+                        : "text-stone-300 dark:text-stone-700"
                     }
                   />
                 ))}
               </div>
-              <span className="text-sm font-bold text-stone-100">
+              <span className="text-sm font-bold text-stone-900 dark:text-stone-100">
                 {averageRating}
               </span>
-              <span className="text-xs text-stone-400">/ 5.0 Overall</span>
+              <span className="text-xs text-stone-500 dark:text-stone-400">
+                / 5.0 Overall
+              </span>
             </div>
           </div>
 
@@ -263,20 +270,20 @@ export default async function page({ params }) {
             {/* Left Column: List of Reviews */}
             <div className="lg:col-span-7 space-y-4">
               {reviews.length === 0 ? (
-                <div className="bg-stone-900/40 border border-stone-800/80 p-8 rounded-2xl text-center text-stone-400 text-sm">
+                <div className="bg-white dark:bg-stone-900/40 border border-stone-200 dark:border-stone-800/80 p-8 rounded-2xl text-center text-stone-500 dark:text-stone-400 text-sm shadow-sm dark:shadow-none">
                   No reviews yet. Be the first to share your experience with
                   this item!
                 </div>
               ) : (
                 reviews.map((rev) => {
                   const date = new Date(rev.createdAt);
+                  const formattedDate = date.toLocaleDateString();
+                  const formattedTime = date.toLocaleTimeString();
 
-                  rev.date = date.toLocaleDateString();
-                  rev.time = date.toLocaleTimeString();
                   return (
                     <div
                       key={rev._id}
-                      className="bg-stone-900/60 border border-stone-800 p-6 rounded-2xl flex flex-col justify-between"
+                      className="bg-white dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 p-6 rounded-2xl flex flex-col justify-between shadow-sm dark:shadow-none"
                     >
                       <div>
                         <div className="flex items-center justify-between mb-3">
@@ -288,25 +295,25 @@ export default async function page({ params }) {
                                 className={
                                   i < rev.stars
                                     ? "fill-amber-500"
-                                    : "text-stone-700"
+                                    : "text-stone-300 dark:text-stone-700"
                                 }
                               />
                             ))}
                           </div>
-                          <span className="text-xs text-stone-500">
-                            {rev.date} . {rev.time}
+                          <span className="text-xs text-stone-400">
+                            {formattedDate} • {formattedTime}
                           </span>
                         </div>
-                        <p className="text-stone-300 text-sm leading-relaxed mb-4">
+                        <p className="text-stone-700 dark:text-stone-300 text-sm leading-relaxed mb-4">
                           &quot;{rev.message}&quot;
                         </p>
                       </div>
-                      <div className="flex items-center justify-between pt-4 border-t border-stone-800/60 text-xs">
-                        <span className="font-semibold text-stone-200">
-                          {rev.userId.name}
+                      <div className="flex items-center justify-between pt-4 border-t border-stone-100 dark:border-stone-800/60 text-xs">
+                        <span className="font-semibold text-stone-800 dark:text-stone-200">
+                          {rev.userId?.name || "Customer"}
                         </span>
                         {rev.verified && (
-                          <span className="flex items-center gap-1 text-emerald-500">
+                          <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-500 font-medium">
                             <CheckCircle2 size={13} /> Verified Buyer
                           </span>
                         )}
@@ -318,7 +325,7 @@ export default async function page({ params }) {
             </div>
 
             {/* Right Column: Review Submission Form */}
-            <div className="lg:col-span-5 sticky top-8">
+            <div className="lg:col-span-5 sticky top-24">
               <ReviewSubmissionForm productId={product._id} />
             </div>
           </div>
@@ -326,19 +333,19 @@ export default async function page({ params }) {
 
         {/* Related Products / Cross-Selling Section */}
         {relatedProducts.length > 0 && (
-          <section className="mt-20 pt-12 border-t border-stone-800">
+          <section className="mt-20 pt-12 border-t border-stone-200 dark:border-stone-800">
             <div className="flex items-end justify-between mb-8">
               <div>
-                <span className="text-amber-500 text-xs font-bold uppercase tracking-widest flex items-center gap-1.5">
+                <span className="text-amber-600 dark:text-amber-500 text-xs font-bold uppercase tracking-widest flex items-center gap-1.5">
                   <Sparkles size={14} /> Similar Designs
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-100 mt-1">
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100 mt-1">
                   You Might Also Like
                 </h2>
               </div>
               <Link
                 href={`/category/${product.category}`}
-                className="text-stone-400 hover:text-amber-500 text-xs font-semibold flex items-center gap-1 transition"
+                className="text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-500 text-xs font-semibold flex items-center gap-1 transition"
               >
                 View Collection <ArrowRight size={14} />
               </Link>

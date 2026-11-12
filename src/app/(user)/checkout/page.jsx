@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { getCartItems } from "@/store/cartSlice";
+import toast from "react-hot-toast";
 
 export default function CheckoutPage() {
   const dispatch = useDispatch();
@@ -36,7 +37,6 @@ export default function CheckoutPage() {
   const deliveryFee = 250;
   const grandTotal = subtotal + deliveryFee - appliedDiscount;
 
-  // Input Change Handler
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -45,7 +45,6 @@ export default function CheckoutPage() {
     }));
   };
 
-  // Discount Apply Handler
   const handleApplyDiscount = (e) => {
     e.preventDefault();
     if (formData.discountCode.toUpperCase() === "HERITAGE10") {
@@ -56,7 +55,7 @@ export default function CheckoutPage() {
     }
   };
 
-  // Order Submission Handler
+  // Order Submission Handler - EDITED FOR SAFEPAY
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -70,7 +69,7 @@ export default function CheckoutPage() {
         city: formData.city,
         province: formData.province,
       },
-      paymentMethod: formData.paymentMethod,
+      paymentMethod: formData.paymentMethod, // "COD" ya "CARD"
       orderItems: items.map((item) => ({
         title: item.title,
         qty: item.qty,
@@ -85,29 +84,46 @@ export default function CheckoutPage() {
     };
 
     try {
-      // API call to MongoDB order endpoint
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-        credentials: "include",
-      });
-      const result = await response.json();
+      if (formData.paymentMethod === "COD") {
+        const response = await fetch("/api/checkout/cod", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          credentials: "include",
+        });
+        const result = await response.json();
+        if (result.success) {
+          dispatch(getCartItems());
+          const query = new URLSearchParams({
+            id: result.order._id,
+            name: formData.fullName,
+            phone: formData.phone,
+            address: `${formData.street}, ${formData.city},${formData.province}`,
+            payment: formData.paymentMethod,
+            total: grandTotal.toString(),
+          }).toString();
 
-      if (result.success) {
-        dispatch(getCartItems());
-        const query = new URLSearchParams({
-          id: result.order._id,
-          name: formData.fullName,
-          phone: formData.phone,
-          address: `${formData.street}, ${formData.city},${formData.province}`,
-          payment: formData.paymentMethod,
-          total: grandTotal.toString(),
-        }).toString();
-
-        router.push(`/order-success?${query}`);
+          router.push(`/order-completed?${query}`);
+        } else {
+          toast.error(result.message);
+        }
       } else {
-        alert("Order submission failed. Please try again.");
+        const response = await fetch("/api/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          credentials: "include",
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          if (result.checkoutUrl) {
+            window.location.href = result.checkoutUrl;
+            return;
+          }
+        } else {
+          alert("Order submission failed. Please try again.");
+        }
       }
     } catch (error) {
       console.error("Error submitting order:", error);
@@ -119,7 +135,6 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100 font-sans selection:bg-amber-600 selection:text-white flex flex-col justify-between">
       <main className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1">
-        {/* Navigation / Breadcrumb */}
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-stone-800">
           <Link
             href="/cart"
@@ -133,14 +148,11 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        {/* Checkout Form Container */}
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 lg:grid-cols-12 gap-10"
         >
-          {/* ---------------- LEFT: CONTROLLED FORM INPUTS (7 COLS) ---------------- */}
           <div className="lg:col-span-7 space-y-8">
-            {/* Step 1: Customer Contact Info */}
             <section className="bg-stone-900 border border-stone-800 rounded-2xl p-6 sm:p-8 space-y-5">
               <div className="flex items-center gap-3 pb-3 border-b border-stone-800">
                 <span className="w-7 h-7 bg-amber-600/20 text-amber-500 border border-amber-600/30 rounded-full flex items-center justify-center font-bold text-xs">
@@ -150,7 +162,6 @@ export default function CheckoutPage() {
                   Contact Information
                 </h2>
               </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold uppercase tracking-wider text-stone-400">
@@ -166,7 +177,6 @@ export default function CheckoutPage() {
                     className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-3 text-xs text-stone-100 placeholder-stone-600 focus:outline-none focus:border-amber-600 transition"
                   />
                 </div>
-
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold uppercase tracking-wider text-stone-400">
                     Phone Number (WhatsApp){" "}
@@ -182,7 +192,6 @@ export default function CheckoutPage() {
                     className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-3 text-xs text-stone-100 placeholder-stone-600 focus:outline-none focus:border-amber-600 transition"
                   />
                 </div>
-
                 <div className="sm:col-span-2 space-y-1.5">
                   <label className="text-xs font-bold uppercase tracking-wider text-stone-400">
                     Email Address{" "}
@@ -200,7 +209,6 @@ export default function CheckoutPage() {
               </div>
             </section>
 
-            {/* Step 2: Shipping Address */}
             <section className="bg-stone-900 border border-stone-800 rounded-2xl p-6 sm:p-8 space-y-5">
               <div className="flex items-center gap-3 pb-3 border-b border-stone-800">
                 <span className="w-7 h-7 bg-amber-600/20 text-amber-500 border border-amber-600/30 rounded-full flex items-center justify-center font-bold text-xs">
@@ -210,7 +218,6 @@ export default function CheckoutPage() {
                   Shipping Address
                 </h2>
               </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2 space-y-1.5">
                   <label className="text-xs font-bold uppercase tracking-wider text-stone-400">
@@ -227,7 +234,6 @@ export default function CheckoutPage() {
                     className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-3 text-xs text-stone-100 placeholder-stone-600 focus:outline-none focus:border-amber-600 transition"
                   />
                 </div>
-
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold uppercase tracking-wider text-stone-400">
                     City <span className="text-amber-500">*</span>
@@ -242,7 +248,6 @@ export default function CheckoutPage() {
                     className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-3 text-xs text-stone-100 placeholder-stone-600 focus:outline-none focus:border-amber-600 transition"
                   />
                 </div>
-
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold uppercase tracking-wider text-stone-400">
                     Province <span className="text-amber-500">*</span>
@@ -265,7 +270,6 @@ export default function CheckoutPage() {
               </div>
             </section>
 
-            {/* Step 3: Payment Method Selection */}
             <section className="bg-stone-900 border border-stone-800 rounded-2xl p-6 sm:p-8 space-y-5">
               <div className="flex items-center gap-3 pb-3 border-b border-stone-800">
                 <span className="w-7 h-7 bg-amber-600/20 text-amber-500 border border-amber-600/30 rounded-full flex items-center justify-center font-bold text-xs">
@@ -304,44 +308,44 @@ export default function CheckoutPage() {
                   </div>
                 </label>
 
-                {/* Bank Transfer Option */}
+                {/* NEW - CARD / SAFEPAY Option */}
                 <label
-                  className={`flex items-center justify-between p-4 bg-stone-950 border rounded-xl cursor-pointer transition ${formData.paymentMethod === "Bank Transfer" ? "border-amber-600" : "border-stone-800"}`}
+                  className={`flex items-center justify-between p-4 bg-stone-950 border rounded-xl cursor-pointer transition ${formData.paymentMethod === "CARD" ? "border-amber-600" : "border-stone-800"}`}
                 >
                   <div className="flex items-center gap-3">
                     <input
                       type="radio"
                       name="paymentMethod"
-                      value="Bank Transfer"
-                      checked={formData.paymentMethod === "Bank Transfer"}
+                      value="CARD"
+                      checked={formData.paymentMethod === "CARD"}
                       onChange={handleChange}
                       className="accent-amber-600 w-4 h-4"
                     />
                     <div className="flex items-center gap-2">
-                      <CreditCard size={18} className="text-stone-400" />
+                      <CreditCard size={18} className="text-amber-500" />
                       <div>
-                        <span className="text-xs font-bold text-stone-300 block">
-                          Direct Bank / EasyPaisa / JazzCash
+                        <span className="text-xs font-bold text-stone-100 block">
+                          Pay with Card - Debit / Credit
                         </span>
-                        <span className="text-[11px] text-stone-500">
-                          Transfer details shared via WhatsApp after order.
+                        <span className="text-[11px] text-stone-400">
+                          Secure payment via Safepay. Visa / Mastercard.
                         </span>
                       </div>
                     </div>
                   </div>
+                  <span className="text-[10px] bg-amber-600/20 text-amber-500 border border-amber-600/30 px-2 py-1 rounded-full font-bold">
+                    SECURE
+                  </span>
                 </label>
               </div>
             </section>
           </div>
 
-          {/* ---------------- RIGHT: ORDER SUMMARY (5 COLS) ---------------- */}
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6 sticky top-8 space-y-6">
               <h2 className="font-serif font-bold text-xl text-stone-100 pb-4 border-b border-stone-800">
                 Order Summary
               </h2>
-
-              {/* Items List */}
               <div className="space-y-4 max-h-64 overflow-y-auto pr-1">
                 {items.map((item) => (
                   <div
@@ -362,8 +366,6 @@ export default function CheckoutPage() {
                   </div>
                 ))}
               </div>
-
-              {/* Promo Code Input */}
               <div className="pt-4 border-t border-stone-800">
                 <div className="flex gap-2">
                   <div className="relative w-full">
@@ -389,8 +391,6 @@ export default function CheckoutPage() {
                   </button>
                 </div>
               </div>
-
-              {/* Calculation */}
               <div className="pt-4 border-t border-stone-800 space-y-2.5 text-xs">
                 <div className="flex justify-between text-stone-400">
                   <span>Subtotal</span>
@@ -416,15 +416,18 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white font-bold py-4 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2"
+                className={`w-full bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white font-bold py-4 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 ${isSubmitting ? "cursor-not-allowed" : ""}`}
               >
                 <ShieldCheck size={16} />
                 <span>
-                  {isSubmitting ? "Placing Order..." : "Confirm & Place Order"}
+                  {isSubmitting
+                    ? "Please Wait..."
+                    : formData.paymentMethod === "CARD"
+                      ? "Pay with Card - Secure"
+                      : "Confirm & Place Order"}
                 </span>
               </button>
             </div>

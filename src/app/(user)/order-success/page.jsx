@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -17,9 +17,51 @@ import {
 function OrderDetails() {
   const searchParams = useSearchParams();
 
+  // YAHAN FIX HAI: route.js ?order= bhejta hai, ye page ?id= parhta tha
+  // Ab dono chalenge
+  const orderId = searchParams.get("order") || searchParams.get("id");
+
+  const [paymentStatus, setPaymentStatus] = useState("Verifying...");
+  const [isPaid, setIsPaid] = useState(false);
+
+  // ===== VERIFY LOGIC - YAHI MISSING THA =====
+  useEffect(() => {
+    const realOrderId = searchParams.get("order") || searchParams.get("id");
+    if (!realOrderId || realOrderId === "CHE-84920") return;
+
+    let tries = 0;
+    const checkPayment = async () => {
+      tries++;
+      try {
+        const res = await fetch(`/api/order/verify?order=${realOrderId}`);
+        const data = await res.json();
+        console.log("Payment verify:", data);
+
+        if (data.status === "Paid") {
+          setPaymentStatus("Paid ✅");
+          setIsPaid(true);
+          return; // Paid ho gaya to dobara check mat karo
+        }
+
+        // Agar abhi Pending hai to 3 baar dobara try karo (Safepay ko time lagta hai)
+        if (tries < 3) {
+          setTimeout(checkPayment, 3000);
+        } else {
+          setPaymentStatus(data.status || "Pending");
+        }
+      } catch (e) {
+        setPaymentStatus("Pending");
+      }
+    };
+
+    // 2 second ruk ke check karo taake Safepay ko time mil jaye
+    const timer = setTimeout(checkPayment, 2000);
+    return () => clearTimeout(timer);
+  }, [searchParams]);
+
   // Query Params se real data extract kar rahe hain
   const orderData = {
-    orderId: searchParams.get("id") || "CHE-84920",
+    orderId: orderId,
     customerName: searchParams.get("name") || "Valued Customer",
     phone: searchParams.get("phone") || "N/A",
     deliveryAddress:
@@ -37,10 +79,8 @@ function OrderDetails() {
     <div className="max-w-2xl w-full space-y-8">
       {/* Success Header Box */}
       <div className="bg-stone-900 border border-stone-800 rounded-3xl p-8 sm:p-10 text-center space-y-5 shadow-2xl relative overflow-hidden">
-        {/* Subtle Glow Effect */}
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-48 h-48 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Animated Icon Container */}
         <div className="w-20 h-20 bg-amber-600/10 border border-amber-600/30 rounded-full flex items-center justify-center mx-auto text-amber-500 shadow-inner">
           <CheckCircle2 size={44} className="stroke-[1.75]" />
         </div>
@@ -56,6 +96,13 @@ function OrderDetails() {
             Aap ka order successfully receive ho chuka hai. Hum jald hi craft
             processing shuru kar rahe hain.
           </p>
+          {/* Payment Status Badge - NAYA */}
+          <div
+            className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold border ${isPaid ? "bg-emerald-600/10 border-emerald-600/30 text-emerald-400" : "bg-amber-600/10 border-amber-600/30 text-amber-400"}`}
+          >
+            {!isPaid && <Loader2 size={13} className="animate-spin" />}
+            Payment Status: {paymentStatus}
+          </div>
         </div>
 
         {/* Order ID Badge */}
@@ -97,6 +144,9 @@ function OrderDetails() {
             <p className="text-amber-500 font-bold text-sm pt-1">
               Total: Rs. {orderData.totalAmount.toLocaleString()}
             </p>
+            <p className="text-[11px] text-stone-400">
+              Status: {paymentStatus}
+            </p>
           </div>
         </div>
 
@@ -113,7 +163,6 @@ function OrderDetails() {
 
       {/* Action Buttons */}
       <div className="space-y-3">
-        {/* WhatsApp Confirmation Option */}
         <a
           href={`https://wa.me/923379368405?text=${whatsappMessage}`}
           target="_blank"

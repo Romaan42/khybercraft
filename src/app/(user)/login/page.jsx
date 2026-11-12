@@ -4,9 +4,7 @@ import React, { useActionState, useEffect, useState } from "react";
 import {
   Eye,
   EyeOff,
-  User,
   Mail,
-  Phone,
   Lock,
   Sparkles,
   ShieldCheck,
@@ -14,14 +12,14 @@ import {
   Award,
   ArrowRight,
 } from "lucide-react";
-import { loginUser, registerUser } from "@/actions/userActions";
+import { loginUser } from "@/actions/userActions";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { checkLogin } from "@/store/userSlice";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
@@ -70,13 +68,13 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 font-sans selection:bg-amber-600 selection:text-white flex flex-col justify-between">
+    <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans selection:bg-amber-600 selection:text-white flex flex-col justify-between transition-colors duration-300">
       <Toaster />
       {/* Announcement Bar */}
       <div className="bg-amber-700 text-stone-100 text-xs py-2 px-4 text-center font-medium tracking-wide flex justify-center items-center gap-2">
         <Sparkles size={14} className="animate-pulse text-amber-300" />
         <span>
-          Create an account today to get 10% OFF on your first Charsadda Chappal
+          Create an account today to get 10% OFF on your first KhyberCraft
           order!
         </span>
       </div>
@@ -87,35 +85,38 @@ export default function RegisterPage() {
           {/* Left Column: Brand Story & Loyalty Benefits */}
           <div className="lg:col-span-5 space-y-8 text-center lg:text-left">
             <div>
-              <a href="/" className="inline-block group mb-4">
-                <span className="font-serif text-3xl font-bold tracking-tight text-stone-100 group-hover:text-amber-500 transition">
-                  CHARSADDA<span className="text-amber-600">.</span>
+              <Link href="/" className="inline-block group mb-4">
+                <span className="font-serif text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100 group-hover:text-amber-600 dark:group-hover:text-amber-500 transition">
+                  KHYBERCRAFT<span className="text-amber-600">.</span>
                 </span>
-                <span className="block text-[10px] uppercase tracking-[0.3em] text-stone-400 -mt-1 font-semibold">
+                <span className="block text-[10px] uppercase tracking-[0.3em] text-stone-500 dark:text-stone-400 -mt-1 font-semibold">
                   Heritage Footwear
                 </span>
-              </a>
-              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-100 leading-tight">
+              </Link>
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-stone-100 leading-tight">
                 Join the Exclusive{" "}
-                <span className="text-amber-500">Charsadda</span> Club
+                <span className="text-amber-600 dark:text-amber-500">
+                  KhyberCraft
+                </span>{" "}
+                Club
               </h1>
-              <p className="text-stone-400 text-sm mt-3 leading-relaxed">
+              <p className="text-stone-600 dark:text-stone-400 text-sm mt-3 leading-relaxed">
                 Unlock instant access to limited edition Norozi cuts, VIP
                 pre-orders for Kaptaan collections, and seamless order tracking.
               </p>
             </div>
 
             {/* Member Perks */}
-            <div className="space-y-4 pt-4 border-t border-stone-800/80">
+            <div className="space-y-4 pt-4 border-t border-stone-200 dark:border-stone-800/80">
               <div className="flex items-start gap-4 text-left">
-                <div className="p-2.5 bg-amber-600/10 text-amber-500 rounded-lg border border-amber-600/20 mt-1">
+                <div className="p-2.5 bg-amber-600/10 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-600/20 mt-1">
                   <Award size={20} />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-stone-200">
+                  <h4 className="text-sm font-semibold text-stone-800 dark:text-stone-200">
                     Exclusive Reward Points
                   </h4>
-                  <p className="text-xs text-stone-400">
+                  <p className="text-xs text-stone-600 dark:text-stone-400">
                     Earn points on every purchase and redeem them for free
                     leather care kits.
                   </p>
@@ -123,14 +124,14 @@ export default function RegisterPage() {
               </div>
 
               <div className="flex items-start gap-4 text-left">
-                <div className="p-2.5 bg-amber-600/10 text-amber-500 rounded-lg border border-amber-600/20 mt-1">
+                <div className="p-2.5 bg-amber-600/10 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-600/20 mt-1">
                   <Truck size={20} />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-stone-200">
+                  <h4 className="text-sm font-semibold text-stone-800 dark:text-stone-200">
                     Express Checkout
                   </h4>
-                  <p className="text-xs text-stone-400">
+                  <p className="text-xs text-stone-600 dark:text-stone-400">
                     Save multiple delivery addresses across Pakistan for 1-click
                     orders.
                   </p>
@@ -138,14 +139,14 @@ export default function RegisterPage() {
               </div>
 
               <div className="flex items-start gap-4 text-left">
-                <div className="p-2.5 bg-amber-600/10 text-amber-500 rounded-lg border border-amber-600/20 mt-1">
+                <div className="p-2.5 bg-amber-600/10 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-600/20 mt-1">
                   <ShieldCheck size={20} />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-stone-200">
+                  <h4 className="text-sm font-semibold text-stone-800 dark:text-stone-200">
                     Lifetime Sole Guarantee
                   </h4>
-                  <p className="text-xs text-stone-400">
+                  <p className="text-xs text-stone-600 dark:text-stone-400">
                     Registered members get direct priority access for
                     replacement warranty services.
                   </p>
@@ -155,35 +156,35 @@ export default function RegisterPage() {
           </div>
 
           <div className="lg:col-span-7">
-            <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-amber-600/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl p-6 sm:p-10 shadow-xl dark:shadow-2xl relative overflow-hidden transition-colors duration-300">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 dark:bg-amber-600/5 rounded-full blur-3xl pointer-events-none" />
 
-              <div className="mb-8">
-                <h2 className="text-2xl font-serif font-bold text-stone-100">
+              <div className="mb-8 relative z-10">
+                <h2 className="text-2xl font-serif font-bold text-stone-900 dark:text-stone-100">
                   Login Your Account
                 </h2>
-                <p className="text-xs text-stone-400 mt-1">
+                <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
                   Don't have an account?{" "}
                   <Link
                     href="/register"
-                    className="text-amber-500 font-semibold hover:underline"
+                    className="text-amber-600 dark:text-amber-500 font-semibold hover:underline"
                   >
                     Sign up here
                   </Link>
                 </p>
               </div>
 
-              <form action={handleSubmit} className="space-y-5">
-                {/* Email & Phone Grid */}
+              <form action={handleSubmit} className="space-y-5 relative z-10">
+                {/* Email */}
                 <div className="grid grid-cols-1 gap-5">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-300 mb-2">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-2">
                       Email Address
                     </label>
                     <div className="relative">
                       <Mail
                         size={18}
-                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-500"
+                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500"
                       />
                       <input
                         type="email"
@@ -192,7 +193,7 @@ export default function RegisterPage() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="name@example.com"
-                        className="w-full bg-stone-950 border border-stone-800 rounded-lg pl-10 pr-4 py-3 text-sm text-stone-100 placeholder-stone-600 focus:outline-none focus:border-amber-600 transition"
+                        className="w-full bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-800 rounded-lg pl-10 pr-4 py-3 text-sm text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-600 focus:outline-none focus:border-amber-600 transition"
                       />
                     </div>
                   </div>
@@ -201,13 +202,13 @@ export default function RegisterPage() {
                 {/* Password & Confirm Password Grid */}
                 <div className="grid grid-cols-1 gap-5">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-300 mb-2">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-2">
                       Password
                     </label>
                     <div className="relative">
                       <Lock
                         size={18}
-                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-500"
+                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500"
                       />
                       <input
                         type={showPassword ? "text" : "password"}
@@ -216,12 +217,12 @@ export default function RegisterPage() {
                         value={formData.password}
                         onChange={handleChange}
                         placeholder="••••••••"
-                        className="w-full bg-stone-950 border border-stone-800 rounded-lg pl-10 pr-10 py-3 text-sm text-stone-100 placeholder-stone-600 focus:outline-none focus:border-amber-600 transition"
+                        className="w-full bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-800 rounded-lg pl-10 pr-10 py-3 text-sm text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-600 focus:outline-none focus:border-amber-600 transition"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-300"
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300 cursor-pointer"
                       >
                         {showPassword ? (
                           <EyeOff size={16} />
@@ -233,13 +234,13 @@ export default function RegisterPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-300 mb-2">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-2">
                       Confirm Password
                     </label>
                     <div className="relative">
                       <Lock
                         size={18}
-                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-500"
+                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500"
                       />
                       <input
                         type={showConfirmPassword ? "text" : "password"}
@@ -248,14 +249,14 @@ export default function RegisterPage() {
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         placeholder="••••••••"
-                        className="w-full bg-stone-950 border border-stone-800 rounded-lg pl-10 pr-10 py-3 text-sm text-stone-100 placeholder-stone-600 focus:outline-none focus:border-amber-600 transition"
+                        className="w-full bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-800 rounded-lg pl-10 pr-10 py-3 text-sm text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-600 focus:outline-none focus:border-amber-600 transition"
                       />
                       <button
                         type="button"
                         onClick={() =>
                           setShowConfirmPassword(!showConfirmPassword)
                         }
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-300"
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300 cursor-pointer"
                       >
                         {showConfirmPassword ? (
                           <EyeOff size={16} />
@@ -271,7 +272,11 @@ export default function RegisterPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`w-full bg-amber-600 ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-amber-700"} text-white font-bold py-3.5 rounded-lg text-sm uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 group`}
+                  className={`w-full bg-amber-600 ${
+                    loading
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-amber-700 cursor-pointer"
+                  } text-white font-bold py-3.5 rounded-lg text-sm uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 group`}
                 >
                   <span>Login Account</span>
                   <ArrowRight

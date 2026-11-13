@@ -9,13 +9,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Product from "@/components/Product";
-
-const categories = [
-  { id: "all", label: "All Collections" },
-  { id: "kaptaan", label: "Kaptaan Special" },
-  { id: "norozi", label: "Norozi Cut" },
-  { id: "peshawari", label: "Peshawari Collection" },
-];
+import { categories } from "@/lib/categories";
 
 export default function ShopClient({ initialProducts = [] }) {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -72,7 +66,7 @@ export default function ShopClient({ initialProducts = [] }) {
     activeCategory !== "all" ||
     searchQuery !== "" ||
     priceRange.min > 0 ||
-    priceRange.max < maxAvailablePrice ||
+    priceRange.max <= maxAvailablePrice ||
     sortBy !== "default";
 
   // Shared Sidebar Filters Component
@@ -84,19 +78,19 @@ export default function ShopClient({ initialProducts = [] }) {
           Categories
         </h3>
         <div className="space-y-2">
-          {categories.map((cat) => {
-            const isSelected = activeCategory === cat.id;
+          {categories.map((cat, i) => {
+            const isSelected = false;
             return (
               <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
+                key={i}
+                onClick={() => setActiveCategory(i)}
                 className={`flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-xs font-medium transition-all ${
                   isSelected
                     ? "bg-amber-600 text-white shadow-md shadow-amber-600/20"
                     : "text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 hover:text-stone-900 dark:hover:text-stone-200"
                 }`}
               >
-                <span>{cat.label}</span>
+                <span>{cat}</span>
                 {isSelected && (
                   <span className="h-2 w-2 rounded-full bg-white" />
                 )}
@@ -123,14 +117,15 @@ export default function ShopClient({ initialProducts = [] }) {
             type="range"
             min="0"
             max={maxAvailablePrice}
-            step="500"
+            step="10"
             value={priceRange.max}
-            onChange={(e) =>
+            onChange={(e) => {
+              console.log(e.target.value);
               setPriceRange((prev) => ({
                 ...prev,
                 max: Number(e.target.value),
-              }))
-            }
+              }));
+            }}
             className="w-full h-1.5 cursor-pointer appearance-none rounded-lg bg-stone-200 dark:bg-stone-800 accent-amber-600 dark:accent-amber-500"
           />
           <div className="flex items-center justify-between text-[11px] text-stone-500 font-medium">

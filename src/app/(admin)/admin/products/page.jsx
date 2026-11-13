@@ -4,6 +4,7 @@ import { Plus, Search, Filter, Edit, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import TableSkeleton from "@/components/admin/LoadingSkeleton";
+import ClImage from "@/components/ClgImage";
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);
@@ -105,8 +106,14 @@ export default function AdminProductsPage() {
                 {products?.map((p) => (
                   <tr key={p._id} className="hover:bg-slate-50/80 transition">
                     <td className="px-5 py-3.5 flex items-center gap-3">
-                      <div className="w-10 h-10 bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-center shrink-0 overflow-hidden text-[10px] font-bold text-slate-400">
-                        <img src={p.images[0]} alt={p.title} />
+                      <div className="w-10 h-10 bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-center shrink-0 overflow-hidden text-[10px] font-bold text-slate-400 relative">
+                        <ClImage
+                          fill
+                          quality={75}
+                          src={p.images[0]}
+                          alt={p.title}
+                          className="w-full"
+                        />
                       </div>
                       <div>
                         <span className="font-bold text-slate-900 block">

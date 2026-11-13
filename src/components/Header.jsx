@@ -4,7 +4,7 @@ import { getAllItems, getCartItems } from "@/store/cartSlice";
 import { checkLogin } from "@/store/userSlice";
 import { LogOut, Menu, PhoneCall, ShoppingBag, User, X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,10 +13,15 @@ export default function Header() {
   const router = useRouter();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const pathname = usePathname();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { user, userLoading, error } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [pathname]);
 
   useEffect(() => {
     dispatch(checkLogin());
@@ -94,6 +99,9 @@ export default function Header() {
               <Link
                 key={val.name}
                 href={val.link}
+                onClick={() => {
+                  window.screenTop = 0;
+                }}
                 className="text-stone-700 dark:text-stone-300 hover:text-amber-600 dark:hover:text-amber-500 transition"
               >
                 {val.name}

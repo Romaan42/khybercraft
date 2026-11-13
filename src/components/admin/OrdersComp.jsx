@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 export default function OrdersComp() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const fetchOrders = () => {
     setLoading(true);
@@ -49,6 +50,44 @@ export default function OrdersComp() {
     }
   };
 
+  const handeOnBulkDelete = async () => {
+    if (confirm(`do yout want to delete ${selectedItems.length} products?`)) {
+      const res = await fetch("/admin/api/orders/bulk", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ ids: selectedItems }),
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        toast.success(result.message);
+        fetchOrders();
+      } else {
+        toast.error(result.message);
+      }
+    }
+  };
+
+  const handleChecked = (id) => {
+    if (selectedItems.includes(id)) {
+      setSelectedItems((prev) => prev.filter((v) => v !== id));
+    } else {
+      setSelectedItems((prev) => [...prev, id]);
+    }
+  };
+
+  const handleSelectAll = () => {
+    setSelectedItems((prev) => {
+      if (prev.length === orders.length) {
+        return [];
+      }
+
+      return orders.map((val) => val._id);
+    });
+  };
+
   if (loading) return <TableSkeleton />;
 
   if (orders.length === 0)
@@ -60,9 +99,30 @@ export default function OrdersComp() {
   return (
     <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
+        {selectedItems.length > 0 && (
+          <div className="w-full flex justify-between items-center px-10 py-3 bg-red-200">
+            <span className="text-red-500">
+              {selectedItems.length} Selected
+            </span>
+            <button
+              className="cursor-pointer text-red-500 "
+              onClick={handeOnBulkDelete}
+            >
+              <TrashIcon />
+            </button>
+          </div>
+        )}
         <table className="w-full text-left text-xs">
           <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-100">
             <tr>
+              <th className="px-5 py-3.5">
+                <input
+                  type="checkbox"
+                  className="size-4 cursor-pointer"
+                  onChange={handleSelectAll}
+                  checked={orders.length === selectedItems.length}
+                />
+              </th>
               <th className="px-5 py-3.5">Order ID</th>
               <th className="px-5 py-3.5">Customer Details</th>
               <th className="px-5 py-3.5">Ordered Items</th>
@@ -74,8 +134,24 @@ export default function OrdersComp() {
           </thead>
           <tbody className="divide-y divide-slate-100 text-slate-700">
             {orders.map((o) => (
-              <tr key={o._id} className="hover:bg-slate-50/80 transition">
+              <tr
+                key={o._id}
+                className={` ${selectedItems.includes(o._id) ? "border border-red-500 rounded-2xl bg-red-100" : "hover:bg-slate-50/80"} transition`}
+              >
                 <td className="px-5 py-3.5 font-mono font-bold text-slate-900">
+                  <input
+                    type="checkbox"
+                    name="select"
+                    id="select"
+                    className="size-4 cursor-pointer"
+                    checked={selectedItems.includes(o._id)}
+                    onChange={() => handleChecked(o._id)}
+                  />
+                </td>
+                <td
+                  className="cursor-pointer px-5 py-3.5 font-mono font-bold text-slate-900"
+                  onClick={() => handleChecked(o._id)}
+                >
                   {o._id}
                 </td>
                 <td className="px-5 py-3.5">

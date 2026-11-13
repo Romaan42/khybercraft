@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { Star, Send, Loader2, CheckCircle2 } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -59,16 +60,16 @@ export default function ReviewSubmissionForm({ productId, onReviewSubmitted }) {
   };
 
   return (
-    <div className="bg-stone-900 border border-stone-800 p-6 sm:p-8 rounded-2xl">
-      <h3 className="text-lg font-serif font-bold text-stone-100 mb-2">
+    <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6 sm:p-8 rounded-2xl shadow-sm dark:shadow-none transition-colors duration-300">
+      <h3 className="text-lg font-serif font-bold text-stone-900 dark:text-stone-100 mb-2">
         Leave a Review
       </h3>
-      <p className="text-xs text-stone-400 mb-6">
+      <p className="text-xs text-stone-500 dark:text-stone-400 mb-6">
         Share your experience with this handcrafted leather product.
       </p>
 
       {success ? (
-        <div className="bg-emerald-950/40 border border-emerald-800/60 p-4 rounded-xl flex items-center gap-3 text-emerald-400 text-sm">
+        <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 p-4 rounded-xl flex items-center gap-3 text-emerald-700 dark:text-emerald-400 text-sm">
           <CheckCircle2 size={20} className="shrink-0" />
           <span>Thank you! Your review has been successfully submitted.</span>
         </div>
@@ -76,7 +77,7 @@ export default function ReviewSubmissionForm({ productId, onReviewSubmitted }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Star Rating Picker */}
           <div>
-            <label className="block text-xs font-semibold text-stone-300 mb-1.5 uppercase tracking-wider">
+            <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1.5 uppercase tracking-wider">
               Rating
             </label>
             <div className="flex items-center gap-1">
@@ -84,7 +85,7 @@ export default function ReviewSubmissionForm({ productId, onReviewSubmitted }) {
                 <button
                   type="button"
                   key={star}
-                  className="p-1 focus:outline-none transition transform hover:scale-110"
+                  className="p-1 focus:outline-none transition transform hover:scale-110 cursor-pointer"
                   onClick={() => setRating(star)}
                   onMouseEnter={() => setHoverRating(star)}
                   onMouseLeave={() => setHoverRating(0)}
@@ -94,35 +95,19 @@ export default function ReviewSubmissionForm({ productId, onReviewSubmitted }) {
                     className={`${
                       (hoverRating || rating) >= star
                         ? "fill-amber-500 text-amber-500"
-                        : "text-stone-700"
+                        : "text-stone-300 dark:text-stone-700"
                     } transition-colors`}
                   />
                 </button>
               ))}
-              <span className="ml-2 text-xs font-medium text-amber-500">
+              <span className="ml-2 text-xs font-medium text-amber-600 dark:text-amber-500">
                 {rating} / 5 Stars
               </span>
             </div>
           </div>
 
-          {/* Author Name */}
-          {/* <div>
-            <label className="block text-xs font-semibold text-stone-300 mb-1.5 uppercase tracking-wider">
-              Your Name
-            </label>
-            <input
-              type="text"
-              value={user ? user.name : "please login first"}
-              onChange={(e) => setAuthor(e.target.value)}
-              placeholder="e.g. Ahmed Khan"
-              className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-stone-100 placeholder-stone-600 focus:outline-none focus:border-amber-500 transition"
-              required
-              readOnly
-            />
-          </div> */}
-
           <div>
-            <label className="block text-xs font-semibold text-stone-300 mb-1.5 uppercase tracking-wider">
+            <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1.5 uppercase tracking-wider">
               Your Review
             </label>
             <textarea
@@ -130,19 +115,21 @@ export default function ReviewSubmissionForm({ productId, onReviewSubmitted }) {
               onChange={(e) => setComment(e.target.value)}
               placeholder="How was the leather quality, fitting, and delivery?"
               rows={4}
-              className="w-full bg-stone-950 border border-stone-800 rounded-xl p-4 text-sm text-stone-100 placeholder-stone-600 focus:outline-none focus:border-amber-500 transition resize-none"
+              className="w-full bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-800 rounded-xl p-4 text-sm text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-600 focus:outline-none focus:border-amber-600 dark:focus:border-amber-500 transition resize-none"
               required
             />
           </div>
 
           {error && (
-            <p className="text-xs text-rose-500 font-medium">{error}</p>
+            <p className="text-xs text-rose-600 dark:text-rose-500 font-medium">
+              {error}
+            </p>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold py-3 px-6 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition disabled:opacity-50 cursor-pointer"
+            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition disabled:opacity-50 cursor-pointer shadow-lg shadow-amber-600/20"
           >
             {loading ? (
               <>

@@ -34,7 +34,14 @@ const productSchema = mongoose.Schema({
     },
   ],
   images: [String],
+  video: String,
   sizes: [String],
+  colors: [
+    {
+      name: String,
+      image: String,
+    },
+  ],
   isActive: {
     type: Boolean,
     default: true,

@@ -19,7 +19,7 @@ import ReviewSubmissionForm from "@/components/ReviewSubmission";
 async function getReviews(id) {
   try {
     const res = await fetch(`${process.env.BASE_URL}/api/review/${id}`, {
-      cache: "no-store", // Ensures reviews are always fresh on submission
+      cache: "no-store",
     });
     const result = await res.json();
 
@@ -30,31 +30,63 @@ async function getReviews(id) {
 }
 
 async function getProductBySlug(slug) {
-  const res = await fetch(`${process.env.BASE_URL}/api/product/${slug}`);
-  const result = await res.json();
+  try {
+    const res = await fetch(`${process.env.BASE_URL}/api/product/${slug}`);
+    const result = await res.json();
 
-  if (!result.success) {
+    if (!result.success) {
+      return null;
+    }
+
+    return result.product;
+  } catch (error) {
     return null;
   }
-
-  return result.product;
 }
 
 async function getRelatedProducts(currentId) {
-  const res = await fetch(`${process.env.BASE_URL}/api/products`);
-  const result = await res.json();
-  return result.products.filter((product) => product._id !== currentId);
+  try {
+    const res = await fetch(`${process.env.BASE_URL}/api/products`);
+    const result = await res.json();
+    return result.products
+      .filter((product) => product._id !== currentId)
+      .slice(0, 3);
+  } catch (error) {
+    return [];
+  }
 }
 
-export default async function page({ params }) {
+// Dynamic SEO Metadata for Product Page
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+
+  if (!product) {
+    return {
+      title: "Product Not Found | KhyberCraft",
+    };
+  }
+
+  return {
+    title: `${product.title} | KhyberCraft Heritage Footwear`,
+    description:
+      product.shortDescription ||
+      `Buy authentic handcrafted ${product.title} online with Cash on Delivery across Pakistan.`,
+    openGraph: {
+      title: product.title,
+      description: product.shortDescription || "",
+      images: product.images?.[0] ? [product.images[0]] : [],
+    },
+  };
+}
+
+export default async function ProductDetailPage({ params }) {
   const { slug } = await params;
 
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  // Fetch reviews using the product's unique ID
   const reviews = await getReviews(product._id);
-
   const relatedProducts = await getRelatedProducts(product._id);
 
   const averageRating =
@@ -63,6 +95,8 @@ export default async function page({ params }) {
           reviews.reduce((acc, item) => acc + item.stars, 0) / reviews.length
         ).toFixed(1)
       : "5.0";
+
+  const baseUrl = process.env.BASE_URL || "https://khybercraft.com";
 
   // SEO-friendly JSON-LD Schema with Product + Reviews/AggregateRating
   const productSchema = {
@@ -77,36 +111,35 @@ export default async function page({ params }) {
       price: product.price,
       priceCurrency: "PKR",
       availability:
-        product.stock > 0
+        (product.stock ?? product.stok) > 0
           ? "https://schema.org/InStock"
           : "https://schema.org/OutOfStock",
-      url: `https://yourdomain.com/products/${slug}`,
+      url: `${baseUrl}/products/${slug}`,
     },
-    aggregateRating:
-      reviews.length > 0
-        ? {
-            "@type": "AggregateRating",
-            ratingValue: averageRating,
-            reviewCount: reviews.length,
-            bestRating: "5",
-            worstRating: "1",
-          }
-        : undefined,
-    review: reviews.map((rev) => ({
-      "@type": "Review",
-      author: {
-        "@type": "Person",
-        name: rev?.userId?.name || "Verified Buyer",
-      },
-      datePublished: new Date(rev.createdAt).toISOString(),
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: rev.stars,
+    ...(reviews.length > 0 && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: averageRating,
+        reviewCount: reviews.length,
         bestRating: "5",
         worstRating: "1",
       },
-      reviewBody: rev.message,
-    })),
+      review: reviews.map((rev) => ({
+        "@type": "Review",
+        author: {
+          "@type": "Person",
+          name: rev?.userId?.name || "Verified Buyer",
+        },
+        datePublished: new Date(rev.createdAt).toISOString(),
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: rev.stars,
+          bestRating: "5",
+          worstRating: "1",
+        },
+        reviewBody: rev.message,
+      })),
+    }),
   };
 
   return (
@@ -120,7 +153,7 @@ export default async function page({ params }) {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Breadcrumb Navigation */}
         <nav aria-label="Breadcrumb" className="mb-8">
-          <ol className="flex items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
+          <ol className="flex flex-wrap items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
             <li>
               <Link
                 href="/"
@@ -151,7 +184,7 @@ export default async function page({ params }) {
             <li>
               <ChevronRight size={12} />
             </li>
-            <li className="text-amber-600 dark:text-amber-500 font-medium truncate max-w-[180px]">
+            <li className="text-amber-600 dark:text-amber-500 font-medium truncate max-w-[180px] sm:max-w-xs">
               {product.title}
             </li>
           </ol>
@@ -160,14 +193,14 @@ export default async function page({ params }) {
         {/* Product Interactive Main Grid */}
         <article className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
           <ProductInteractiveSection product={product} />
+
+          {/* Logistics & Stock Availability */}
           <div className="lg:col-span-12 space-y-4 pt-8 border-t border-stone-200 dark:border-stone-800">
-            {/* Section Heading */}
             <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold text-xs uppercase tracking-wider">
               <Truck size={16} />
               <span>Logistics & Stock Availability</span>
             </div>
 
-            {/* 4-Item Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Estimated Delivery */}
               <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800/80 p-4 rounded-xl flex items-center gap-4 transition hover:border-amber-500/40 shadow-sm dark:shadow-none">
@@ -232,7 +265,7 @@ export default async function page({ params }) {
           </div>
         </article>
 
-        {/* SEO-Friendly Customer Reviews Section & Submission Layout */}
+        {/* Customer Reviews Section & Submission Layout */}
         <section className="mt-20 pt-12 border-t border-stone-200 dark:border-stone-800">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
             <div>
@@ -278,7 +311,10 @@ export default async function page({ params }) {
                 reviews.map((rev) => {
                   const date = new Date(rev.createdAt);
                   const formattedDate = date.toLocaleDateString();
-                  const formattedTime = date.toLocaleTimeString();
+                  const formattedTime = date.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  });
 
                   return (
                     <div

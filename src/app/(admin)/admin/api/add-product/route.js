@@ -13,8 +13,10 @@ export const POST = async (request) => {
       stok,
       description,
       sizes,
+      colors,
       images,
       isFeatured,
+      shortDescription,
       inStock,
     } = await request.json();
 
@@ -26,7 +28,9 @@ export const POST = async (request) => {
       discout: salePrice,
       stock: stok,
       description,
+      shortDescription,
       sizes,
+      colors,
       images,
       isFeatured,
     });

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   ShoppingBag,
   Trash2,
@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllItems,
   getCartItems,
   guestRemoveFromCart,
   setLoading,
@@ -54,9 +53,6 @@ export default function CartPage() {
     }
   };
 
-  // Handle Size Change
-  const updateSize = (id, newSize) => {};
-
   // Handle Item Removal
   const removeItem = async (id) => {
     if (userLoading) return;
@@ -77,11 +73,13 @@ export default function CartPage() {
   const handleApplyPromo = (e) => {
     e.preventDefault();
     if (promoCode.trim() === "123") {
-      toast.success("coupon are applied");
+      toast.success("Coupon applied!");
       setAppliedDiscount(10);
+      setPromoMessage("10% discount applied successfully!");
     } else {
-      toast.error("code are wrong!");
+      toast.error("Invalid promo code!");
       setAppliedDiscount(0);
+      setPromoMessage("Invalid promo code.");
     }
   };
 
@@ -94,28 +92,26 @@ export default function CartPage() {
     if (appliedDiscount < 1) {
       return 0;
     }
-
-    return subtotal / appliedDiscount;
-  }, [items]);
+    return Math.round(subtotal / appliedDiscount);
+  }, [subtotal, appliedDiscount]);
 
   const shippingFee = 0; // Free delivery
   const grandTotal = subtotal - discountAmount + shippingFee;
 
   const productsNames = useMemo(() => {
-    const p = items.reduce((init, item) => {
-      return (init += `${item.title}`);
-    }, "");
-
-    return p;
+    return items.map((item) => `${item.title} (x${item.qty})`).join(", ");
   }, [items]);
-  const message = `text=*Product* *(${productsNames})* Total :${grandTotal}`;
+
+  const message = `text=${encodeURIComponent(
+    `*Products:* ${productsNames}\n*Total:* Rs. ${grandTotal.toLocaleString()}`,
+  )}`;
 
   if (cartLoading || userLoading) {
     return <CartSkeleton />;
   }
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 font-sans selection:bg-amber-600 selection:text-white flex flex-col justify-between">
+    <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans selection:bg-amber-600 selection:text-white flex flex-col justify-between transition-colors duration-300">
       {/* Top Free Shipping Announcement */}
       <div className="bg-amber-700 text-stone-100 text-xs py-2 px-4 text-center font-medium tracking-wide flex justify-center items-center gap-2">
         <Sparkles size={14} className="animate-pulse text-amber-300" />
@@ -125,21 +121,21 @@ export default function CartPage() {
       {/* Main Cart Content */}
       <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Header Breadcrumb */}
-        <div className="flex items-center justify-between border-b border-stone-800 pb-6 mb-8">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 dark:border-stone-800 pb-6 mb-8">
           <div>
-            <span className="text-amber-500 text-xs font-bold uppercase tracking-widest">
+            <span className="text-amber-600 dark:text-amber-500 text-xs font-bold uppercase tracking-widest">
               Your Selection
             </span>
-            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-stone-100 mt-1">
+            <h1 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-stone-100 mt-1">
               Shopping Cart ({items.reduce((acc, i) => acc + i.qty, 0)})
             </h1>
           </div>
-          <a
+          <Link
             href="/shop"
-            className="inline-flex items-center gap-2 text-stone-400 hover:text-amber-500 text-xs font-semibold tracking-wide transition"
+            className="inline-flex items-center gap-2 text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-500 text-xs font-semibold tracking-wide transition"
           >
             <ArrowLeft size={16} /> Continue Shopping
-          </a>
+          </Link>
         </div>
 
         {items.length > 0 ? (
@@ -149,11 +145,11 @@ export default function CartPage() {
               {items.map((item) => (
                 <div
                   key={item._id}
-                  className="bg-stone-900 border border-stone-800 rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 hover:border-stone-700 transition"
+                  className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 hover:border-stone-300 dark:hover:border-stone-700 shadow-sm dark:shadow-none transition"
                 >
                   {/* Item Image & Info */}
                   <div className="flex items-center gap-4 w-full sm:w-auto">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-stone-950 rounded-lg overflow-hidden border border-stone-800 shrink-0">
+                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-stone-100 dark:bg-stone-950 rounded-xl overflow-hidden border border-stone-200 dark:border-stone-800 shrink-0">
                       <ClImage
                         src={item.image}
                         alt={item.title}
@@ -164,15 +160,15 @@ export default function CartPage() {
                     </div>
 
                     <div className="space-y-1">
-                      <h3 className="font-serif font-bold text-stone-100 text-base sm:text-lg">
+                      <h3 className="font-serif font-bold text-stone-900 dark:text-stone-100 text-base sm:text-lg">
                         {item.title}
                       </h3>
 
                       <div className="flex items-center gap-2 pt-1">
-                        <label className="text-[11px] text-stone-400 uppercase font-bold">
+                        <span className="text-[11px] text-stone-500 dark:text-stone-400 uppercase font-bold">
                           Size (PK/UK):
-                        </label>
-                        <span className="text-[11px] text-white uppercase font-bold">
+                        </span>
+                        <span className="text-[11px] text-stone-900 dark:text-white bg-stone-100 dark:bg-stone-800 px-2 py-0.5 rounded uppercase font-bold">
                           {item.size}
                         </span>
                       </div>
@@ -180,26 +176,26 @@ export default function CartPage() {
                   </div>
 
                   {/* Quantity Controls & Price */}
-                  <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-6 border-t sm:border-t-0 border-stone-800 pt-3 sm:pt-0">
+                  <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-6 border-t sm:border-t-0 border-stone-200 dark:border-stone-800 pt-3 sm:pt-0">
                     {/* Quantity Adjustment Buttons */}
-                    <div className="flex items-center border border-stone-800 rounded-lg bg-stone-950">
+                    <div className="flex items-center border border-stone-300 dark:border-stone-800 rounded-lg bg-stone-50 dark:bg-stone-950">
                       <button
                         onClick={() =>
                           updateQuantity(item._id, "DECREASE", item.qty)
                         }
-                        className="p-2 text-stone-400 hover:text-amber-500 transition"
+                        className="p-2 text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-500 transition cursor-pointer"
                         title="Decrease"
                       >
                         <Minus size={14} />
                       </button>
-                      <span className="px-3 text-xs font-bold text-stone-100">
+                      <span className="px-3 text-xs font-bold text-stone-900 dark:text-stone-100">
                         {item.qty}
                       </span>
                       <button
                         onClick={() =>
                           updateQuantity(item._id, "INCREASE", item.qty)
                         }
-                        className="p-2 text-stone-400 hover:text-amber-500 transition"
+                        className="p-2 text-stone-600 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-500 transition cursor-pointer"
                         title="Increase"
                       >
                         <Plus size={14} />
@@ -208,10 +204,10 @@ export default function CartPage() {
 
                     {/* Price Tag */}
                     <div className="text-right">
-                      <div className="text-base sm:text-lg font-bold text-amber-500">
+                      <div className="text-base sm:text-lg font-bold text-amber-600 dark:text-amber-500">
                         Rs. {(item.price * item.qty).toLocaleString()}
                       </div>
-                      <div className="text-[10px] text-stone-500 line-through">
+                      <div className="text-[10px] text-stone-400 dark:text-stone-500 line-through">
                         Rs. {(item.price * item.qty + 30).toLocaleString()}
                       </div>
                     </div>
@@ -219,7 +215,7 @@ export default function CartPage() {
                     {/* Remove Item Button */}
                     <button
                       onClick={() => removeItem(item._id)}
-                      className="p-2 text-stone-500 hover:text-red-500 transition"
+                      className="p-2 text-stone-400 dark:text-stone-500 hover:text-rose-600 dark:hover:text-red-500 transition cursor-pointer"
                       title="Remove Item"
                     >
                       <Trash2 size={18} />
@@ -230,19 +226,25 @@ export default function CartPage() {
 
               {/* Guarantees Ribbon */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                <div className="bg-stone-900/50 border border-stone-800/80 p-3.5 rounded-xl flex items-center gap-3">
-                  <ShieldCheck size={20} className="text-amber-500 shrink-0" />
-                  <p className="text-xs text-stone-300">
-                    <strong className="text-stone-100">
+                <div className="bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800/80 p-3.5 rounded-xl flex items-center gap-3 shadow-sm dark:shadow-none">
+                  <ShieldCheck
+                    size={20}
+                    className="text-amber-600 dark:text-amber-500 shrink-0"
+                  />
+                  <p className="text-xs text-stone-600 dark:text-stone-300">
+                    <strong className="text-stone-900 dark:text-stone-100">
                       100% Genuine Leather Guarantee:
                     </strong>{" "}
                     Hand-stitched with lifetime sole endurance.
                   </p>
                 </div>
-                <div className="bg-stone-900/50 border border-stone-800/80 p-3.5 rounded-xl flex items-center gap-3">
-                  <Truck size={20} className="text-amber-500 shrink-0" />
-                  <p className="text-xs text-stone-300">
-                    <strong className="text-stone-100">
+                <div className="bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800/80 p-3.5 rounded-xl flex items-center gap-3 shadow-sm dark:shadow-none">
+                  <Truck
+                    size={20}
+                    className="text-amber-600 dark:text-amber-500 shrink-0"
+                  />
+                  <p className="text-xs text-stone-600 dark:text-stone-300">
+                    <strong className="text-stone-900 dark:text-stone-100">
                       Easy Size Exchange:
                     </strong>{" "}
                     Free replacement if the chappal doesn't fit your feet
@@ -252,41 +254,46 @@ export default function CartPage() {
               </div>
             </div>
 
+            {/* ----------------- ORDER SUMMARY (RIGHT - 4 COLS) ----------------- */}
             <div className="lg:col-span-4">
-              <div className="bg-stone-900 border border-stone-800 rounded-2xl p-6 space-y-6 sticky top-24">
-                <h2 className="font-serif font-bold text-xl text-stone-100 pb-4 border-b border-stone-800">
+              <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl p-6 space-y-6 sticky top-24 shadow-md dark:shadow-none">
+                <h2 className="font-serif font-bold text-xl text-stone-900 dark:text-stone-100 pb-4 border-b border-stone-200 dark:border-stone-800">
                   Order Summary
                 </h2>
 
                 {/* Promo Code Form */}
                 <form onSubmit={handleApplyPromo} className="space-y-2">
-                  <label className="text-xs font-semibold uppercase tracking-wider text-stone-400">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-stone-600 dark:text-stone-400">
                     Have a Promo Code?
                   </label>
                   <div className="flex gap-2">
                     <div className="relative flex-1">
                       <Tag
                         size={16}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500"
                       />
                       <input
                         type="text"
-                        placeholder="CHARSADDA10"
+                        placeholder="KHYBER10"
                         value={promoCode}
                         onChange={(e) => setPromoCode(e.target.value)}
-                        className="w-full bg-stone-950 border border-stone-800 rounded-lg pl-9 pr-3 py-2 text-xs text-stone-100 uppercase placeholder-stone-600 focus:outline-none focus:border-amber-600"
+                        className="w-full bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-800 rounded-lg pl-9 pr-3 py-2 text-xs text-stone-900 dark:text-stone-100 uppercase placeholder-stone-400 dark:placeholder-stone-600 focus:outline-none focus:border-amber-600"
                       />
                     </div>
                     <button
                       type="submit"
-                      className="bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-bold px-4 py-2 rounded-lg transition border border-stone-700"
+                      className="bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-bold px-4 py-2 rounded-lg transition border border-stone-300 dark:border-stone-700 cursor-pointer"
                     >
                       Apply
                     </button>
                   </div>
                   {promoMessage && (
                     <p
-                      className={`text-[11px] ${appliedDiscount > 0 ? "text-green-400" : "text-red-400"}`}
+                      className={`text-[11px] font-medium ${
+                        appliedDiscount > 0
+                          ? "text-emerald-600 dark:text-green-400"
+                          : "text-rose-600 dark:text-red-400"
+                      }`}
                     >
                       {promoMessage}
                     </p>
@@ -294,27 +301,31 @@ export default function CartPage() {
                 </form>
 
                 {/* Calculation Breakdown */}
-                <div className="space-y-3 pt-4 border-t border-stone-800 text-sm">
-                  <div className="flex justify-between text-stone-300">
+                <div className="space-y-3 pt-4 border-t border-stone-200 dark:border-stone-800 text-sm">
+                  <div className="flex justify-between text-stone-600 dark:text-stone-300">
                     <span>Subtotal</span>
-                    <span>Rs. {subtotal.toLocaleString()}</span>
+                    <span className="font-medium text-stone-900 dark:text-stone-100">
+                      Rs. {subtotal.toLocaleString()}
+                    </span>
                   </div>
 
                   {appliedDiscount > 0 && (
-                    <div className="flex justify-between text-green-400">
+                    <div className="flex justify-between text-emerald-600 dark:text-green-400 font-medium">
                       <span>Heritage Discount (10%)</span>
                       <span>- Rs. {discountAmount.toLocaleString()}</span>
                     </div>
                   )}
 
-                  <div className="flex justify-between text-stone-300">
+                  <div className="flex justify-between text-stone-600 dark:text-stone-300">
                     <span>Nationwide Delivery</span>
-                    <span className="text-amber-500 font-semibold">FREE</span>
+                    <span className="text-amber-600 dark:text-amber-500 font-semibold">
+                      FREE
+                    </span>
                   </div>
 
-                  <div className="flex justify-between font-serif font-bold text-lg text-stone-100 pt-3 border-t border-stone-800">
+                  <div className="flex justify-between font-serif font-bold text-lg text-stone-900 dark:text-stone-100 pt-3 border-t border-stone-200 dark:border-stone-800">
                     <span>Total Amount</span>
-                    <span className="text-amber-500">
+                    <span className="text-amber-600 dark:text-amber-500">
                       Rs. {grandTotal.toLocaleString()}
                     </span>
                   </div>
@@ -324,7 +335,7 @@ export default function CartPage() {
                 <div className="space-y-3 pt-2">
                   <Link
                     href="/checkout"
-                    className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3.5 rounded-lg text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 group"
+                    className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 group"
                   >
                     <span>Proceed to Checkout</span>
                     <ChevronRight
@@ -337,10 +348,13 @@ export default function CartPage() {
                     href={`https://wa.me/923379368405?${message}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full bg-stone-950 hover:bg-stone-800 text-stone-200 border border-stone-800 font-semibold py-3 rounded-lg text-xs flex items-center justify-center gap-2 transition"
+                    className="w-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-950 dark:hover:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-800 font-semibold py-3 rounded-xl text-xs flex items-center justify-center gap-2 transition"
                   >
-                    <PhoneCall size={14} className="text-green-500" /> Quick
-                    Order via WhatsApp
+                    <PhoneCall
+                      size={14}
+                      className="text-emerald-600 dark:text-green-500"
+                    />{" "}
+                    Quick Order via WhatsApp
                   </a>
                 </div>
 
@@ -353,31 +367,31 @@ export default function CartPage() {
           </div>
         ) : (
           /* ----------------- EMPTY CART STATE ----------------- */
-          <div className="text-center py-20 bg-stone-900/40 rounded-2xl border border-stone-800 max-w-2xl mx-auto my-8">
-            <div className="w-16 h-16 bg-stone-800 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-stone-700">
+          <div className="text-center py-20 bg-white dark:bg-stone-900/40 rounded-2xl border border-stone-200 dark:border-stone-800 max-w-2xl mx-auto my-8 shadow-sm dark:shadow-none">
+            <div className="w-16 h-16 bg-amber-50 dark:bg-stone-800 text-amber-600 dark:text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-200 dark:border-stone-700">
               <ShoppingBag size={28} />
             </div>
-            <h2 className="font-serif text-2xl font-bold text-stone-100">
+            <h2 className="font-serif text-2xl font-bold text-stone-900 dark:text-stone-100">
               Your Cart is Currently Empty
             </h2>
-            <p className="text-stone-400 text-xs sm:text-sm mt-2 max-w-md mx-auto">
-              You haven't added any authentic Charsadda Chappals to your cart
-              yet. Explore our handcrafted Kaptaan and Norozi collections.
+            <p className="text-stone-600 dark:text-stone-400 text-xs sm:text-sm mt-2 max-w-md mx-auto">
+              You haven't added any authentic KhyberCraft products to your cart
+              yet. Explore our handcrafted collections.
             </p>
-            <a
+            <Link
               href="/shop"
-              className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20"
+              className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-amber-600/20"
             >
               <span>Explore Collection</span>
               <ArrowRight size={16} />
-            </a>
+            </Link>
           </div>
         )}
       </div>
 
       {/* Mini Footer */}
-      <footer className="border-t border-stone-900 py-6 text-center text-xs text-stone-500">
-        © 2026 Charsadda Heritage Footwear. All rights reserved.
+      <footer className="border-t border-stone-200 dark:border-stone-900 py-6 text-center text-xs text-stone-500">
+        © 2026 KhyberCraft Heritage Footwear. All rights reserved.
       </footer>
     </div>
   );

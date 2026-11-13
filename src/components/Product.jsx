@@ -37,7 +37,7 @@ export default function Product({ product }) {
               {product.title}
             </h3>
             <p className="mt-3 text-sm leading-6 text-stone-600 dark:text-stone-400">
-              {product.shortDescription}
+              {product.shortDescription.slice(0, 80)}...
             </p>
           </Link>
 
@@ -58,7 +58,7 @@ export default function Product({ product }) {
         <div className="mt-6">
           <div className="mb-4 flex items-center gap-3">
             <span className="text-2xl font-bold text-amber-600 dark:text-amber-400">
-              AED {product.price}
+              Rs {product.price}
             </span>
             <span className="text-sm text-stone-400 dark:text-stone-500 line-through">
               {product.originalPrice}

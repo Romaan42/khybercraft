@@ -19,6 +19,7 @@ import {
 import { CldUploadButton } from "next-cloudinary";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
+import { categories } from "@/lib/categories";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
@@ -33,7 +34,7 @@ export default function AdminEditProductPage({ params }) {
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
-    category: "Traditional Chappal",
+    category: categories[0],
     price: "",
     salePrice: "",
     stock: "",
@@ -43,7 +44,7 @@ export default function AdminEditProductPage({ params }) {
     shortDescription: "",
   });
 
-  const [sizes, setSizes] = useState(["6", "7", "8", "9", "10", "11"]);
+  const [sizes, setSizes] = useState([]);
   const [colors, setColors] = useState([]);
   const [currColor, setCurrColor] = useState("#000000");
   const [currColorImage, setCurrColorImage] = useState("");
@@ -61,7 +62,7 @@ export default function AdminEditProductPage({ params }) {
           setFormData({
             title: data.title || "",
             slug: data.slug || "",
-            category: data.category || "Traditional Chappal",
+            category: data.category || categories[0],
             price: data.price || "",
             salePrice: data.salePrice || "",
             stock: data.stock || "",
@@ -653,12 +654,11 @@ export default function AdminEditProductPage({ params }) {
                     }
                     className="w-full bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-800 rounded-xl px-4 py-3 text-xs text-stone-900 dark:text-stone-100 focus:outline-none focus:border-amber-600 transition"
                   >
-                    <option value="Traditional Chappal">
-                      Traditional Chappal
-                    </option>
-                    <option value="Kaptaan Special">Kaptaan Special</option>
-                    <option value="Norani Chappal">Norani Chappal</option>
-                    <option value="Zalmi Cut">Zalmi Cut</option>
+                    {categories.map((val, i) => (
+                      <option key={i} value={val}>
+                        {val}
+                      </option>
+                    ))}
                   </select>
                 </div>
 

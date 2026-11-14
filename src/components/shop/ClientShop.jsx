@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Search,
   SlidersHorizontal,
@@ -9,64 +9,101 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Product from "@/components/Product";
-import { categories } from "@/lib/categories";
 
 export default function ShopClient({ initialProducts = [] }) {
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 25000 });
   const [sortBy, setSortBy] = useState("default");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+  // Helper: Effective price (salePrice agar mojood ho toh woh, warna regular price)
+  const getEffectivePrice = (product) => {
+    const sale = Number(product.salePrice);
+    const regular = Number(product.price) || 0;
+    return sale > 0 && sale < regular ? sale : regular;
+  };
 
   // Dynamic Maximum Price Calculation
   const maxAvailablePrice = useMemo(() => {
     if (!initialProducts.length) return 25000;
-    return Math.max(...initialProducts.map((p) => Number(p.price) || 0));
+    const max = Math.max(...initialProducts.map((p) => getEffectivePrice(p)));
+    return max > 0 ? max : 25000;
   }, [initialProducts]);
 
-  // Combined Filtering & Sorting Logic
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 25000 });
+
+  // Sync max price automatically jab initialProducts load hon
+  useEffect(() => {
+    setPriceRange((prev) => ({
+      min: prev.min,
+      max: maxAvailablePrice,
+    }));
+  }, [maxAvailablePrice]);
+
+  useEffect(() => {
+    const allCategories = initialProducts.reduce((prev, curr) => {
+      if (curr.category && !prev.includes(curr.category)) {
+        prev.push(curr.category);
+      }
+      return prev;
+    }, []);
+
+    setCategories(allCategories);
+  }, [initialProducts]);
+
   const filteredProducts = useMemo(() => {
     return initialProducts
       .filter((product) => {
         // Category Filter
         const matchesCategory =
-          activeCategory === "all" || product.category === activeCategory;
+          activeCategory === "All" || product.category === activeCategory;
 
         // Search Query Filter
         const searchLower = searchQuery.toLowerCase();
         const matchesSearch =
           product.title?.toLowerCase().includes(searchLower) ||
+          product.category?.toLowerCase().includes(searchLower) ||
           product.tags?.some((t) => t.toLowerCase().includes(searchLower));
 
-        // Price Filter
-        const productPrice = Number(product.price) || 0;
-        const matchesPrice =
-          productPrice >= Number(priceRange.min) &&
-          productPrice <= Number(priceRange.max);
+        // Price Filter (Using effective price)
+        const productPrice = getEffectivePrice(product);
+        const minVal = Number(priceRange.min) || 0;
+        const maxVal = Number(priceRange.max) || maxAvailablePrice;
+        const matchesPrice = productPrice >= minVal && productPrice <= maxVal;
 
         return matchesCategory && matchesSearch && matchesPrice;
       })
       .sort((a, b) => {
-        if (sortBy === "price-low") return Number(a.price) - Number(b.price);
-        if (sortBy === "price-high") return Number(b.price) - Number(a.price);
+        if (sortBy === "price-low")
+          return getEffectivePrice(a) - getEffectivePrice(b);
+        if (sortBy === "price-high")
+          return getEffectivePrice(b) - getEffectivePrice(a);
         if (sortBy === "newest")
           return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
         return 0;
       });
-  }, [activeCategory, initialProducts, searchQuery, priceRange, sortBy]);
+  }, [
+    activeCategory,
+    initialProducts,
+    searchQuery,
+    priceRange,
+    sortBy,
+    maxAvailablePrice,
+  ]);
 
   const resetFilters = () => {
-    setActiveCategory("all");
+    setActiveCategory("All");
     setSearchQuery("");
     setPriceRange({ min: 0, max: maxAvailablePrice });
     setSortBy("default");
   };
 
   const isFiltered =
-    activeCategory !== "all" ||
-    searchQuery !== "" ||
-    priceRange.min > 0 ||
-    priceRange.max <= maxAvailablePrice ||
+    activeCategory !== "All" ||
+    searchQuery.trim() !== "" ||
+    Number(priceRange.min) > 0 ||
+    Number(priceRange.max) < maxAvailablePrice ||
     sortBy !== "default";
 
   // Shared Sidebar Filters Component
@@ -78,13 +115,13 @@ export default function ShopClient({ initialProducts = [] }) {
           Categories
         </h3>
         <div className="space-y-2">
-          {categories.map((cat, i) => {
-            const isSelected = false;
+          {["All", ...categories].map((cat, i) => {
+            const isSelected = cat === activeCategory;
             return (
               <button
                 key={i}
-                onClick={() => setActiveCategory(i)}
-                className={`flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-xs font-medium transition-all ${
+                onClick={() => setActiveCategory(cat)}
+                className={`flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-xs font-medium transition-all cursor-pointer ${
                   isSelected
                     ? "bg-amber-600 text-white shadow-md shadow-amber-600/20"
                     : "text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 hover:text-stone-900 dark:hover:text-stone-200"
@@ -102,34 +139,78 @@ export default function ShopClient({ initialProducts = [] }) {
 
       <hr className="border-stone-200 dark:border-stone-800" />
 
-      {/* Price Range Filter */}
+      {/* Improved Price Range Filter (Slider + Min/Max Inputs) */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
             Price Range
           </h3>
-          <span className="text-xs font-semibold text-stone-700 dark:text-stone-300">
-            Rs. {Number(priceRange.max).toLocaleString()}
+          <span className="text-xs font-bold text-stone-800 dark:text-stone-200">
+            Up to Rs. {Number(priceRange.max).toLocaleString()}
           </span>
         </div>
-        <div className="space-y-3">
+
+        {/* Min & Max Numeric Inputs */}
+        <div className="grid grid-cols-2 gap-2.5">
+          <div className="space-y-1">
+            <label className="text-[10px] font-semibold uppercase text-stone-500">
+              Min (Rs.)
+            </label>
+            <input
+              type="number"
+              min={0}
+              max={priceRange.max + 10}
+              value={priceRange.min}
+              onChange={(e) => {
+                const val = Math.max(0, Number(e.target.value));
+                setPriceRange((prev) => ({
+                  ...prev,
+                  min: Math.min(val, prev.max),
+                }));
+              }}
+              className="w-full rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 px-3 py-2 text-xs font-semibold text-stone-800 dark:text-stone-200 outline-none focus:border-amber-600 dark:focus:border-amber-500"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-[10px] font-semibold uppercase text-stone-500">
+              Max (Rs.)
+            </label>
+            <input
+              type="number"
+              min={priceRange.min}
+              max={maxAvailablePrice}
+              value={priceRange.max}
+              onChange={(e) => {
+                const val = Math.min(maxAvailablePrice, Number(e.target.value));
+                setPriceRange((prev) => ({
+                  ...prev,
+                  max: Math.max(val, prev.min),
+                }));
+              }}
+              className="w-full rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 px-3 py-2 text-xs font-semibold text-stone-800 dark:text-stone-200 outline-none focus:border-amber-600 dark:focus:border-amber-500"
+            />
+          </div>
+        </div>
+
+        {/* Range Slider */}
+        <div className="space-y-2 pt-1">
           <input
             type="range"
-            min="0"
+            min={priceRange.min}
             max={maxAvailablePrice}
-            step="10"
+            step="50"
             value={priceRange.max}
-            onChange={(e) => {
-              console.log(e.target.value);
+            onChange={(e) =>
               setPriceRange((prev) => ({
                 ...prev,
                 max: Number(e.target.value),
-              }));
-            }}
+              }))
+            }
             className="w-full h-1.5 cursor-pointer appearance-none rounded-lg bg-stone-200 dark:bg-stone-800 accent-amber-600 dark:accent-amber-500"
           />
           <div className="flex items-center justify-between text-[11px] text-stone-500 font-medium">
-            <span>Rs. 0</span>
+            <span>Rs. {Number(priceRange.min).toLocaleString()}</span>
             <span>Rs. {maxAvailablePrice.toLocaleString()}</span>
           </div>
         </div>
@@ -146,7 +227,7 @@ export default function ShopClient({ initialProducts = [] }) {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="w-full appearance-none rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 px-4 py-2.5 text-xs font-medium text-stone-800 dark:text-stone-200 outline-none focus:border-amber-600 dark:focus:border-amber-500 transition-colors"
+            className="w-full appearance-none rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 px-4 py-2.5 text-xs font-medium text-stone-800 dark:text-stone-200 outline-none focus:border-amber-600 dark:focus:border-amber-500 transition-colors cursor-pointer"
           >
             <option value="default">Featured / Default</option>
             <option value="price-low">Price: Low to High</option>
@@ -161,7 +242,7 @@ export default function ShopClient({ initialProducts = [] }) {
       {isFiltered && (
         <button
           onClick={resetFilters}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 py-2.5 text-xs font-semibold text-rose-600 dark:text-rose-400 transition hover:bg-rose-500/20"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 py-2.5 text-xs font-semibold text-rose-600 dark:text-rose-400 transition hover:bg-rose-500/20 cursor-pointer"
         >
           <RotateCcw size={14} /> Clear All Filters
         </button>
@@ -198,7 +279,7 @@ export default function ShopClient({ initialProducts = [] }) {
             {/* Mobile Filter Button Toggle */}
             <button
               onClick={() => setIsMobileFilterOpen(true)}
-              className="flex items-center gap-2 rounded-full border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950/90 px-4 py-3 text-xs font-medium text-stone-700 dark:text-stone-300 lg:hidden transition-colors"
+              className="flex items-center gap-2 rounded-full border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950/90 px-4 py-3 text-xs font-medium text-stone-700 dark:text-stone-300 lg:hidden transition-colors cursor-pointer"
             >
               <SlidersHorizontal
                 size={14}
@@ -227,7 +308,7 @@ export default function ShopClient({ initialProducts = [] }) {
                 </h3>
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="rounded-lg p-1 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
+                  className="rounded-lg p-1 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 cursor-pointer"
                 >
                   <X size={20} />
                 </button>
@@ -256,7 +337,7 @@ export default function ShopClient({ initialProducts = [] }) {
                 </span>
                 <button
                   onClick={resetFilters}
-                  className="text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 underline"
+                  className="text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 underline cursor-pointer"
                 >
                   Reset
                 </button>
@@ -280,7 +361,7 @@ export default function ShopClient({ initialProducts = [] }) {
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="mt-2 inline-flex items-center gap-2 rounded-full bg-amber-600 px-5 py-2 text-xs font-semibold text-white transition hover:bg-amber-700 dark:hover:bg-amber-500"
+                  className="mt-2 inline-flex items-center gap-2 rounded-full bg-amber-600 px-5 py-2 text-xs font-semibold text-white transition hover:bg-amber-700 dark:hover:bg-amber-500 cursor-pointer"
                 >
                   Reset Filters
                 </button>

@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { getCartItems } from "@/store/cartSlice";
 import toast from "react-hot-toast";
+import CartSkeleton from "@/components/Cart/CartSkelton";
+import EmptyCheckoutCart from "@/components/Cart/CartEmpty";
 
 export default function CheckoutPage() {
   const dispatch = useDispatch();
@@ -32,7 +34,7 @@ export default function CheckoutPage() {
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { items } = useSelector((state) => state.cart);
+  const { items, cartLoading } = useSelector((state) => state.cart);
   const subtotal = items.reduce((acc, item) => acc + item.price * item.qty, 0);
   const deliveryFee = 250;
   const grandTotal = subtotal + deliveryFee - appliedDiscount;
@@ -135,6 +137,13 @@ export default function CheckoutPage() {
     }
   };
 
+  if (cartLoading) {
+    return <CartSkeleton />;
+  }
+
+  if (items.length < 1 && !cartLoading) {
+    return <EmptyCheckoutCart />;
+  }
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans selection:bg-amber-600 selection:text-white flex flex-col justify-between transition-colors duration-300">
       <main className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1">
@@ -345,7 +354,7 @@ export default function CheckoutPage() {
                 </label>
 
                 {/* CARD / SAFEPAY Option */}
-                <label
+                {/* <label
                   className={`flex items-center justify-between p-4 bg-stone-50 dark:bg-stone-950 border rounded-xl cursor-pointer transition ${
                     formData.paymentMethod === "CARD"
                       ? "border-amber-600 bg-amber-50/40 dark:bg-amber-950/10"
@@ -379,7 +388,7 @@ export default function CheckoutPage() {
                   <span className="text-[10px] bg-amber-600/10 dark:bg-amber-600/20 text-amber-700 dark:text-amber-500 border border-amber-600/25 dark:border-amber-600/30 px-2.5 py-1 rounded-full font-bold shrink-0">
                     SECURE
                   </span>
-                </label>
+                </label> */}
               </div>
             </section>
           </div>

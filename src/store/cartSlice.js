@@ -49,7 +49,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [],
-    cartLoading: false,
+    cartLoading: true,
   },
   reducers: {
     setLoading: (state, action) => {

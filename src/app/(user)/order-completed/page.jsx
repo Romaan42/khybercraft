@@ -119,7 +119,7 @@ function OrderDetails() {
       {/* Action Buttons */}
       <div className="space-y-3">
         <a
-          href={`https://wa.me/923379368405?text=${whatsappMessage}`}
+          href={`https://wa.me/923469715695?text=${whatsappMessage}`}
           target="_blank"
           rel="noopener noreferrer"
           className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-600/10 flex items-center justify-center gap-2 cursor-pointer"
@@ -173,7 +173,7 @@ export default function OrderSuccessPage() {
       <footer className="mt-12 text-center text-xs text-stone-500 dark:text-stone-600">
         Questions about your order? Contact support at{" "}
         <span className="text-stone-700 dark:text-stone-400">
-          support@charsaddaheritage.com
+          romaan4244@gmail.com || 03469715695
         </span>
       </footer>
     </div>

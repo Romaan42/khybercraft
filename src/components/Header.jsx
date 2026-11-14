@@ -166,7 +166,7 @@ export default function Header() {
 
             {/* WhatsApp */}
             <a
-              href="https://wa.me/923379368405"
+              href="https://wa.me/923469715695"
               target="_blank"
               className="hidden md:inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-full transition shadow-lg shadow-amber-600/20"
             >
@@ -236,7 +236,7 @@ export default function Header() {
           {/* WhatsApp */}
           <div className="pt-2">
             <a
-              href="https://wa.me/923379368405"
+              href="https://wa.me/923469715695"
               target="_blank"
               className="flex items-center justify-center gap-2 w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-md text-sm transition"
             >

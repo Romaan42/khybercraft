@@ -32,7 +32,7 @@ export default function AdminEditProductPage() {
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
-    category: "Traditional Chappal",
+    category: categories[1],
     price: "",
     salePrice: "",
     stok: "",

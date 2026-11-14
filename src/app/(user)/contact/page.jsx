@@ -78,7 +78,7 @@ export default function ContactPage() {
               </div>
 
               <a
-                href="https://wa.me/923379368405"
+                href="https://wa.me/923469715695"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-lg shadow-amber-600/20"
@@ -100,11 +100,11 @@ export default function ContactPage() {
                     Call / WhatsApp
                   </h4>
                   <a
-                    href="https://wa.me/923379368405"
+                    href="https://wa.me/923469715695"
                     target="_blank"
                     className="text-sm font-semibold text-stone-900 dark:text-stone-100 mt-1 block hover:text-amber-600 dark:hover:text-amber-500 transition"
                   >
-                    +92 337 9368405
+                    +92 346 9715695
                   </a>
                   <p className="text-[11px] text-stone-500">
                     Mon - Sat (10:00 AM to 9:00 PM)
@@ -122,7 +122,7 @@ export default function ContactPage() {
                     Email Address
                   </h4>
                   <p className="text-sm font-semibold text-stone-900 dark:text-stone-100 mt-1">
-                    khybercraft.pk@gmail.com
+                    khybercraftt@gmail.com
                   </p>
                   <p className="text-[11px] text-stone-500">
                     We respond within 24 hours.

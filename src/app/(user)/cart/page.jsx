@@ -345,7 +345,7 @@ export default function CartPage() {
                   </Link>
 
                   <a
-                    href={`https://wa.me/923379368405?${message}`}
+                    href={`https://wa.me/923469715695?${message}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full bg-stone-100 hover:bg-stone-200 dark:bg-stone-950 dark:hover:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-800 font-semibold py-3 rounded-xl text-xs flex items-center justify-center gap-2 transition"

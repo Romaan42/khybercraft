@@ -34,9 +34,9 @@ export default function ProfilePage() {
   const [profileData, setProfileData] = useState({
     name: "",
     phone: "",
-    address: "",
+    streetAddress: "",
     city: "",
-    postalCode: "",
+    zipCode: "",
   });
 
   useEffect(() => {
@@ -44,9 +44,9 @@ export default function ProfilePage() {
       setProfileData({
         name: user.name || "",
         phone: user.phone || "",
-        address: user.address || "",
+        streetAddress: user.streetAddress || "",
         city: user.city || "",
-        postalCode: user.postalCode || "",
+        zipCode: user.zipCode || "",
       });
     }
   }, [user]);
@@ -77,6 +77,23 @@ export default function ProfilePage() {
       router.push("/");
     } else {
       toast.error(result.message);
+    }
+  };
+
+  const handeSaveChanges = async () => {
+    const res = await fetch("/api/profile", {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(profileData),
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      toast.success(data.message);
+    } else {
+      toast.error(data.message);
     }
   };
 
@@ -304,7 +321,7 @@ export default function ProfilePage() {
                       <span className="text-stone-500">
                         Need help with this order?{" "}
                         <a
-                          href="https://wa.me/923379368405"
+                          href="https://wa.me/923469715695"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-amber-600 dark:text-amber-500 hover:underline font-medium"
@@ -355,7 +372,7 @@ export default function ProfilePage() {
                 </p>
               </div>
               <button
-                onClick={() => toast.success("Profile saved")}
+                onClick={handeSaveChanges}
                 className="inline-flex items-center gap-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition cursor-pointer"
               >
                 <Edit3 size={14} /> Save Changes
@@ -397,9 +414,12 @@ export default function ProfilePage() {
                 </label>
                 <input
                   type="text"
-                  value={profileData.address}
+                  value={profileData.streetAddress}
                   onChange={(e) =>
-                    setProfileData({ ...profileData, address: e.target.value })
+                    setProfileData({
+                      ...profileData,
+                      streetAddress: e.target.value,
+                    })
                   }
                   className="w-full bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-800 rounded-lg px-3.5 py-2.5 text-stone-900 dark:text-stone-100 focus:outline-none focus:border-amber-600 transition"
                 />
@@ -425,11 +445,11 @@ export default function ProfilePage() {
                 </label>
                 <input
                   type="text"
-                  value={profileData.postalCode}
+                  value={profileData.zipCode}
                   onChange={(e) =>
                     setProfileData({
                       ...profileData,
-                      postalCode: e.target.value,
+                      zipCode: e.target.value,
                     })
                   }
                   className="w-full bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-800 rounded-lg px-3.5 py-2.5 text-stone-900 dark:text-stone-100 focus:outline-none focus:border-amber-600 transition"

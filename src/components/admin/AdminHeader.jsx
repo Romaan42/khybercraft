@@ -1,7 +1,7 @@
 "use client";
 
 import { adminLogout } from "@/actions/adminActions";
-import { Box, LayoutGrid, ShoppingCart } from "lucide-react";
+import { Box, LayoutGrid, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Toaster } from "react-hot-toast";
@@ -20,6 +20,11 @@ export default function AdminHeader() {
       name: "Products",
       link: "/admin/products",
       icon: <Box size={20} />,
+    },
+    {
+      name: "Curstomers",
+      link: "/admin/customers",
+      icon: <User size={20} />,
     },
     {
       name: "Orders",
@@ -41,8 +46,6 @@ export default function AdminHeader() {
       <div className="text-2xl font-bold p-5 flex justify-center items-center border-neutral-200 border">
         Admin Panel
       </div>
-
-      {/* Navigation */}
       <nav className="flex flex-col p-5 gap-4">
         {links.map((link) => {
           const isActive = pathname === link.link;

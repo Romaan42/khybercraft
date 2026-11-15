@@ -2,6 +2,7 @@ import Link from "next/link";
 import AddToCart from "./AddToCart";
 import ClImage from "./ClgImage";
 import RatingSection from "./RatingSection";
+import { Eye } from "lucide-react";
 
 export default function Product({ product }) {
   return (
@@ -23,7 +24,7 @@ export default function Product({ product }) {
             </span>
           ) : null}
           <span className="rounded-full border border-stone-200 dark:border-stone-800 bg-white/90 dark:bg-stone-950/95 px-3 py-1 text-[11px] text-stone-700 dark:text-stone-300 backdrop-blur-sm">
-            {product.tag}
+            10%
           </span>
         </div>
       </div>
@@ -64,15 +65,28 @@ export default function Product({ product }) {
               {product.originalPrice}
             </span>
           </div>
-          <AddToCart
-            product={{
-              _id: product._id,
-              title: product.title,
-              price: product.price,
-              image: product.images[0],
-              sizes: product.sizes,
-            }}
-          />
+          {product.sizes.length === 0 && product.colors.length === 0 ? (
+            <AddToCart
+              product={{
+                _id: product._id,
+                title: product.title,
+                price: product.price,
+                image: product.images[0],
+                sizes: product.sizes,
+              }}
+            />
+          ) : (
+            <Link
+              href={`/product/${product.slug}`}
+              className="flex items-center justify-center gap-1.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 hover:bg-amber-600 dark:bg-stone-900 dark:hover:bg-amber-600 px-3.5 py-2 text-xs font-bold text-stone-700 hover:text-white dark:text-stone-300 dark:hover:text-white transition-all duration-200 shadow-sm hover:shadow-amber-600/20 group w-full"
+            >
+              <Eye
+                size={14}
+                className="text-amber-600 group-hover:text-white transition-colors"
+              />
+              <span>View</span>
+            </Link>
+          )}
         </div>
       </div>
     </div>

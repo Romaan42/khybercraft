@@ -19,6 +19,9 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    streetAddress: String,
+    city: String,
+    zipCode: String,
   },
   { timestamps: true },
 );

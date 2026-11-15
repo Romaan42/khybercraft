@@ -71,11 +71,7 @@ export default function AdminEditProductPage({ params }) {
             isFeatured: data.isFeatured || false,
             inStock: data.inStock ?? true,
           });
-          setSizes(
-            data.sizes && data.sizes.length > 0
-              ? data.sizes
-              : ["6", "7", "8", "9", "10", "11"],
-          );
+          setSizes(data.sizes && data.sizes.length > 0 ? data.sizes : []);
           setImages(data.images && data.images.length > 0 ? data.images : []);
           setColors(data.colors || []);
           setVideo(data.video || "");
@@ -359,7 +355,7 @@ export default function AdminEditProductPage({ params }) {
                       {/* Color Preview Box/Circle */}
                       <div
                         className="w-8 h-8 rounded-full border border-stone-300 dark:border-stone-700 shrink-0 shadow-sm"
-                        style={{ backgroundColor: c.name.toLowerCase() }}
+                        style={{ backgroundColor: c.name?.toLowerCase() }}
                         title={c.name}
                       />
                       {/* Linked Image Thumbnail */}
